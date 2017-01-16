@@ -1,0 +1,43 @@
+<div class="loginbg">
+<div class="loginmodal-container">
+    <div class="orion-logo"><img src="/app/assets/img/orion-logo.png" width="99" height="25" alt="Orion" /></div>
+    <div class="loginwindow">
+        <h1>Login to Your Account</h1><br>
+        <div class="error" *ngIf="showErrorMessage">
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                Invalid Username or Password.
+            </div>
+        </div>
+        <div class="error" *ngIf="authenticationError">
+             <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                {{authenticationError}}
+            </div>            
+        </div>
+        <!--<form name="formLogin" method="post" (submit)="onLogin()">
+            <div class="form-group">
+                <input type="text" name="username" [(ngModel)]="username" class="form-control" placeholder="Username" required />
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password" required />
+            </div>
+            <input type="submit" name="login" class="login loginmodal-submit" value="Login" />
+        </form>-->
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+         <div class="form-group">
+            <label>Username:</label>
+            <input type="text" formControlName="username" class="form-control">
+            <!--<div *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched" class="alert alert-danger">Username is required.</div>-->
+         </div>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" formControlName="password" class="form-control">
+         </div>
+            <input type="submit" name="login" [disabled]="!loginForm.valid" class="login loginmodal-submit" value="Login" />
+    </form>
+        <div class="login-help">
+            <a href="#">Forgot Password</a>
+        </div>
+    </div>
+</div></div>

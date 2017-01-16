@@ -1,0 +1,13 @@
+<div class="topbar">
+    <div class="breadcrum">
+        <div class="topbar-left">
+            <ol class="breadcrumb">
+                <li class="crumb-icon"><a [routerLink]="['/community', 'subscription','profiles']"><span class="glyphicon glyphicon-home"></span></a></li>
+                <li class="crumb-link"><a [routerLink]="['/community', 'subscription','profiles']">Home</a></li>
+                <!--<li class="crumb-link" *ngIf="!isDashboard"><a [routerLink]="['/community', 'subscription','profiles']">Subscription</a></li>-->
+                <ng-content *ngIf="!isDashboard"></ng-content>
+                <li class="crumb-trail">{{pageName}}</li>
+            </ol>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="form-inline">
+    <!--<input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Search User">-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-3 form-inline tabs-data form-group" *ngIf="!isViewUser">
+                <p-autoComplete class="form-control radius-none" class="autocomplete-block" [(ngModel)]="selecteduser" [suggestions]="FilteredUserresults"
+                    placeholder="Search User" (completeMethod)="autoUserSearch($event)" field="name" [minLength]="1" (onSelect)="handleselectedUser(selecteduser)" (keyup)="handleselectedUser(selecteduser)"></p-autoComplete>
+            </div>
+            <div class="col-sm-1" *ngIf="!isViewUser">
+                <button type="button" class="btn btn-info btn-raised" (click)="addUser(selecteduser)" [disabled]="btnDisableUser">Add</button>
+            </div>           
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showGrid">
+    <!-- Because we are using the Angular ID (ie #ag-grid marker), we have to have all the items that use that marker inside the same ng-if as the grid -->
+    <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" suppressContextMenu="true" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+        enableColResize="true" [columnDefs]="columnDefs" [rowData]="teamUsers" enableFilter (modelUpdated)="onModelUpdated()">
+    </ag-grid-ng2>
+</div>
+
+<p-dialog header="" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+    [resizable]=false width="420">
+    <div>
+        <div>This action will Delete the User and he/she will not be able to login to the Application unless he is re-assigned a Role and a TEAM.  <br /><br /> Do you wish to continue ?</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayConfirm=false">No</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="deleterUsers()">Yes</button>
+            </div>
+
+        </footer>
+    </div>
+</p-dialog>

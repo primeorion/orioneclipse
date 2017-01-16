@@ -1,0 +1,323 @@
+<eclipse-portfolio-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-portfolio-tabnav>
+<div class="tab-content">
+    <form name="formPortfolioDetails" (submit)="onSave()">
+        <div id="portfoliodetails" class="tab-pane fade active in">
+            <!--<div class="row">
+                <div class="col-md-4">
+                    <div class="portfoliodetails-search-add">
+                        <input type="text" class="port-search" id="" placeholder="Search Portfolio" [hidden]="isEdit">
+                    </div>
+                </div>
+            </div>-->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="primar-label"><strong>Name</strong></label>
+                                <input type="text" class="form-control" placeholder="Enter  Name" id="Name" [(ngModel)]="editPortfolio.name" (keyup)="hideError()">
+                                <span *ngIf="nameValidation" class="error">Please enter portfolio name</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="primar-label"><strong>Sleeved Portfolio</strong></label>
+                                <select style="width: 30%;" [(ngModel)]="editPortfolio.isSleevePortfolio" class="form-control">
+                                    <option *ngFor="let sleeve of sleevedOptions" [ngValue]="sleeve.id" >
+                                        {{sleeve.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group is-empty">
+                                <label class="primar-label"><strong>Model </strong></label>
+                                <p-autoComplete class="form-control autocomplete-block" [(ngModel)]="portfolio.general.modelName" [suggestions]="modelSuggestions"
+                                    placeholder="Search Model" (completeMethod)="autoModelSearch($event)" field="name" [minLength]="1"
+                                    (onSelect)="onModelSelect($event)" (keyup)="onModelUnSelect($event)">
+                                </p-autoComplete>
+                            </div>
+                            <a href="javascript:void(0)" class="btn btn-info btn-sm" [ngClass]="{linkdisabled:portfolio.general.modelName == undefined}"
+                                (click)="gotoModel()">View Model</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-info btn-sm pull-right" (click)="openCommunityPopup()">Find Community Models</a>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group is-empty">
+                                <label class="primar-label"><strong>Tags </strong></label>
+                                <input type="text" class="form-control" id="" style="width: 30%;" placeholder="Type Tag name" [(ngModel)]="editPortfolio.tags"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label><strong>TEAM <span class="text-danger">*</span></strong></label>
+                                <div class="table-responsive-y">
+                                    <table class="table table-hover portfolio-team-stripd-table">
+                                        <tbody>
+                                            <tr *ngFor="let team of portfolioTeams">
+                                                <td><a href="javascript:void(0)" (click)="deleteTeam(team.id)"><i *ngIf="!team.isPrimary" class="fa fa-trash-o"></i></a>                                                    {{team.name}}</td>
+                                                <td><label class="radio-inline"><input type="radio" name="optradio" [ngModel]="{checked: team.isPrimary}" value="1" checked (click)="getValue(team.id)"> Set as Primary?</label></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" *ngIf="portfolioId > 0">
+                    <label><strong>Errors and Warnings  </strong></label>
+                    <table class="error-table">
+                        <tbody>
+                            <tr>
+                                <td>Out of Tolerance</td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.outOfTolerance}}</span><span>%</span></td>
+                            </tr>
+                            <tr>
+                                <td>Cash Need </td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.cashNeed | currency:'USD':true}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Set for Auto Rebalance </td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.setForAutoRebalance}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Contributions</td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.contributions | currency:'USD':true}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Distribution </td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.distribution | currency:'USD':true}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Model Association</td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.modelAssociation}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Blocked </td>
+                                <td class="text-right"><span>{{portfolio.issues.blocked}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>TLH Opportunity</td>
+                                <td class="text-right"><span>{{portfolio.issues.TLHOpportunity}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Data Errors </td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.dataErrors}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Pending Trades </td>
+                                <td class="text-danger text-right"><span>{{portfolio.issues.pendingsTrades}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="" [hidden]="!portfolioId > 0">
+                <h3><strong>SUMMARY</strong></h3>
+                <div class="col-lg-3">
+                    <div id="donut"></div>
+                </div>
+                <div class="col-lg-9 gray95">
+                    <div class="portfolio-aum-info-wrap">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3 class="portfolio-aum-title"><strong>Portfolio AUM Information</strong></h3>
+                                <p>Managed+Excluded+Total Cash (where Total cash = Reserve + Cash)</p>
+                                <div class="col-lg-12">
+                                    <div class="row row-no-padding portfolio-aum-tiles">
+                                        <div class="col-lg-4">
+                                            <div class="panel">
+                                                <div class="panel-body dash-bg-color-11">
+                                                    <div class="portfolio-aum-info text-center">
+                                                        <div class="count-box"><span>{{portfolio.summary.AUM.managedValue | currency:'USD':true}}</span>                                                            Managed</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="panel">
+                                                <div class="panel-body dash-bg-color-12">
+                                                    <div class="portfolio-aum-info text-center">
+                                                        <div class="count-box"><span>{{portfolio.summary.AUM.excludedValue | currency:'USD':true}}</span>                                                            Excluded</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row row-no-padding portfolio-aum-tiles">
+                                        <div class="col-lg-4">
+                                            <div class="panel">
+                                                <div class="panel-body dash-bg-color-13">
+                                                    <div class="portfolio-aum-info text-center">
+                                                        <div class="count-box"><span>{{portfolio.summary.AUM.totalCash.total | currency:'USD':true}}</span>                                                            Total Cash <small> (Reserve + Cash)</small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="panel">
+                                                <div class="panel-body dash-bg-color-14">
+                                                    <div class="portfolio-aum-info text-center">
+                                                        <div class="count-box"><span>{{portfolio.summary.AUM.totalCash.reserve | currency:'USD':true}}</span>                                                            Reserve</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="panel">
+                                                <div class="panel-body dash-bg-color-15">
+                                                    <div class="portfolio-aum-info text-center">
+                                                        <div class="count-box"><span>{{portfolio.summary.AUM.totalCash.cash | currency:'USD':true}}</span>                                                            Cash</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="portfolio-aum-title-clount">
+                                    <h5 class="text-right"><strong>Based on data available on:</strong> {{portfolio.editedOn | date: 'MM/dd/yyyy'}}</h5>
+                                    <h2 class="text-right">{{portfolio.summary.AUM.total | currency:'USD':true}}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="divider"></div>
+                    <div class="portfolio-aum-info-wrap">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3><strong>Portfolio Realized Gain/Loss YTD </strong></h3>
+                                <p>YTD Realized Gain/Loss = (+/- Long Term Realized Gain/Loss) + (+/- Short Term Realized Gain/Loss)</p>
+                                <div class="col-lg-12">
+                                    <div class="row row-no-padding portfolio-aum-tiles">
+                                        <div class="col-lg-4">
+                                            <div class="panel">
+                                                <div [ngClass]="shortermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+                                                    <div class="portfolio-aum-info text-center">
+                                                        <div class="count-box">
+                                                            <span *ngIf="!shortermflag">{{portfolio.summary.realized.shortTerm | currency:'USD':true}}</span>
+                                                            <span *ngIf="shortermflag">({{portfolio.summary.realized.shortTerm * (-1) | currency:'USD':true}})</span>                                                            Short Term
+                                                            <div *ngIf="isShortTermGain"><i class="fa fa-arrow-up"></i></div>
+                                                            <div *ngIf="!isShortTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="panel">
+                                                <div [ngClass]="longtermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+                                                    <div class="portfolio-aum-info text-center">
+                                                        <div class="count-box">
+                                                            <span *ngIf="!longtermflag">{{portfolio.summary.realized.longTerm | currency:'USD':true}}</span>
+                                                            <span *ngIf="longtermflag">({{portfolio.summary.realized.longTerm *(-1)| currency:'USD':true}})</span>                                                            Long Term
+                                                            <div *ngIf="isLongTermGain"> <i class="fa fa-arrow-up"></i></div>
+                                                            <div *ngIf="!isLongTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="portfolio-aum-title-clount">
+                                    <h2><strong *ngIf="!totalflag"> {{portfolio.summary.realized.total | currency:'USD':true}} </strong>
+                                        <strong *ngIf="totalflag"> ({{portfolio.summary.realized.total*(-1) | currency:'USD':true}}) </strong>
+                                        <i class="fa fa-arrow-up text-success" *ngIf="isTotalGain"></i>
+                                        <i class="fa fa-arrow-down text-danger" *ngIf="!isTotalGain"></i>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="" *ngIf="portfolioId > 0">
+                <h3><strong>ACCOUNTS</strong></h3>
+                <div class="nav-tabs-container">
+                    <ul class="nav nav-tabs pull-left">
+                        <li class="active" (click)="selectedGrid='REG'"><a data-toggle="tab" href="#regular" aria-expanded="true">Regular</a></li>
+                        <li class="" (click)="selectedGrid='SMA'"><a data-toggle="tab" href="#sma" aria-expanded="true">SMA</a></li>
+                        <li class="" (click)="selectedGrid='SLE'"><a data-toggle="tab" href="#sleevedaccount" aria-expanded="true">Sleeved account</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div id="regular" class="tab-pane fade active in">
+                        <div class="clearfix"></div>
+                        <div class="table-responsive" style="height:350px;">
+                            <div>
+                                <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                                    [gridOptions]="gridOptions.regular" rowSelection="single" [columnDefs]="columnDefs" [rowData]="regularAccounts"
+                                    enableColResize="true" enableFilter (rowDoubleClicked)="onRowDoubleClicked($event)" [getContextMenuItems]="getContextMenuItems">
+                                </ag-grid-ng2>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="sma" class="tab-pane fade">
+                        <div>
+                            <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                                [gridOptions]="gridOptions.sma" rowSelection="single" [columnDefs]="columnDefs" [rowData]="smaAccounts"
+                                enableColResize="true" enableFilter (rowDoubleClicked)="onRowDoubleClicked($event)" [getContextMenuItems]="getContextMenuItems">
+                            </ag-grid-ng2>
+                        </div>
+                    </div>
+                    <div id="sleevedaccount" class="tab-pane fade">
+                        <div>
+                            <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                                [gridOptions]="gridOptions.sleeved" rowSelection="single" [columnDefs]="columnDefs" [rowData]="sleevedAccounts"
+                                enableColResize="true" enableFilter (rowDoubleClicked)="onRowDoubleClicked($event)" [getContextMenuItems]="getContextMenuItems">
+                            </ag-grid-ng2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+            <div class="bs-component pull-right">
+                <input type="submit" name="portfolioSave" class="btn btn-info btn-raised" value="Save" />
+                <a [routerLink]="['/eclipse', 'portfolio', 'list']" class="btn btn-raised btn-default">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<p-dialog header="Find Community Models" [(visible)]="displayCommunityModel" modal="modal" responsive="true" showEffect="fade"
+    [resizable]=false width="600">
+    <form [ngFormModel]="portfolioDetailsGroup" (ngSubmit)="savePortfolio(portfolioDetailsGroup)">
+        <div class="form-group">
+            <label class="col-md-4 control-label">Strategist</label>
+            <div class="col-md-6">
+                <select class="form-control watermarked gray" ngControl="Strategist" #name="ngForm" (change)="getCommunityModel($event.target.value)">
+                    <option value="0" selected>Select Community Strategist</option>
+                    <option *ngFor="let cs of strategistList" id="{{cs.id}}" value="{{cs.id}}">{{cs.name}}</option>
+                </select>
+                <em class="securityError danger" *ngIf="!Strategist && submitCategory">Required</em>
+            </div>
+            <div class="col-md-2"><a href="javascript:void(0)" class="btn btn-info">View</a></div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Community Model</label>
+            <div class="col-md-6">
+                <select class="form-control watermarked gray" ngControl="Community" #name="ngForm"> <!-- (change)="CommunityChange($event.target.value)" -->
+                    <option value="0" selected="selected">Select Community Model</option>
+                    <option *ngFor="let cm of modelList" value="{cm.name}">{{cm.name}}</option>
+                </select>
+                <em class="securityError danger" *ngIf="!Community && submitCategory">Required</em>
+            </div>
+        </div>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix ">
+            <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayCommunityModel=false">CANCEL</button>
+            <button type="button" class="btn btn-blueouter" icon="fa-check">SAVE</button>
+        </div>
+    </form>
+</p-dialog>

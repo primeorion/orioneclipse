@@ -1,0 +1,92 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Teams" [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-team-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-admin-team-tabnav>
+    <div class="tab-content">
+        <!--<form name="formTeamDetails">-->
+            <div style="padding: 15px;">
+            <div>
+                <div class="row">
+                    <div class="col-sm-6" id="team">
+                        <div class="row">
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label class="primar-label" for="team" class="col-sm-4">Search Team</label>
+                                <div class="col-sm-6 col-md-pull-1">
+                                    <p-autoComplete [(ngModel)]="selectedTeam" [suggestions]="teamSuggestions" placeholder="Search By Team Name" class="autocomplete-block"
+                                        (completeMethod)="autoTeamSearch($event)" (onSelect)="onTeamSelect($event)" field="name"
+                                        [minLength]="1">
+                                    </p-autoComplete>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div [hidden]="teamId == undefined">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="primar-label">Team Name</label>
+                            <div class="form-inline tabs-data">
+                                <div><span>{{team.name}}</span></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="teamId != undefined">
+                            <label class="primar-label">Team Id</label>
+                            <div class="form-inline tabs-data">
+                                <div><span>{{team.id}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row marging-bottom-2x">
+                        <div class="col-sm-4">
+                            <label class="primar-label">Portfolio Permission</label>
+                            <div class="form-inline tabs-data">
+                                <div class="radio" *ngIf="team.portfolioAccess == 1">
+                                    <label><input type="radio" name="portfolio" checked /><span class="circle"></span><span class="check"></span>&nbsp; Permission</label>
+                                </div>
+                                <div class="radio" *ngIf="team.portfolioAccess == 0">
+                                    <label><input type="radio" name="portfolio" checked /><span class="circle"></span><span class="check"></span>&nbsp; All</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="primar-label">Model Permission</label>
+                            <div class="form-inline tabs-data">
+                                <div class="radio" *ngIf="team.modelAccess == 1">
+                                    <label><input type="radio" name="model" checked /><span class="circle"></span><span class="check"></span>&nbsp; Permission</label>
+                                </div>
+                                <div class="radio" *ngIf="team.modelAccess == 0">
+                                    <label><input type="radio" name="model" checked /><span class="circle"></span><span class="check"></span>&nbsp; All</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="primar-label" for="roletype">Status</label>
+                            <p class="label label-success" *ngIf="team.status">Active</p>
+                            <p class="label label-default" *ngIf="!team.status">In-active</p>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <tab-set>
+                            <tab tabTitle="Users" tabName="tabUsers">
+                                <eclipse-admin-teamusers></eclipse-admin-teamusers>
+                            </tab>
+                            <tab tabTitle="Portfolio" tabName="tabPortfolio">
+                                <eclipse-admin-teamportfolios></eclipse-admin-teamportfolios>
+                            </tab>
+                            <tab tabTitle="Advisor" tabName="tabAdvisor">
+                                <eclipse-admin-teamadvisors></eclipse-admin-teamadvisors>
+                            </tab>
+                            <tab tabTitle="Model" tabName="tabModel">
+                                <eclipse-admin-teammodels></eclipse-admin-teammodels>
+                            </tab>
+                        </tab-set>
+                    </div>
+                </div>
+                <div class="button-footer">
+                    <a [routerLink]="['/eclipse', 'admin', 'team', 'list']" class="btn btn-default btn-raised">Cancel</a>
+                </div>
+            </div>
+        <!--</form>-->
+            </div>
+    </div>
+</div>

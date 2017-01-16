@@ -1,0 +1,13 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left">
+        <li><a [routerLinkActive]="['active']"  *ngIf="model.route == 'aum'" [routerLink]="['/community', 'overview', 'aumfirm']">Firm</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'aum'" [routerLink]="['/community', 'overview', 'aummodel']">Model</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'aum'" [routerLink]="['/community', 'overview', 'aumadvisor']">Advisor</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'accounts'" [routerLink]="['/community', 'overview', 'accountsfirm']">Firm</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'accounts'" [routerLink]="['/community', 'overview', 'accountsmodel']">Model</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'accounts'" [routerLink]="['/community', 'overview', 'accountsadvisor']">Advisor</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'cashflow'" [routerLink]="['/community', 'overview', 'cashflowfirm']">Firm</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'cashflow'" [routerLink]="['/community', 'overview', 'cashflowmodel']">Model</a></li>
+        <li><a [routerLinkActive]="['active']" *ngIf="model.route == 'cashflow'" [routerLink]="['/community', 'overview', 'cashflowadvisor']">Advisor</a></li>
+    </ul>
+</div>

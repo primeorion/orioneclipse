@@ -1,0 +1,28 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left">
+        <li [routerLinkActive]="['active']"><a [routerLink] = "['/community', 'administrator', 'user','list']">ALL USERS</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'V'"><a [routerLink]="['/community', 'administrator', 'user', 'view' , (model.id || '')]">USER DETAIL</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'L' || model.action == 'A'"><a [routerLink]="['/community', 'administrator', 'user', 'add']">USER DETAIL</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'E'"><a [routerLink]="['/community', 'administrator', 'user', 'edit' , model.id]">USER DETAIL</a></li>
+    </ul>
+    <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu">
+            <li [hidden]="model.id == undefined || model.action == 'V'">
+                <a [routerLink]="['/community', 'administrator', 'user', 'view' , (model.id || '')]">View User</a>
+            </li>
+            <li [hidden]="model.id == undefined || model.action == 'E'">
+                <a href="javascript:void(0)" [routerLink]="['/community', 'administrator', 'user', 'edit', model.id]">Edit User</a>
+            </li>
+            <li [hidden]="!(model.id != undefined || model.ids != undefined) || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('Delete')">Delete</a>
+            </li>
+            <li [hidden]="(model.id != undefined || model.ids != undefined ) || model.action != 'L'">
+                <a [routerLink]="['/community', 'administrator', 'user', 'add']">Add New User</a>
+            </li>
+        </ul>
+    </div>
+</div>

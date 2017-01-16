@@ -1,0 +1,36 @@
+<eclipse-holding-filterby routeName="list"></eclipse-holding-filterby>
+<eclipse-holding-tabnav [model]="tabsModel"></eclipse-holding-tabnav>
+<div class="tab-content">
+    <div id="allaccounts" class="tab-pane fade in active grid-height">
+        <div class="tab-header">
+            <div class="row">
+                <div class="holdings-search-head-dispaly">
+                    <b><span class="{{accountType =='portfolio' ? 'text-warning' : 'text-info'}}" ><i class="fa fa-{{accountType =='portfolio' ? 'suitcase' : 'calculator'}}"></i> {{selectedHoldingObj}}</span> <span class="marging-left-2x" title="{{selectedHoldingValue  | currency:'USD':true }}">{{selectedHoldingValue | currencyMillionfilter : 2}} <sub style='color:white'>{{selectedHoldingValue | currencyAmountfilter}}</sub></span></b>
+                </div>
+            </div>
+            <div class="form-inline">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <eclipse-savedviews [model]="savedView" (parentColDefCallback)="createColumnDefs()" (parentCallback)="refreshHoldingsList()"
+                            viewTypeId="4"></eclipse-savedviews>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <div class="form-group">
+                            <label class="label-right-space">Filter : </label>
+                            <select id="select111" class="form-control" [(ngModel)]="filterType" (change)="onFilterChange($event)">
+                            <option value="0">NONE</option>
+                            <option *ngFor="let h of holdingFilters" value={{h.id}}> {{h.name}}</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height margin-top-15" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+            enableColResize="true" rowSelection="single" (rowSelected)="onRowSelected($event)" [columnDefs]="columnDefs" [rowData]="holdingsList"
+            enableFilter [getContextMenuItems]="getContextMenuItems" (gridReady)="onGridReady($event)" [context]="gridContext"
+            [suppressMenuMainPanel]="true" (modelUpdated)="onModelUpdated()">
+        </ag-grid-ng2>
+    </div>
+</div>

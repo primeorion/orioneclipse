@@ -1,0 +1,88 @@
+<div [formGroup]="form" class="form-horizontal">
+    <div class="form-group">
+        <div [attr.for]="dynamicControlData.name">
+            <div [ngSwitch]="dynamicControlData.componentType">
+
+                <div *ngSwitchCase="'default'">
+
+                    <label class="control-label col-sm-6">
+  {{dynamicControlData.displayName}}
+      <a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a>
+    </label>
+                    <div class="col-md-1"><span *ngIf="dynamicControlData.symbol !=null" class="input-group-addon-symbol">{{dynamicControlData.symbol }}</span>
+                        <span *ngIf="dynamicControlData.indicatorOptions != undefined && dynamicControlData.indicatorOptions.length > 0">
+                            {{dynamicControlData.indicatorValue}}
+                        </span>
+                    </div>
+                    <div [ngSwitch]="dynamicControlData.componentName" class="col-sm-5">
+                        <div *ngSwitchCase="'Textbox'">
+                            <label> {{dynamicControlData.value}}</label>
+                        </div>
+                        <div *ngSwitchCase="'Dropdown'">
+                            <span *ngIf="dynamicControlData.selectedOptions.length > 0">
+                            <label>   {{dynamicControlData.selectedOptions[0].name}}</label>
+                        </span>
+                        </div>
+                        <div *ngSwitchCase="'Checkbox'" [id]="dynamicControlData.name">
+                            <div [ngSwitch]="dynamicControlData.valueType">
+                                <div *ngSwitchCase="'Boolean'">
+                                    <input type="Checkbox" [id]="dynamicControlData.name" [name]="dynamicControlData.name" [formControlName]="dynamicControlData.name"
+                                        [value]="dynamicControlData.value" (change)="setCheckBoValue($event)" [checked]="setcheckboxchecked(dynamicControlData.value)"
+                                        [title]="showTooltip(dynamicControlData)" disabled>
+                                </div>
+
+                                <div *ngSwitchCase="'List'">
+                                    <div *ngFor="let opt of dynamicControlData.options">
+                                        <input type="Checkbox" [id]="dynamicControlData.name" [name]="dynamicControlData.name" [value]="opt.id" [formControlName]="dynamicControlData.name"
+                                            [checked]="dynamicControlData.selectedOptions.indexOf(opt.id) > -1" 
+                                            disabled> {{opt.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Custom control display / rendering-->
+                <div *ngSwitchCase="'custom'">
+                    <div [ngSwitch]="dynamicControlData.componentName">
+
+                        <div *ngSwitchCase="'TaxLotDepletionMethodSortedlist'" class="form-group">
+                            <label class="control-label col-sm-6"> {{dynamicControlData.displayName}}<a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a></label>
+                            <div class="col-md-1"></div>
+                            <div class="col-sm-5">
+                                <sortobjects-component [displaypermission]="false" [(model)]="(dynamicControlData.selectedOptions.length >0) ? dynamicControlData.selectedOptions : dynamicControlData.options"></sortobjects-component>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="'PriorityRankingSortedlist'" class="form-group">
+                            <label class="control-label col-sm-6"> {{dynamicControlData.displayName}}<a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a></label>
+                            <div class="col-md-1"></div>
+                            <div class="col-sm-5">
+                                <sortobjects-component [displaypermission]="false" [(model)]="(dynamicControlData.selectedOptions.length > 0) ? dynamicControlData.selectedOptions : dynamicControlData.options"></sortobjects-component>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="'CommunityStrategistEnabledListCascadingControl'" class="form-group">
+                            <preference-community-stratagists [displaypermission]="false" [(CommunityStrategies)]="communityStrategies"></preference-community-stratagists>
+                        </div>
+
+                        <div *ngSwitchCase="'LocationOptimizationDataGrid'" class="form-group">
+                            <label class="control-label col-sm-6"> {{dynamicControlData.displayName}}
+                <a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a>
+              </label>
+                            <div class="col-md-1"></div>
+                            <div class="col-sm-5">
+                                <location-optimization [displaypermission]="false" [(dataSource)]="LocationOptimizations.subClasses"></location-optimization>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'SecurityDataGrid'">
+                            <Security-DataGrid [displaypermission]="false" [(fromParent)]="SecurityPrefResult"></Security-DataGrid>
+                        </div>
+                    </div>
+                </div>
+                <span class="cat-pref-error">{{errorMessage }}</span>
+            </div>
+        </div>
+    </div>
+</div>

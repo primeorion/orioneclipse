@@ -1,0 +1,30 @@
+<!--right side main area start-->
+<div class="main">
+    <breadcrumb pageName="Portfolio"></breadcrumb>
+    <div class="dashboard-content dashboard-content-margin">
+        <!-- <di></di>v class="nav-tabs-container">
+            <ul class="nav nav-tabs pull-left">
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'portfolio', 'dashboard']">Dashboard</a> </li>
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'portfolio', 'list']">All Portfolios</a></li>
+                <li *ngIf="permission.canAdd" [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'portfolio', 'detail']">Portfolio Details</a></li>
+                <li *ngIf="permission.canRead" [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'portfolio', 'view']">Portfolio Details</a></li>
+            </ul>
+            <div class="actionBtn btn-group pull-right">
+                <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="material-icons">more_vert</i>
+                    <div class="ripple-container"></div>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void(0)">Action</a></li>
+                    <li><a href="javascript:void(0)">Another action</a></li>
+                    <li><a href="javascript:void(0)">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0)">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content"> -->
+             <router-outlet></router-outlet>
+    </div>
+</div>
+<!--right side main area end -->

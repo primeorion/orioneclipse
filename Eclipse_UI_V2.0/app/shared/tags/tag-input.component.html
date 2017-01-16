@@ -1,0 +1,11 @@
+<rl-tag-input-item [text]="tag" [index]="index" [selected]="selectedTag === index" (tagRemoved)="_removeTag($event)" *ngFor="let tag of tagsList; let index = index">
+</rl-tag-input-item>
+
+<form #tagInputForm="ngForm" class="padding-0">
+    <input class="ng2-tag-input-field form-control placeholder-input" type="text" [(ngModel)]="inputValue" name="tagInputField" [placeholder]="placeholder"
+        (paste)="inputPaste($event)" (keydown)="inputChanged($event)" (blur)="inputBlurred($event)" (focus)="inputFocused()">
+</form>
+
+<style>
+  
+</style>

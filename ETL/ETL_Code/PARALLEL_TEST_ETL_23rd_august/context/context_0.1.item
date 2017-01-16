@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd">
+  <talendfile:ContextType xmi:id="_0UzDAE_mEeaomfJTF-XHLg" confirmationNeeded="false" name="context">
+    <contextParameter xmi:id="_0UzDAU_mEeaomfJTF-XHLg" comment="" name="serverIp" prompt="serverIp?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDAk_mEeaomfJTF-XHLg" comment="" name="database" prompt="database?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDA0_mEeaomfJTF-XHLg" comment="" name="filepath_advisor" prompt="filepath_advisor?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDBE_mEeaomfJTF-XHLg" comment="" name="positionpath" prompt="positionpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDBU_mEeaomfJTF-XHLg" comment="" name="custodianpath" prompt="custodianpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDBk_mEeaomfJTF-XHLg" comment="" name="taxlotpath" prompt="taxlotpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDB0_mEeaomfJTF-XHLg" comment="" name="transactionpath" prompt="transactionpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDCE_mEeaomfJTF-XHLg" comment="" name="securitypath" prompt="securitypath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDCU_mEeaomfJTF-XHLg" comment="" name="accountpath" prompt="accountpath?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDCk_mEeaomfJTF-XHLg" comment="" name="inputDir" prompt="inputDir?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDC0_mEeaomfJTF-XHLg" comment="" name="username" prompt="username?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDDE_mEeaomfJTF-XHLg" comment="" name="password" prompt="password?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDDU_mEeaomfJTF-XHLg" comment="" name="contextDir" prompt="contextDir?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDDk_mEeaomfJTF-XHLg" comment="" name="stagingdb" prompt="stagingdb?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDD0_mEeaomfJTF-XHLg" comment="" name="commondb" prompt="commondb?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDEE_mEeaomfJTF-XHLg" comment="" name="localpath" prompt="localpath?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDEU_mEeaomfJTF-XHLg" comment="" name="port" prompt="port?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDEk_mEeaomfJTF-XHLg" comment="" name="host" prompt="host?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDE0_mEeaomfJTF-XHLg" comment="" name="teamPreferenceOption" prompt="teamPreferenceOption?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDFE_mEeaomfJTF-XHLg" comment="" name="rowCountTSV" prompt="rowCountTSV?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDFU_mEeaomfJTF-XHLg" comment="" name="rowCountStaging" prompt="rowCountStaging?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDFk_mEeaomfJTF-XHLg" comment="" name="rowCountFirm" prompt="rowCountFirm?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDF0_mEeaomfJTF-XHLg" comment="" name="firm" prompt="firm?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDGE_mEeaomfJTF-XHLg" comment="" name="rowCountUpdated" prompt="rowCountUpdated?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDGU_mEeaomfJTF-XHLg" comment="" name="rowCountRejectedFirm" prompt="rowCountRejectedFirm?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDGk_mEeaomfJTF-XHLg" comment="" name="firmId" prompt="firmId?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDG0_mEeaomfJTF-XHLg" comment="" name="date" prompt="date?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDHE_mEeaomfJTF-XHLg" comment="" name="filestorage" prompt="filestorage?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDHU_mEeaomfJTF-XHLg" comment="" name="filestorage2" prompt="filestorage2?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDHk_mEeaomfJTF-XHLg" comment="" name="pathforlocal" prompt="pathforlocal?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_517EcF7oEeaYwroTnlGMUA" comment="" name="a" prompt="a?" promptNeeded="false" type="id_Boolean" value=""/>
+    <contextParameter xmi:id="_517EcV7oEeaYwroTnlGMUA" comment="" name="b" prompt="b?" promptNeeded="false" type="id_Boolean" value=""/>
+    <contextParameter xmi:id="_517Ecl7oEeaYwroTnlGMUA" comment="" name="c" prompt="c?" promptNeeded="false" type="id_Boolean" value=""/>
+    <contextParameter xmi:id="_517Ec17oEeaYwroTnlGMUA" comment="" name="d" prompt="d?" promptNeeded="false" type="id_Boolean" value=""/>
+    <contextParameter xmi:id="_517EdF7oEeaYwroTnlGMUA" comment="" name="e" prompt="e?" promptNeeded="false" type="id_Boolean" value=""/>
+    <contextParameter xmi:id="_517EdV7oEeaYwroTnlGMUA" comment="" name="f" prompt="f?" promptNeeded="false" type="id_Boolean" value=""/>
+    <contextParameter xmi:id="_517Edl7oEeaYwroTnlGMUA" comment="" name="g" prompt="g?" promptNeeded="false" type="id_Boolean" value=""/>
+  </talendfile:ContextType>
+  <talendfile:ContextType xmi:id="_0UzDH0_mEeaomfJTF-XHLg" confirmationNeeded="false" name="Default">
+    <contextParameter xmi:id="_0UzDIE_mEeaomfJTF-XHLg" comment="" name="serverIp" prompt="serverIp?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDIU_mEeaomfJTF-XHLg" comment="" name="database" prompt="database?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDIk_mEeaomfJTF-XHLg" comment="" name="filepath_advisor" prompt="filepath_advisor?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDI0_mEeaomfJTF-XHLg" comment="" name="positionpath" prompt="positionpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDJE_mEeaomfJTF-XHLg" comment="" name="custodianpath" prompt="custodianpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDJU_mEeaomfJTF-XHLg" comment="" name="taxlotpath" prompt="taxlotpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDJk_mEeaomfJTF-XHLg" comment="" name="transactionpath" prompt="transactionpath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDJ0_mEeaomfJTF-XHLg" comment="" name="securitypath" prompt="securitypath?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDKE_mEeaomfJTF-XHLg" comment="" name="accountpath" prompt="accountpath?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDKU_mEeaomfJTF-XHLg" comment="" name="inputDir" prompt="inputDir?" promptNeeded="false" type="id_Directory" value=""/>
+    <contextParameter xmi:id="_0UzDKk_mEeaomfJTF-XHLg" comment="" name="username" prompt="username?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDK0_mEeaomfJTF-XHLg" comment="" name="password" prompt="password?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDLE_mEeaomfJTF-XHLg" comment="" name="contextDir" prompt="contextDir?" promptNeeded="false" type="id_String" value="E:\orion\Talend\context"/>
+    <contextParameter xmi:id="_0UzDLU_mEeaomfJTF-XHLg" comment="" name="stagingdb" prompt="stagingdb?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDLk_mEeaomfJTF-XHLg" comment="" name="commondb" prompt="commondb?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDL0_mEeaomfJTF-XHLg" comment="" name="localpath" prompt="localpath?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDME_mEeaomfJTF-XHLg" comment="" name="port" prompt="port?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDMU_mEeaomfJTF-XHLg" comment="" name="host" prompt="host?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDMk_mEeaomfJTF-XHLg" comment="" name="teamPreferenceOption" prompt="teamPreferenceOption?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDM0_mEeaomfJTF-XHLg" comment="" name="rowCountTSV" prompt="rowCountTSV?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDNE_mEeaomfJTF-XHLg" comment="" name="rowCountStaging" prompt="rowCountStaging?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDNU_mEeaomfJTF-XHLg" comment="" name="rowCountFirm" prompt="rowCountFirm?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDNk_mEeaomfJTF-XHLg" comment="" name="firm" prompt="firm?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDN0_mEeaomfJTF-XHLg" comment="" name="rowCountUpdated" prompt="rowCountUpdated?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDOE_mEeaomfJTF-XHLg" comment="" name="rowCountRejectedFirm" prompt="rowCountRejectedFirm?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter xmi:id="_0UzDOU_mEeaomfJTF-XHLg" comment="" name="firmId" prompt="firmId?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDOk_mEeaomfJTF-XHLg" comment="" name="date" prompt="date?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDO0_mEeaomfJTF-XHLg" comment="" name="filestorage" prompt="filestorage?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDPE_mEeaomfJTF-XHLg" comment="" name="filestorage2" prompt="filestorage2?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_0UzDPU_mEeaomfJTF-XHLg" comment="" name="pathforlocal" prompt="pathforlocal?" promptNeeded="false" type="id_String" value=""/>
+    <contextParameter xmi:id="_517rgF7oEeaYwroTnlGMUA" comment="" name="a" prompt="a?" promptNeeded="false" type="id_Boolean" value="false"/>
+    <contextParameter xmi:id="_517rgV7oEeaYwroTnlGMUA" comment="" name="b" prompt="b?" promptNeeded="false" type="id_Boolean" value="false"/>
+    <contextParameter xmi:id="_517rgl7oEeaYwroTnlGMUA" comment="" name="c" prompt="c?" promptNeeded="false" type="id_Boolean" value="false"/>
+    <contextParameter xmi:id="_517rg17oEeaYwroTnlGMUA" comment="" name="d" prompt="d?" promptNeeded="false" type="id_Boolean" value="false"/>
+    <contextParameter xmi:id="_517rhF7oEeaYwroTnlGMUA" comment="" name="e" prompt="e?" promptNeeded="false" type="id_Boolean" value="false"/>
+    <contextParameter xmi:id="_517rhV7oEeaYwroTnlGMUA" comment="" name="f" prompt="f?" promptNeeded="false" type="id_Boolean" value="false"/>
+    <contextParameter xmi:id="_517rhl7oEeaYwroTnlGMUA" comment="" name="g" prompt="g?" promptNeeded="false" type="id_Boolean" value="false"/>
+  </talendfile:ContextType>
+</xmi:XMI>

@@ -1,0 +1,92 @@
+<div class="main">
+    <overview-breadcrumb pageName="Overview"></overview-breadcrumb>
+    <div class="dashboard-content dashboard-content-margin">
+        <community-overview-leftnav menuName="Overview"></community-overview-leftnav>
+        <div class="grid-container">
+            <community-overview-tabnav [model]="tabsModel"></community-overview-tabnav>
+            <div class="tab-content">
+                <div id="tab3" class="tab-pane fade in active ">
+
+                    <div class="tab-header">
+
+                        <div class="row" style='height: 60px;'>
+                            <div class="col-sm-5">
+                                <div class="chart-value ">
+                                    <div class="col-xs-6">
+                                        <i class="fa fa-sort-asc icon-green" aria-hidden="true"></i> <strong>{{percentChange}} %</strong><br>
+                                        <strong>Value on</strong> {{selectedDate}} </div>
+                                    <div class="col-xs-6">
+                                        <div class="total-amount">{{totalMarketValue | currency:'USD':true}}</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6 col-md-push-2">
+                                <div class="form-group is-empty">
+                                    <label class="col-md-2"><strong>As Of</strong></label>
+                                    <div class="icon-green col-md-5 ">
+                                        <p-calendar showAnim="slideDown" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" [(ngModel)]="selectedDate">
+                                        </p-calendar>
+                                    </div>
+                                    <div class="col-md-4 margin-top-minus">
+                                        <button class="btn btn-bg-green" (click)="getAumDataByDate()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                        <button class="btn btn-bg-blue"><i class="fa fa-print" aria-hidden="true"></i></button>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- rest of form -->
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-no-padding">
+                        <div class="col-lg-4 ">
+                            <div class="gray95 ">
+                                <div class="img-responsive" id="advisorDonut"></div>
+                            </div>
+                        </div>
+                        <!--<div class="col-lg-9 gray95 ">
+                    <div class="marging-top-1x ">
+                        15%<br> Value on 8/3/2016<br> $2,09,41,813
+                    </div>
+                </div>-->
+                        <div class="col-lg-8 gray95 ">
+                            <div class="marging-top-1x ">
+                                <div class="table-responsive ">
+                                    <table class="table account-portfolioAUM-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ADVISOR </th>
+                                                <th class="text-right">MARKET VALUE </th>
+                                                <th class="text-right">PERCENT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of aumAdvisorData">
+                                                <td class=" "><span [ngStyle]="{'background': item.color}"></span>{{item.name}}</td>
+                                                <td class="text-right">{{item.marketValue | currency:'USD':true}}</td>
+                                                <td class="text-right">{{item.percent}}%</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th> </th>
+                                                <th class="text-right"><span class='total'>{{totalMarketValue | currency:'USD':true}}</span> </th>
+                                                <th class="text-right"><span class='total'>{{totalPercent}}%</span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

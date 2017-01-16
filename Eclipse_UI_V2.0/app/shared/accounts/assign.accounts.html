@@ -1,0 +1,77 @@
+<!--<eclipse-account-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-account-tabnav>-->
+<div class="row">
+    <p-dialog header="Portfolio Assignment" [(visible)]="showAssignPopup" modal="modal" responsive="true" showEffect="fade" [resizable]=true
+        width="1024" (onBeforeHide)="onBeforeHide()">
+        <div class="col-md-5">Accounts
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <select class="form-control" [disabled]="disableType" [(ngModel)]="accountFilterId" required (change)="onAccountTypeChange($event.target.value)">  
+                       <option value="0">All Accounts</option>
+                       <option value="4">New Account</option>
+                       <option value="5">Accounts With No Portfolio</option>
+                    </select>
+                </div>
+                <div class="col-md-6 margin-top-05" *ngIf="accountSearch">
+                    <p-autoComplete placeholder="Search Account Name" (onSelect)="onAccountSelect($event)" [(ngModel)]="searchAccountString"
+                        field="name" [minLength]="1" [suggestions]="accountsSuggestions" (completeMethod)="autoAccountSearch($event)">
+                    </p-autoComplete>
+                </div>
+            </div>
+            <div class="">
+                <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                    [gridOptions]="accountGridOptions" suppressRowClickSelection="true" rowSelection="multiple" enableColResize="true"
+                    [columnDefs]="accountsColumnDefs" [rowData]="accounts" enableFilter [suppressMenuMainPanel]="true">
+                </ag-grid-ng2>
+            </div>
+        </div>
+        <div class="col-md-7">Portfolio
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <select class="form-control" [disabled]="disableType" [(ngModel)]="portfolioFilterId" (change)="onPortfolioTypeChange($event.target.value)"
+                        required>
+                        <option value="0">All Portfolios</option>
+                        <option value="1">New Portfolio </option>
+                        <option value="2">Find by Orion HouseHold ID</option>
+                    </select>
+                </div>
+                <div class="col-md-6 margin-top-05" *ngIf="portfolioSearch">
+                    <p-autoComplete placeholder="Search Portfolio Name" (onSelect)="onPortfolioSelect($event)" [(ngModel)]="searchPorfolioString"
+                        field="name" [minLength]="1" [suggestions]="portfolioSuggestions" (completeMethod)="autoPortfolioSearch($event)">
+                    </p-autoComplete>
+                </div>
+                <div class="col-md-6 margin-top-05" *ngIf="householdSearch">
+                    <p-autoComplete placeholder="Search HouseHold Id" [(ngModel)]="searchHouseHoldString" (onSelect)="onHouseHoldSelect($event)"
+                        field="name" [minLength]="1" [suggestions]="householdSuggestions" (completeMethod)="autoHouseholdSearch($event)">
+                    </p-autoComplete>
+                </div>
+            </div>
+            <div class="">
+                <ag-grid-ng2 style="width:100%; height: 350px;" rowBuffer="100" class="ag-material ag-dark" [showToolPanel]="false"
+                    enableSorting (rowClicked)="onPortfolioRowClicked($event)" [gridOptions]="portfolioGridOptions" rowSelection="single"
+                    (rowSelected)="onRowSelect($event)" enableColResize="true" [columnDefs]="portfolioColumnDefs" [rowData]="portfolios"
+                    enableFilter [suppressMenuMainPanel]="true">
+                </ag-grid-ng2>
+            </div>
+           
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter" pButton (click)="resetAssignPopup();" label="Cancel"></button>
+                <button type="button" class="btn btn-raised btn-info" (click)="assignAccountsToPortfolio();" [disabled]="!enableAssignButton()"
+                    pButton label="Assign"></button>
+            </div>
+        </footer>
+    </p-dialog>
+</div>
+
+<p-dialog header="" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" width="720">
+    <div>
+        <div>This action will re-assign the Account(s) to new Portfolio. Do you wish to continue? </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" icon="fa-close" (click)="displayConfirm=false" class="btn btn-info btn-raised">No</button>
+                <button type="button" icon="fa-check" (click)="assignConformation()" class="btn btn-blueouter">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

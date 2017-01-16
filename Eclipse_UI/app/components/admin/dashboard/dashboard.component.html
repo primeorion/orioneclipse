@@ -1,0 +1,168 @@
+<!--right side main area start-->
+<div class="main">
+    <div class="topbar">
+        <div class="breadcrum">
+            <div class="topbar-left">
+                <ol class="breadcrumb">
+                    <li class="crumb-icon"><a [routerLink]="['/eclipse', 'dashboard']"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li class="crumb-link"><a [routerLink]="['/eclipse', 'dashboard']">Home</a></li>
+                    <li class="crumb-link"><a [routerLink]="['/eclipse', 'dashboard']">Dashboard</a></li>
+                    <li class="crumb-trail">Administrator </li>
+                </ol>
+            </div>
+            <div class="topbar-right">
+                <div class="dashboard-widget-tray">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Action</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0);">Action</a></li>
+                            <li><a href="javascript:void(0);">Another action</a></li>
+                            <li><a href="javascript:void(0);">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:void(0);">Separated link</a></li>
+                        </ul>
+                    </div>
+                    <!--<a href="javascript:void(0);" title="" style="height:20px; width:20px; background:red;" class="pull-right"><i class="fa fa-angle-right"></i></a>
+-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="dashboard-main">
+            <div class="col-md-6">
+                <div class="panel dash-bg-color1">
+                    <div class="panel-body">
+                        <div *ngIf="uiprivilege.hasTeam" class="panel-actions-fly pull-right"><a data-toggle="dropdown" class="btn-panel" href="javascript:void(0);"><i class="glyphicon  glyphicon-option-vertical"></i>     </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'team']"><i class="fa fa-angle-right" aria-hidden="true"></i> All Teams</a></li>
+                                <li class="dropdown-submenu" *ngIf="uiprivilege.team.canRead"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'team', {queryStr:'create'}]"><i class="fa fa-angle-right" aria-hidden="true"></i> Team Details</a></li>
+                                <li class="dropdown-submenu" *ngIf="uiprivilege.team.canAdd"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'team', {queryStr:'add'}]"><i class="fa fa-angle-right" aria-hidden="true"></i> Add Team</a></li>
+                            </ul>
+                        </div>
+                        <p class="lead">Teams</p>
+                        <p class="text-50  ">{{dashboardModel.totalTeams}} <span>Total</span></p>
+                        <div class="controls">
+                            <div class="contorl-active">Existing<span>{{dashboardModel.existingTeams}}</span></div>
+                            <div class="contorl-active">New<span>{{dashboardModel.newTeams}}</span></div>
+                        </div>
+                        <div *ngIf="uiprivilege.hasTeam" class="goto-link"><a [routerLink]="['/eclipse/admin', 'team']">Go to Teams <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel dash-bg-color2">
+                    <div class="panel-body">
+                        <div *ngIf="uiprivilege.hasUser" class="panel-actions-fly pull-right"><a data-toggle="dropdown" class="btn-panel" href="javascript:void(0);"><i class="glyphicon  glyphicon-option-vertical"></i>     </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'user']"><i class="fa fa-angle-right" aria-hidden="true"></i> All Users</a></li>
+                                <li class="dropdown-submenu" *ngIf="uiprivilege.user.canRead"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'user', 'view']"><i class="fa fa-angle-right" aria-hidden="true"></i> User Details</a></li>
+                                <li class="dropdown-submenu" *ngIf="uiprivilege.user.canAdd"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'user', 'add']"><i class="fa fa-angle-right" aria-hidden="true"></i> Add User</a></li>
+                            </ul>
+                        </div>
+                        <p class="lead">Users</p>
+                        <p class="text-50  ">{{dashboardModel.totalUsers}}</p>
+                        <div class="controls">
+                            <div class="contorl-active">Existing<span>{{dashboardModel.existingUsers}}</span></div>
+                            <div class="contorl-active">New<span>{{dashboardModel.newUsers}}</span></div>
+                        </div>
+                        <div *ngIf="uiprivilege.hasUser" class="goto-link"><a [routerLink]="['/eclipse/admin', 'user']">Go to Users <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 tile-height">
+                <div class="panel dash-bg-color3">
+                    <div class="panel-body">
+                        <div *ngIf="uiprivilege.hasRole" class="panel-actions-fly pull-right"><a data-toggle="dropdown" class="btn-panel" href="javascript:void(0);"><i class="glyphicon  glyphicon-option-vertical"></i> </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="1" [routerLink]="['/eclipse/admin', 'role']"><i class="fa fa-angle-right" aria-hidden="true"></i> All Roles</a>
+                                </li>
+                                <li class="dropdown-submenu" *ngIf="uiprivilege.role.canRead"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'role', 'view']"><i class="fa fa-angle-right" aria-hidden="true"></i> Role Details</a></li>
+                                <li class="dropdown-submenu" *ngIf="uiprivilege.role.canAdd"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'role', 'add']"><i class="fa fa-angle-right" aria-hidden="true"></i> Add Role</a></li>
+                            </ul>
+                        </div>
+                        <p class="lead">Roles</p>
+                        <p class="text-50  ">{{dashboardModel.totalRoles}}</p>
+                        <div class="controls">
+                            <div class="contorl-active">Existing<span>{{dashboardModel.existingRoles}}</span></div>
+                            <div class="contorl-active">New<span>{{dashboardModel.newRoles}}</span></div>
+                        </div>
+                        <div *ngIf="uiprivilege.hasRole" class="goto-link"><a [routerLink]="['/eclipse/admin', 'role']">Go to Roles <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel dash-bg-color4">
+                    <div class="panel-body">
+                        <div *ngIf="uiprivilege.hasPreferences" class="panel-actions-fly pull-right"><a data-toggle="dropdown" class="btn-panel" href="javascript:void(0);"><i class="glyphicon glyphicon-option-vertical"></i>     </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu"> <a tabindex="1" href="javascript:void(0);"><i class="fa fa-angle-right" aria-hidden="true"></i> Create Preferences</a></li>
+                                <li class="dropdown-submenu"> <a tabindex="1" href="javascript:void(0);"><i class="fa fa-angle-right" aria-hidden="true"></i> View Preferences</a></li>
+                            </ul>
+                        </div>
+                        <p class="lead">Preference
+                            <span>Settings</span></p>
+                        <p class="text-50">{{dashboardModel.PreferenceTotal}}</p>
+                        <div class="controls">
+                            <div class="contorl-active">Edited This Week<span>{{dashboardModel.PreferenceEditedInWeek}}</span></div>
+                            <div class="contorl-active">Today<span>{{dashboardModel.PreferenceEditedToday}}</span></div>
+                        </div>
+                        <div *ngIf="uiprivilege.hasPreferences && redirectToThisRouterLink != undefined" class="goto-link"><a *ngIf="confirmRedirect === 'PREFREDIRECT'" [routerLink]= [redirectToThisRouterLink]>Go to Preferences <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" *ngIf="uiprivilege.isFirmAdmin">
+                <div class="panel dash-bg-color5">
+                    <div class="panel-body">
+                        <div *ngIf="uiprivilege.hasCustodian" class="panel-actions-fly pull-right"><a data-toggle="dropdown" class="btn-panel" href="javascript:void(0);"><i class="glyphicon  glyphicon-option-vertical"></i>     </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'custodian']"><i class="fa fa-angle-right" aria-hidden="true"></i> All Custodians</a></li>
+                                <li class="dropdown-submenu" *ngIf="uiprivilege.custodian.canRead"> <a tabindex="1" [routerLink]="['/eclipse/admin', 'custodian', 'view']"><i class="fa fa-angle-right" aria-hidden="true"></i> Custodian Details</a></li>
+                            </ul>
+                        </div>
+                        <p class="lead">Custodian</p>
+                        <p class="text-50  ">{{dashboardModel.totalCustodians}} </p>
+                        <div class="controls">
+                            <div class="contorl-active">Active<span>{{dashboardModel.activeCustodians}}</span></div>
+                            <!-- <div class="contorl-active">Decline<span>{{dashboardModel.declinedCustodians}}</span></div> -->
+                        </div>
+                        <div *ngIf="uiprivilege.hasCustodian" class="goto-link"><a [routerLink]="['/eclipse/admin', 'custodian']">Go to Custodian <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="uiprivilege.isFirmAdmin">
+                <div class="panel dash-bg-color6">
+                    <div class="panel-body">
+                        <div class="panel-actions-fly">
+                            <a class="btn-panel" href="javascript:void(0);"> <i class="glyphicon glyphicon-refresh"></i> </a>
+                        </div>
+                        <p class="lead">Overall Visits</p>
+                        <div class="visitlist">
+                            <div class="col-xs-4">
+                                <p class="text-ellipsis">Overall Visits</p>
+                                <p class="text-lg"><strong>{{dashboardModel.visits}}</strong></p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p class="text-ellipsis">Today's</p>
+                                <p class="text-lg"><strong>{{dashboardModel.todayVisits}}</strong></p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p class="text-ellipsis">Monthly</p>
+                                <p class="text-lg"><strong>{{dashboardModel.monthlyVisits}}</strong></p>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="progress">
+                                <div style="width: 30%" class="progress-bar "> <span class="sr-only">60% Complete (inverse)</span> </div>
+                            </div>
+                            <p>{{dashboardModel.percentageHigher}}% higher than last month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--right side main area end -->

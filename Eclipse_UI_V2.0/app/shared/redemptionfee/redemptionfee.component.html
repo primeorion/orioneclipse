@@ -1,0 +1,106 @@
+<span [ngSwitch]="displaypermission">      
+    <span *ngSwitchCase="true">
+<div class="firm-security-setting-header">
+    <div class="row" id="securitypref">
+        <label class="col-sm-4" for="team">Redemption Fee Settings </label>
+        <div class="col-sm-4">
+
+            <!--<p-autoComplete class="form-control radius-none" class="autocomplete-block" [(ngModel)]="selectedSecurity" [suggestions]="filteredSecurityResult"
+                placeholder="Please Select" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedSecurity(selectedSecurity)"
+                (keyup)="handleSelectedSecurity(selectedSecurity)"></p-autoComplete>-->
+
+                        <select class="form-control watermarked gray" [(ngModel)]="selectedSecurityType" (change)="handleSelectedSecurityType($event.target.value)">
+                            <option *ngIf="!selectedSecurityType" value="" selected="selected">Please Select</option> 
+                               <option *ngFor="let st of securityTypes" value={{st.id}}>{{st.name}}</option>
+                        </select>
+        </div>
+
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-info btn-raised customBtn" title="Set Preferences" (click)="setPrefPopup(selectedSecurityType)"
+                [disabled]="btnDisableSetPref">Add</button>
+        </div>
+    </div>
+</div>
+    </span>
+<div class="row mar">
+    <span *ngSwitchCase="true">
+    <ag-grid-ng2 #agGrid style="width: 148%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+    [gridOptions]="gridOptions" rowSelection="single" [columnDefs]="columnDefs" [rowData]="PrefrowData" enableFilter (rowClicked)="rowSelected($event)"
+    enableColResize="true" [getContextMenuItems]="getContextMenuItems" [suppressMenuMainPanel]="true">
+</ag-grid-ng2>
+    </span>
+    <span *ngSwitchCase="false">
+    <ag-grid-ng2 class="ag-material ag-dark" #agGrid style="width: 148%; height: 350px;" [columnDefs]="columnDefs" [rowData]="PrefrowData"
+        [gridOptions]="gridOptions" [suppressContextMenu]="true" [suppressMenuColumnPanel]="true" [suppressMenuFilterPanel]="true" [suppressMenuMainPanel]="true">
+    </ag-grid-ng2>
+</span>
+</div>
+
+
+<p-dialog header="Security Preferences" [resizable]="true" [(visible)]="displayRedemptionFeePref" responsive="true" showEffect="fade"
+    width="1024">
+
+    <div class="col-sm-12 security-preferences-modal-body">
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Id:<span class="margin-left-05">{{securityId}}</span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Name: <span class="margin-left-05">{{securityName}}</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Type:<span class="margin-left-05">{{securityType}}</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Symbol:<span class="margin-left-05">{{securitySymbol}}</span>
+            </div>
+        </div>
+
+        <div class="row" [hidden]="(fromParentPrefLevel =='model') ||(fromParentPrefLevel =='portfolio') ||(fromParentPrefLevel =='account')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Redemption Fee</legend>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        Redemption Fee Amount:
+                        <div class="form-inline">
+                            <select id="ddlType" [(ngModel)]="type" (change)="onFeeTypeChange($event)" class="form-control">  
+                           <option value="$">$</option>
+                            <option value="%">%</option>
+                            </select>
+                            <input placeholder="Enter amount" *ngIf="type=='$'" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="redemptionFeeAmount"
+                            />
+                            <input placeholder="Enter amount" *ngIf="type=='%'" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="redemptionFeeAmount"
+                                (keyup)="validatePercent(securityPref)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Redemption Fee days:
+                        <input placeholder="Enter days" type="number" min="0" value="0" step="1" class="form-control" [(ngModel)]="redemptionFeeDays"
+                        />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+    <!--<footer>-->
+
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button type="button" class="btn btn-blueouter btn-raised" icon="fa-close" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-blueouter" icon="fa-check" (click)="addtoGrid()">Add</button>
+    </div>
+    <!--</footer>-->
+
+</p-dialog>
+</span>

@@ -1,0 +1,170 @@
+<div class="nav-tabs-container dropdown-style">
+    <ul class="nav nav-tabs pull-left step-process-tab-style">
+        <li id="selectionFilter" class="tab-disabled" [ngClass]="{'active': viewName == 'SelectionTab'}">
+            <a aria-expanded="false" data-toggle="tab" href="#SelectionTab"> <i>1</i> Selection and Filter </a>
+        </li>
+        <li id="createTrades" class="tab-disabled" [ngClass]="{'active': viewName == 'createTradesTab'}">
+            <a aria-expanded="true" data-toggle="tab" href="#createTradesTab"> <i>2</i> Create Trades</a>
+        </li>
+        <li id="Final" *ngIf="isTickerSwap==false" class="tab-disabled" [ngClass]="{'active': viewName == 'finalTab'}">
+            <a aria-expanded="true" data-toggle="tab" href="#finalTab"> <i>3</i> FINAL</a>
+        </li>
+        <li id="FinalTicker" *ngIf="isTickerSwap==true" class="tab-disabled" [ngClass]="{'active': viewName == 'finalTabTickerSwap'}">
+            <a aria-expanded="true" data-toggle="tab" href="#finalTabTickerSwap"> <i>3</i> FINAL</a>
+        </li>
+    </ul>
+</div>
+<div class="tab-content">
+    <div id="SelectionTab" class="tab-pane fade in active " *ngIf="viewName == 'SelectionTab'">
+        <eclipse-tradeorder-tradefilter (tradeFilterCallback)="getTradeFiltersData($event)" (tabSelectionCallback)="setSelectedView($event)" [parentModel]="parentModelData"></eclipse-tradeorder-tradefilter>
+        <button [disabled]="disableFilterNextBtn" class="btn btn-info btn-raised pull-right" (click)="getSelectedView('createTradesTab')">NEXT</button>
+        <!--<button class="btn btn-info btn-raised pull-right" (click)="fileUploadAndValidate()">Upload And Validate</button>-->
+        <!--[disabled]="disableFilterNextBtn"-->
+    </div>
+    <div id="createTradesTab" class="tab-tswap-pane" *ngIf="viewName == 'createTradesTab'">
+        <h4 class="text-info">Which securities do you want to trade ?</h4>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <div class="icon-addon addon-md">
+                        <label>Sell securities</label>
+                        <!--<input placeholder="Savings ( Cash ) " class="form-control" type="text">-->
+                        <p-autoComplete [(ngModel)]="selectedSellSecurity" [suggestions]="sellSecuritySuggessions" placeholder="Name or ticker to sell "
+                            (completeMethod)="sellSecuritySearch($event)" (onSelect)="onSellSecuritySelect($event)" field="name"
+                            class="form-control" [minLength]="1">
+                        </p-autoComplete>
+                        <label for="email" class="glyphicon glyphicon-search" rel="tooltip"></label>
+                    </div>                   
+                </div>
+                 <span *ngIf="showSellSecurityMsg" style="color:red;">There are no accounts that have this sell product.</span>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <div class="icon-addon addon-md">
+                        <label>Buy securities</label>
+                        <!--<input placeholder="Name or ticker to buy " class="form-control" type="text">-->
+                        <p-autoComplete [(ngModel)]="selectedBuySecurity" [suggestions]="buySecuritySuggessions" placeholder="Name or ticker to buy "
+                            (completeMethod)="buySecuritySearch($event)" (onSelect)="onBuySecuritySelect($event)" field="name"
+                            class="form-control" [minLength]="1">
+                        </p-autoComplete>
+                        <label for="email" class="glyphicon glyphicon-search" rel="tooltip"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Percent</label>
+                            <input type="number" [(ngModel)]="percent" placeholder="" class="form-control" 
+                            min="0" max="100" [step]='0.01'
+                            (keypress)="checkValue($event, percent)" (blur)="validateValue(percent,1)">
+                            <span *ngIf="isInValidPercent" style="color:red;">Should be greater than 0 and less than or equals to 100</span>
+                            <span *ngIf="isTotalPercentExceed" style="color:red;">Cannot sell more than 100% of a Security</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6"> <button class="btn btn-success btn-green col-sm-12" style="margin-top:50px;" (click)="addTrade()">Add Trade</button>                        </div>
+                </div>
+            </div>
+            <span *ngIf="isDuplicateTrade" style="color:red;">Duplicate Trade</span>
+            <span *ngIf="isSameSucurity" style="color:red;">Cannot buy and Sell the same securities</span>
+            <span *ngIf="isBuyAndSellingSameSecurity" style="color:red;">Do not allow to buy and sell of same security</span>
+        </div>
+        <div class="table-responsive space-top-10" style=" height:250px;">
+            <div class="agcontainer">
+                <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                    [gridOptions]="gobalTradesGridOptions" enableColResize="true" rowSelection="single" [columnDefs]="gobalTradesColDefs"
+                    [rowData]="trades" enableFilter [suppressMenuMainPanel]="true" suppressContextMenu="true">
+                </ag-grid-ng2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right ">
+                <button class="btn btn-black " id="btnBack2" (click)="getSelectedView('SelectionTab')">BACk</button>
+                <button [disabled]="disableCreateTradeNextBtn" class="btn btn-info btn-raised " id="btnNext2" (click)="getSelectedView('0')">NEXT</button>                </div>
+        </div>
+    </div>
+    <div id="finalTab" class="tab-tswap-pane" *ngIf="viewName == 'finalTab'">
+        <h4 class="text-info">Would you like to add a remark or note to this batch before it gets executed ?</h4>
+        <div class=" row col-sm-8 top-space-70">
+            <textarea [(ngModel)]="optionalNote" class="form-control" placeholder="Please add optional note or reasons for the trades"></textarea>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right ">
+                <button class="btn btn-black " id="btnBack3" (click)="getSelectedView('createTradesTab')">BACK</button>
+                <button class="btn btn-info btn-raised" (click)="generateTrades()">CALCULATE</button> </div>
+        </div>
+        <div class="divider"></div>
+    </div>
+    <div id="finalTabTickerSwap" class="tab-tswap-pane" *ngIf="viewName == 'finalTabTickerSwap'">
+        <h4 class="text-info">Are there any specific options for this batch?</h4>
+        <div class="row margin-top-20">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-3 margin-top-10">Minimum</label>
+                    <div class=" col-md-4">
+                        <select class="form-control" [(ngModel)]="taxTicker_SwapOptions.tickerBatch">
+                              <option value="1">Total</option>
+                              <option value="2">Short Term</option>
+                              <option value="3">Long Term</option>
+                              </select>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <select class="form-control" [(ngModel)]= "taxTicker_SwapOptions.profitLoss">
+                                  <option value="1">gains</option>
+                                  <option value="0">losses</option>
+                                  </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+
+                <div class="form-group">
+                    <label class="col-md-4 margin-top-10">to realize</label>
+                    <div class="col-md-4">
+                        <input type="text" [(ngModel)]="percentVal" class="form-control" name="percentVal"
+                        (keypress)="checkValue($event, percentVal)" (blur)="validateValue(percentVal,2)" step="0.01" required />
+                        <span *ngIf="finalTabError" style="color:red;" >{{finalTabError}}</span>    
+                        <!--ng-pattern="/^((\d+)((\.\d{1,2})?))$/"      /^[0-9]+\.[0-9]{0,2}$  -->
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-control" [(ngModel)]="taxTicker_SwapOptions.valueType">
+                              <option value="2">Percent</option>
+                              <option value="1">Dollars</option>
+                          </select>
+                    </div>
+
+                </div>
+            </div>                        
+        </div>
+        <div class="row margin-top-20">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <!--<div class="checkbox">-->
+                    <label>
+                          <input type="checkbox" [(ngModel)]="taxTicker_SwapOptions.includeTaxDeferredOrExemptAccounts"> Include Tax Deferred/Exempt Accounts 
+                                </label>
+                    <!--</div>-->
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <textarea [(ngModel)]="taxTicker_SwapOptions.instanceNote" class="form-control" placeholder="Please add optional note or reasons for the trades"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 text-right ">
+                <button class="btn btn-black " id="btnBack3" (click)="getSelectedView('createTradesTab')">BACK</button>
+                <button class="btn btn-info btn-raised" (click)="generateTrades()">CALCULATE</button> </div>
+        </div>
+        <div class="divider"></div>
+    </div>    
+</div>

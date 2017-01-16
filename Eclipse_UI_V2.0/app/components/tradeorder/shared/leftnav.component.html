@@ -1,0 +1,20 @@
+<div class="admin-sub-left">
+    <div class="admin-page-sub-header">
+        <h4 class="pull-left">Orders</h4>
+    </div>
+    <ul class="admin-menu">
+        <li><a href="javascript:void(0);" title="Dashboard">Dashboard</a></li>
+        <li><a [routerLink]="['/eclipse', 'tradeorder', 'list']" [routerLinkActive]="['active']" title="Orders">Orders 
+            <span class="badge" *ngIf="orders.total > 0"><span *ngIf="orders.showUpdown">{{orders.updownCount}} <i class="fa fa-caret-{{orders.isdown ? 'down' : 'up'}}"></i></span>  <span> {{orders.total}}</span></span></a></li>
+        <li><a href="javascript:void(0);" [routerLinkActive]="['active']" title="Blocks">Blocks</a></li>
+        <li><a href="javascript:void(0);" [routerLinkActive]="['active']" title="Allocations">Allocations</a></li>
+        <li><a href="javascript:void(0);" [routerLinkActive]="['active']" title="Pending">Pending</a></li>
+        <li><a href="javascript:void(0);" [routerLinkActive]="['active']" title="Closed">Closed</a></li>
+    </ul>
+    <ul class="admin-menu-submenu">
+        <li><a [routerLink]="['/eclipse', 'tradeorder','tradefile']" [routerLinkActive]="['active']" title="Trade Files">Trade Files 
+            <span class="badge" *ngIf="files.total > 0"><span *ngIf="files.showUpdown">{{files.updownCount}} <i class="fa fa-caret-{{files.isdown ? 'down' : 'up'}}"></i></span>  <span> {{files.total}}</span></span></a></li>
+        <li><a href="javascript:void(0);" [routerLinkActive]="['active']" title="Instances">Instances</a></li>
+        <li><a href="javascript:void(0);" [routerLinkActive]="['active']" title="Deleted">Deleted</a></li>
+    </ul>
+</div>

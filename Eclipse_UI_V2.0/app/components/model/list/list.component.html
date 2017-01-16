@@ -1,0 +1,287 @@
+<eclipse-model-tabnav (callParentPopup)="showPopup($event)" (onModelsSelect)="navigateToTrades($event)" [model]="tabsModel"></eclipse-model-tabnav>
+<div class="tab-content">
+	<div id="allModel" class="tab-pane fade in active grid-height">
+
+		<div class="tab-header">
+			<div class="form-inline">
+				<div class="row">
+					<div class="col-sm-8">
+						<eclipse-savedviews [model]="savedView" (parentColDefCallback)="createColumnDefs()" (parentCallback)="refreshModelsList()"
+							viewTypeId="6"></eclipse-savedviews>
+					</div>
+					<div class="col-sm-4 text-right">
+						<div class="form-group">
+							<label class="label-right-space">Filter : </label>
+							<select id="select111" class="form-control" [(ngModel)]="modelTypeId" (change)="onFilterChange($event)">
+                            <option value="0">NONE</option>
+                            <option *ngFor="let s of modelFilterTypes" value={{s.id}}> {{s.name}}</option>
+                        </select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="btn-box">
+			<div class="button-container">
+				<button class="btn btn-blueouter btn-raised pull-left" [routerLink]="['/eclipse', 'model', 'modelinfoadd']"><i class="fa fa-plus-circle blue"></i> Create New Model</button>
+			</div>
+			<!--<div class="col-sm-6"> <button type="button" class="btn btn-info btn-raised">Model Import</button></div>-->
+		</div>
+
+		<div class="agcontainer grid-height" id="spka">
+			<ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting (rowSelected)="onRowSelected($event)"
+				(rowDoubleClicked)="onRowDoubleClicked($event)" [gridOptions]="modelGridOptions" enableColResize="true" rowSelection="multiple"
+				[columnDefs]="modelColumnDefs" [rowData]="modelList" enableFilter [getContextMenuItems]="getContextMenuItems" (gridReady)="onGridReady($event)"
+				(modelUpdated)="onModelUpdated()" (rowClicked)="onRowClicked($event)" [groupRowAggNodes]="groupAggFunction" rememberGroupStateWhenNewData="true"
+				[getRowStyle]="getRowStyle" [context]="gridContext" [suppressMenuMainPanel]="true">
+			</ag-grid-ng2>
+
+		</div>
+
+	</div>
+</div>
+
+<p-dialog header="Model Compare" [resizable]="false" [(visible)]="displayModelCompareSec" responsive="true" showEffect="fade"
+	width="1024" height="600">
+
+	<div class="drop_down model-compare-content-header">
+		<span class="label_select">Select Level :</span>
+		<select class="mcompare_selectLevel">
+                                         <!--<option value="1">Level 1</option>
+                                         <option value="2">Level 2</option>
+                                         <option value="3">Level 3</option>
+                                         <option value="4">Level 4</option>-->
+                                </select>
+	</div>
+	<div class="model-compare-content">
+		<div class='axis_tooltip'>
+		</div>
+		<div class="tooltip_mcompare">
+			<div class="label_tooltip"></div>
+			<div class="current_tooltip">TARGET CURRENT :
+				<span class="current_value"></span>
+			</div>
+			<div class="pending_tooltip">TARGET PENDING :
+				<span class="pending_value"></span>
+				<div>
+				</div>
+			</div>
+		</div>
+		<div class="compareModelDiv"></div>
+		<div *ngIf="displayMessageSec" class="model-compare-content-footer row">
+			<p>
+				The action "Approve" will accept and SAVE the new changes in the model.<br /> The action "Reject" will restore the model
+				to last approve state.<br /> *For new model, Reject will make it Not-Active.<br />
+			</p>
+			<div class="row margin-top-15">
+				<div class="col-md-4 text-right">
+					<label><input type="radio" name="Approvereject" value="approve" (click)="setRadioApproveReject($event)" /> APPROVE changes</label>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-4 text-center">
+					<label><input type="radio" name="Approvereject" value="reject" (click)="setRadioApproveReject($event)"/> REJECT changes</label>
+				</div>
+			</div>
+			<div class="row text-center margin-top-15">
+				<button type="submit" name="modelApproveSave" class="btn btn-info btn-raised " (click)='saveModelStatus()' [disabled]="!enableSaveButton()"> Save</button>
+				<button class="btn btn-default btn-raised " type="button" (click)='onCancel()'> Cancel</button>
+			</div>
+		</div>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>This action will delete the Model permanently. <br /> Do you wish to continue?</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="displayConfirm=false" label="No"></button>
+				<button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="deleteModel()" label="Yes"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteCheck" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>The model cannot be deleted as it is being currently used by other Portfolios.</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-blueouter" pButton (click)="deleteCheck=false" label="Ok"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteMessage" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>{{deletedModelsCount}} out of {{selectedModelsCount}} Models have been deleted. <span *ngIf="unDeletedModelsCount > 0"> Cannot delete {{unDeletedModelsCount}}
+            Models due to conflicts. </span>
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-blueouter" pButton (click)="deleteMessage=false" label="Ok"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayImportModel" class="popup-style" modal="modal" responsive="true" header="Model Import" showEffect="fade"
+	width="526" [resizable]=false>
+	<div class="modal-content">
+		<div class="modal-body">
+			<a href="{{modelTemplateUrl}}">
+				<p class="download-format"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Download the Format</p>
+			</a>
+			<div *ngIf="checkUploadFile">
+				<div (dragover)='dragFile($event)' (drop)='dropFile($event)'>
+					<div class="choose-file-small-box file-upload-input-style">
+						<span class="btn btn-info btn-file btn-raised"> Choose File
+                       <input type="file" name="model" id ="model-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+       (change)="selectedTemplate($event)">
+                      </span><br> or drag and drop here
+						<div *ngIf="!disableUploadBtn">
+							<p *ngIf="checkDragFile">{{dragFileName}}</p>
+							<p *ngIf="!checkDragFile">{{file.name}}</p>
+						</div>
+					</div>
+				</div>
+				<em class="securityError danger" *ngIf="showFiletUploadError">{{fileUploadError}}</em>
+			</div>
+			<div *ngIf="modelErrors && !checkUploadFile">
+				<div class="choose-file-small-box file-upload-input-style import-log">
+					<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> There is something wrong please check log.
+				</div>
+
+				<p><strong>Import Log</strong></p>
+				<div class="import-log-box" *ngIf="areErrors">
+					<p *ngFor="let error of errorLog">{{error}}</p>
+				</div>
+				<div class="import-log-box" *ngIf="isError">
+					<p *ngIf="isError">{{errorLog}}</p>
+				</div>
+
+			</div>
+			<div class="choose-file-small-box file-upload-input-style file-successfully-imported" *ngIf="!modelErrors && !checkUploadFile">
+				<i class="fa fa-check-circle" aria-hidden="true"></i> File is successfully imported
+			</div>
+		</div>
+	</div>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<!--<button type="button" class="btn btn-blueouter" icon="fa-close" (click)="cancelImport()">CANCEL</button>
+			<button type="button" class="btn btn-info btn-raised" icon="fa-check" [disabled]="disableUploadBtn" (click)="uploadtemplate()"
+				*ngIf="checkUploadFile">CREATE MODEL</button>
+			<button type="button" class="btn btn-info btn-raised" icon="fa-check" (click)="modelImport()" *ngIf="modelErrors">TRY AGAIN</button>-->
+			<button type="button" class="btn btn-blueouter" icon="fa-close" *ngIf="!showCloseBtn" (click)="cancelImport()">CANCEL</button>
+			<button type="button" class="btn btn-blueouter" icon="fa-close" *ngIf="showCloseBtn" (click)="cancelImport()">CLOSE</button>
+			<button type="button" class="btn btn-info btn-raised" icon="fa-check" [disabled]="disableUploadBtn" (click)="uploadtemplate()"
+				*ngIf="checkUploadFile">CREATE MODEL</button>
+			<button type="button" class="btn btn-info btn-raised" icon="fa-check" (click)="modelImport()" *ngIf="modelErrors">TRY AGAIN</button>
+		</div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="INFO" [(visible)]="infoPopup" modal="modal" responsive="true" showEffect="fade" width="600">
+	<p class="info_popup text-center"></p>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CLOSE" (click)="closeInfoPopUp()"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Copy model" [resizable]="false" class="popup-style" [(visible)]="dispCopyModel" modal="modal" responsive="true"
+	showEffect="fade" width="650">
+	<div class="form-group">
+		<label class="col-md-4"> Save copied Model As :</label>
+		<div class="col-md-8">
+			<input type="text" class="form-control" [(ngModel)]="copiedModelName" placeholder="<Copy of {{selectedModelName}}>">
+		</div>
+	</div>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="SAVE" (click)="copyModelInfo()"></button>
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CANCEL" (click)="closeInfoPopUp()"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+<p-dialog [(visible)]="copyErrorMessage" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>The model cannot be copied as {{copyErrorMessageContent}}.</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-blueouter" pButton (click)="copyErrorMessage=false" label="Ok"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="rebalanceCheck" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>The model cannot be rebalanced due to internal processing error.</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-blueouter" pButton (click)="rebalanceCheck=false" label="Ok"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="rebalanceMessage" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>{{eligibleRebalModelsCount}} out of {{selectedModelsCount}} can be rebalanced. <span *ngIf="nonEligibleRebalModelsCount > 0"> 
+			Cannot rebalance {{nonEligibleRebalModelsCount}} Models due to conflicts. </span>
+		</div>
+		<div>Clicking Yes will rebalance the Model/s. <br /> Do you wish to continue?</div>
+		<footer>
+			<!--<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-blueouter" pButton (click)="rebalanceMessage=false" label="Ok"></button>
+			</div>-->
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="rebalanceMessage=false" label="No"></button>
+				<button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="rebalanceModel()" label="Yes"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="rebalanceApprovedWarning" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>None of the selected {{selectedModelsCount}} Models have Approved status. <span> Please
+			select Approved Models! </span>
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-blueouter" pButton (click)="rebalanceApprovedWarning=false" label="Ok"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<p-dialog [(visible)]="confirmSingleModelRebal" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+	width="400">
+	<div>
+		<div>This action will rebalance the Model. <br /> Do you wish to continue?</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="confirmSingleModelRebal=false" label="No"></button>
+				<button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="rebalanceModel()" label="Yes"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+
+<!--<eclipse-assign-portfolios-model (parentCallback)="callbackAssignPopup(); loadModels();" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-portfolios-model>-->

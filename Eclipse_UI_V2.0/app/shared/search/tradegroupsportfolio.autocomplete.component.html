@@ -1,0 +1,3 @@
+<p-autoComplete [(ngModel)]="selectedItem" [suggestions]="suggestions" placeholder="Trade Group Name" (completeMethod)="loadSuggestions($event)"
+    (onSelect)="onTrageGroupsPortfolioSelect($event)" field="name" class="form-control trade-order-search" [minLength]="1">
+</p-autoComplete>

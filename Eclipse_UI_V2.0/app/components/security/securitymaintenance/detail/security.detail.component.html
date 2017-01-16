@@ -1,0 +1,208 @@
+<eclipse-security-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-security-tabnav>
+<div class="agcontainer">
+<form #securityForm="ngForm" (ngSubmit)="saveSecurity(securityForm)" class="securityForm" novalidate>
+
+<div class="sdcontainer">
+  
+     
+            <label class="primar-label" for="roletype">Search Securities</label>
+            
+     
+                <p-autoComplete class="radius-none sdinput autocomplete-block" [(ngModel)]="autoCompleteSelectedSecurity" [suggestions]="filteredSecurityResult"
+             placeholder="Search By Name" name="securitySearch" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedSecurity(autoCompleteSelectedSecurity)" ></p-autoComplete>
+            
+     </div>   
+
+ 
+<div class= "row" [hidden]="!showSecurityDetails">
+    <div class="col-sm-3">
+        <h4>General Info</h4>
+     </div>
+</div>
+<div class= "row" [hidden]="!showSecurityDetails">
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">ID</label>
+                    <br>
+                    {{selectedSecurity.id}}
+       </div>
+    </div>
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">NAME</label>
+                     <br>
+                    {{selectedSecurity.name}}
+       </div>
+    </div>
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">SYMBOL</label>
+                    <input type="text" name = "securitySymbol" #securitySymbol = "ngModel" required placeholder="symbol" id="price" [disabled]="!isEditSecurity"
+                     class="form-control priceInput" [(ngModel)]="selectedSecurity.symbol" >
+                    <em class="securityError danger" *ngIf="!securitySymbol.valid && (!securitySymbol.pristine || submitSecurity)">Required</em>
+       </div>
+    </div>
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">CUSTODIAL CASH</label>
+                    <select class="form-control" name="custodialCash" [(ngModel)]="selectedSecurity.custodialCash" [disabled]="!isEditSecurity">
+                         <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+       </div>
+    </div>
+</div>
+<div class= "row" [hidden]="!showSecurityDetails">
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">CREATED BY</label>
+                    <br>
+                    {{selectedSecurity.createdBy}}
+       </div>
+    </div>
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">CREATED ON</label>
+                    <br>
+                    {{selectedSecurity.createdOn |  date:"MM/dd/yy, HH:MM"}}
+       </div>
+    </div>
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">EDITED BY</label>
+                    <br>
+                    {{selectedSecurity.editedBy }}
+       </div>
+    </div>
+    <div class="col-sm-3">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">EDITED ON</label>
+                    <br>
+                    {{selectedSecurity.editedOn |  date:"MM/dd/yy, HH:MM"}}
+       </div>
+    </div>
+</div>
+<div class="row">
+   
+    <div class="col-sm-4" [hidden]="!showSecurityDetails">
+         <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">Category</label>
+                    <select class="form-control" [(ngModel)]="selectedSecurity.assetCategoryId" name = "categoryId" #categoryId = "ngModel" required [disabled]="!isEditSecurity">
+                        <option value="null" *ngIf="!selectedSecurity.assetCategoryId">Select Category</option>
+                        <option *ngFor="let category of categoryData" value={{category.id}} >
+                            {{category.name}}
+                        </option>
+                    </select>
+                    <em class="securityError danger" *ngIf="!categoryId.valid && (!categoryId.pristine || submitSecurity)">Required</em>
+                    
+          </div>
+    </div>
+    <div class="col-sm-4" [hidden]="!showSecurityDetails">
+         <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">Class</label>
+                    <select class="form-control" [(ngModel)]="selectedSecurity.assetClassId" name = "classId" #classId = "ngModel" required [disabled]="!isEditSecurity">
+                         <option value="null" *ngIf="!selectedSecurity.assetClassId">Select Class</option>
+                        <option *ngFor="let class of classData" value={{class.id}} >
+                            {{class.name}}
+                        </option>
+                    </select>
+                    <em class="securityError danger" *ngIf="!classId.valid && (!classId.pristine || submitSecurity)">Required</em>
+          </div>
+    </div>
+    <div class="col-sm-4" [hidden]="!showSecurityDetails">
+         <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">Sub Class</label>
+                    <select class="form-control" [(ngModel)]="selectedSecurity.assetSubClassId" name = "subClassId" #subClassId = "ngModel" required [disabled]="!isEditSecurity">
+                         <option value="null" *ngIf="!selectedSecurity.assetSubClassId">Select Sub Class</option>
+                        <option *ngFor="let subClass of subClassData" value={{subClass.id}} >
+                            {{subClass.name}}
+                        </option>
+                    </select>
+                    <em class="securityError danger" *ngIf="!subClassId.valid && (!subClassId.pristine || submitSecurity)">Required</em>
+          </div>
+    </div>
+    </div>
+    <div class="row" [hidden]="!showSecurityDetails">
+    <div class="col-sm-4">
+         <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">Type</label>
+                    <select class="form-control" [(ngModel)]="selectedSecurity.securityTypeId" name = "securityTypeId" #securityTypeId = "ngModel" required 
+                    [disabled]="!isEditSecurity || (permissionToEditSecurityType != null && permissionToEditSecurityType.canRead == 0)">
+                         <option value="null" *ngIf="!selectedSecurity.securityTypeId">Select Type</option>
+                        <option *ngFor="let type of securityTypeData" value={{type.id}} >
+                            {{type.name}}
+                        </option>
+                    </select>
+                    <em class="securityError danger" *ngIf="!securityTypeId.valid && (!securityTypeId.pristine || submitSecurity)">Required</em>
+          </div>
+    </div>
+    
+    <div class="col-sm-4">
+         <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">Status</label>
+                    <select class="form-control" [(ngModel)]="selectedSecurity.status" name="securityStatus" #securityStatus = "ngModel" required [disabled]="!isEditSecurity">
+                         <option value="null" *ngIf="!selectedSecurity.status">Select Status</option>
+                        <option *ngFor="let type of securityStatusList" value={{type}} >
+                            {{type}}
+                        </option>
+                    </select>
+                    <em class="securityError danger" *ngIf="!securityStatus.valid && (!securityStatus.pristine || submitSecurity)">Required</em>
+          </div>
+    </div>
+    
+      <div class="col-sm-4">
+       <div class="form-group is-empty">
+                    <label class="primar-label" for="roletype">Price</label>
+                    <div class="symbol-text"><span>$</span>
+                    <input type="text" placeholder="price" id="price" required
+                    [disabled]="!isEditSecurity || (permissionToEditSecurityPrice != null && permissionToEditSecurityPrice.canRead == 0)" 
+                     class="form-control priceInput" [(ngModel)]="selectedSecurity.price" name="securityPrice" #securityPrice = "ngModel"
+                     (keypress)='priceHandler($event, selectedSecurity.price)'></div>
+                    <em class="securityError danger" *ngIf="!securityPrice.valid && (!securityPrice.pristine || submitSecurity)">Required</em>
+                    
+       </div>
+    </div>
+    
+ </div>
+
+<div class="form-inline" [hidden]="!showSecurityDetails">
+    <div class="row"><div class="col-sm-12"><h4>Custodian Trade Symbol</h4></div></div>
+    <br/>
+   
+   
+   
+    <div class="row seccontainer" [hidden]="!isEditSecurity">
+ 
+            <div class="col-sm-4 form-inline  form-group">
+                <p-autoComplete class="radius-none search-security autocomplete-block" [(ngModel)]="selectedCustodian" [suggestions]="filteredCustodianResult" 
+                    placeholder="Search Custodian" name="custodianSearch" (completeMethod)="autoCustodianSearch($event)" field="name" [minLength]="1" (onSelect)="handleselectedCustodian(selectedCustodian)" (keyup)="handleselectedCustodian(selectedCustodian)"></p-autoComplete>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-info btn-raised customBtn" (click)="addCustodian(selectedCustodian)" [disabled]="btnDisableCustodian" title="Add Custodian">Add</button>
+          </div>
+            
+             
+    </div>
+    
+   <div class="row " [hidden]="!isEditSecurity">
+        <div class="col-sm-12">
+           <em class="securityError danger" *ngIf="invalidCustodians && submitSecurity">Custodian security symbol cannot be null.</em> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+        
+        <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" suppressContextMenu="true" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+        enableColResize="true" [columnDefs]="columnDefs" [rowData]="custodians" enableFilter [suppressMenuMainPanel]="true" >
+         </ag-grid-ng2>
+         </div>
+    </div>
+</div>
+<div class="button-footer" [hidden]="!showSecurityDetails">
+    <span class="securityError danger" *ngIf = "saveError">{{errorMessage}}</span>
+        <!--<a class="btn btn-info btn-raised " href="javascript:void(0)"><i aria-hidden="true" class="fa fa-check-circle-o"></i> Save</a>-->
+       <span [hidden]="!isEditSecurity"> <input type="submit" name="securitySave" class="btn btn-info btn-raised " value="Save" title="Save" /></span>
+        <a class="btn btn-default btn-raised " (click) = "navigateToSecurityListView()" title="Cancel"> Cancel</a>
+    </div>
+</form>
+</div>

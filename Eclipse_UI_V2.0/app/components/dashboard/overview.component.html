@@ -1,0 +1,263 @@
+<!--right side main area start-->
+<div class="main">
+  <breadcrumb isDashboard="false"></breadcrumb>
+  <div class="dashboard-content">
+
+    <div class="nav-tabs-container">
+      <ul class="nav nav-tabs pull-left">
+        <li class="active"><a data-toggle="tab" href="#dashboard">Dashboard</a> </li>
+        <li><a data-toggle="tab" href="#querybuilder">Query Builder</a></li>
+      </ul>
+      <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <i class="material-icons">more_vert</i>
+          <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="javascript:void(0)" (click)="onMenuClick('RefreshAnalytics')">Refresh Analytics</a></li>
+          <li class="divider"></li>
+          <li><a href="javascript:void(0)">Separated link</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tab-content">
+      <div id="dashboard" class="tab-pane fade in active">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="import"> <strong>Last Import Date</strong><br> {{summaryData.lastImportedDate | date: 'MM/dd/yyyy hh:mm:ss'}} </div>
+            <div class="warnings"> <strong>Warnings</strong><br>
+              <a href="javascript:void(0);">{{summaryData.warnings}}</a> </div>
+            <div class="errors"> <strong> Errors</strong><br>
+              <a href="javascript:void(0);">{{summaryData.errors}}</a> </div>
+            <div class="row">
+              <div class="col-sm-12 aum-container">
+                <div class="aum-box">
+                  <p class="hd"> <i class="fa  fa-facebook-official"></i> Total AUM</p>
+                  <p class="aum-hd" title="{{summaryData.totalAUM |  currency:'USD':true}}">{{summaryData.totalAUM | currencyMillionfilter : 2}} <sub style='color:white'>{{summaryData.totalAUM | currencyAmountfilter}}</sub></p> 
+                  <!-- <p class="aum-hd">{{9881884883 | currencyMillionfilter : 0}} <sub style='color:white'>{{9881884883 | currencyAmountfilter}}</sub></p>-->
+                  <p class="text-right"><i class="fa fa-caret-up green"></i> {{summaryData.changeInAum}} %</p>
+                </div>
+              </div>
+            </div>
+          </div>
+         <div class="col-sm-6">
+            <div class="col-sm-6">
+              <a class="btn btn-blueouter btn-raised pull-left" [class.disabled]="disableFullImport" title="Start New Full Import" (click)='startNewFullImport()'> <i class="fa fa-download" aria-hidden="true"></i> Start New Full Import </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="btn btn-blueouter btn-raised pull-left" [class.disabled]="disableFullImport" title="Start New Partial Import" (click)='startNewPartialImport()'> <i class="fa fa-download" aria-hidden="true"></i> Start New Partial Import </a>
+            </div>
+            <div class="col-sm-6 line-spacer"><strong *ngIf="summaryData.isAutoImport">Latest Available Import</strong><br> <span *ngIf="summaryData.isAutoImport">{{summaryData.latestAvailableImport}}</span><br>
+              <a class="btn btn-blueouter btn-raised pull-left line-spacer" [class.disabled]="disableFullImport" title="Accept Import" (click)='getPostImportData()' *ngIf="summaryData.isAutoImport"> <i class="fa fa-sign-out" aria-hidden="true"></i> Accept Import </a>
+            </div>
+            <!--<div class="col-sm-6 line-spacer"><strong>Price Range Date</strong><br>{{pricerange.from}} to {{pricerange.to}}</div>-->
+            <div class="col-sm-6 line-spacer"><strong>Price Date</strong><br>{{pricerange.maxPriceDate | date: 'MM/dd/yyyy hh:mm:ss'}}</div>
+          </div>
+        </div>
+        <div class="graph-container">
+          <p class="graph-caption">Total Time taken during Last Import: 00:00:{{summaryData.lastImportPorcessTime}} (hours:min:sec)</p>
+          <!--<div class="graph">
+            <div class="col-sm-4 block-spacer"><img src="/app/assets/img/dashboard_portfolio.png" /></div>
+            <div class="col-sm-4 block-spacer"><img src="/app/assets/img/dashboard_account.png" /></div>
+            <div class="col-sm-4 block-spacer"><img src="/app/assets/img/dashboard_holding.png" /></div>
+            <div class="col-sm-4 col-sm-push-2 block-spacer"><img src="/app/assets/img/dashboard_orders.png" /></div>
+            <div class="col-sm-4 col-sm-push-2 block-spacer"><img src="/app/assets/img/dashboard_models.png" /></div>
+          </div>-->
+          <!--<div class="col-lg-12">
+            <div class="progresschartpie_one" style='margin-left:70px'></div>
+          </div>
+          <div class="col-lg-12">
+            <div class="progresschartpie_two" style='margin-left:200px'></div>
+          </div>-->
+          <div class="col-lg-6" *ngFor="let item of donutData; let index = index">
+            <div class="portfolio-report-component">
+              <h4 class="title">{{getModuleName(item.moduleName| lowercase)}}</h4>
+              <div class="bs-component">
+                <span class="count">{{item.warning}}</span>
+                <a *ngIf="(item.moduleName|lowercase) != 'holdings'" [routerLink]="['/eclipse', getRouteModuleName(item.moduleName | lowercase) , getRouteActionName(item.moduleName | lowercase)]">
+                
+                <!--<a href="javascript:void(0);">-->
+                  <div class="progress">
+                    <div [className]="'progress-bar '+ getColorClassName(item.moduleName| lowercase)" [style.width]="calculatePercentage(item.warning,item.total) + '%'"></div>
+                  </div>
+                </a>
+                <a *ngIf="(item.moduleName|lowercase) == 'holdings'" [routerLink]="['/eclipse', getRouteModuleName(item.moduleName | lowercase)]">
+                <div class="progress">
+                    <div [className]="'progress-bar '+ getColorClassName(item.moduleName| lowercase)"  [style.width]="calculatePercentage(item.warning,item.total) + '%'"></div>
+                  </div>
+                </a>
+                <span class="total-count">{{item.total}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="querybuilder" class="tab-pane fade in">
+        <div class="col-sm-12">
+          <div class="conditional-container"> <a href="javascript:void(0);" class="btn btn-blueouter btn-raised" data-toggle="modal" data-target="#myModal"> Select Column <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+            <form role="form">
+              <div class="runquery">
+                <h4 class="pull-left queryhd"> Query Output</h4>
+                <a href="javascript:void(0)" class="btn btn-info btn-raised pull-right"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Save View As</a>
+                <div class="">
+                  <textarea class="">(Acc ID=25  AND Name=Model 502  OR  Price < $50000)</textarea>
+                </div>
+              </div>
+              <div class="querytab">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a data-toggle="tab" href="#standard">Standard</a></li>
+                  <li><a data-toggle="tab" href="#advance">Advance</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div id="standard" class="tab-pane fade in active">
+                    <div class="conditions">
+                      <div class="dropdown-plug">
+                        <strong>Condition:</strong>
+                        <select class="form-control">
+                            <option>AND</option>
+                            <option>OR</option>
+                          </select>
+                      </div>
+                      <a class="btn btn-blueouter btn-raised" href="" title="Add Condition"><i class="fa fa-plus-circle"></i> Add Condition</a>                      <a class="btn btn-blueouter btn-raised" href="" title="Add Group"><i class="fa fa-plus-circle"></i> Add Group</a>                      <a class="btn btn-redouter btn-raised" href="" title="Remove Group"><i class="fa fa-minus-circle"></i> Remove Group</a>                      <a class="btn btn-info btn-raised  pull-right" href="query-builder.html">Go</a> </div>
+                    <div class="drag-area">
+                      <div class=" form-inline drag-row">
+                        <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">
+                        <select class="form-control">
+                              <option>Equal </option>
+                              <option>Not Equal</option>
+                              <option>Greater Than</option>
+                              <option>Greater Than or Equal</option>
+                              <option>Less Than</option>
+                              <option>Less Than or Equal </option>
+                            </select>
+                        <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                        <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                      </div>
+                      <div class="form-inline drag-row">
+                        <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">
+                        <select class="form-control">
+                              <option>Equal </option>
+                              <option>Not Equal</option>
+                              <option>Greater Than</option>
+                              <option>Greater Than or Equal</option>
+                              <option>Less Than</option>
+                              <option>Less Than or Equal </option>
+                            </select>
+                        <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                        <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                      </div>
+                      <div class="form-inline drag-row">
+                        <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">                        <select class="form-control">
+                              <option>Equal </option>
+                              <option>Not Equal</option>
+                              <option>Greater Than</option>
+                              <option>Greater Than or Equal</option>
+                              <option>Less Than</option>
+                              <option>Less Than or Equal </option>
+                            </select>
+                        <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                        <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                      </div>
+                      <div class="form-inline drag-row">
+                        <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">                        <select class="form-control">
+                              <option>Equal </option>
+                              <option>Not Equal</option>
+                              <option>Greater Than</option>
+                              <option>Greater Than or Equal</option>
+                              <option>Less Than</option>
+                              <option>Less Than or Equal </option>
+                            </select>
+                        <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                        <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                      </div>
+                      <div class="form-inline drag-row">
+                        <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">                        <select class="form-control">
+                              <option>Equal </option>
+                              <option>Not Equal</option>
+                              <option>Greater Than</option>
+                              <option>Greater Than or Equal</option>
+                              <option>Less Than</option>
+                              <option>Less Than or Equal </option>
+                            </select>
+                        <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                        <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="advance" class="tab-pane fade in">
+                    <div class="conditions">
+                      <div class="dropdown-plug">
+                        <strong>Condition:</strong>
+                        <select class="form-control">
+                            <option>AND</option>
+                            <option>OR</option>
+                          </select>
+                      </div>
+                      <a class="btn btn-blueouter btn-raised" href="" title="Add Condition"><i class="fa fa-plus-circle"></i> Add Condition</a>                      <a class="btn btn-blueouter btn-raised" href="" title="Add Group"><i class="fa fa-plus-circle"></i> Add Group</a>                      <a class="btn btn-redouter btn-raised" href="" title="Remove Group"><i class="fa fa-minus-circle"></i> Remove Group</a>                      <a class="btn btn-info pull-right btn-raised" href="query-builder.html">Go</a> </div>
+                    <div class="drag-area">
+                      <div class="form-inline drag-row">
+                        <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">                        <select class="form-control">
+                              <option>Equal
+                              <option>Not Equal</option>
+                              <option>Greater Than</option>
+                              <option>Greater Than or Equal</option>
+                              <option>Less Than</option>
+                              <option>Less Than or Equal </option>
+                            </select>
+                        <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                        <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                      </div>
+                      <div class="form-inline drag-row">
+                        <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">                        <select class="form-control">
+                              <option>Equal
+                              <option>Not Equal</option>
+                              <option>Greater Than</option>
+                              <option>Greater Than or Equal</option>
+                              <option>Less Than</option>
+                              <option>Less Than or Equal </option>
+                            </select>
+                        <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                        <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                      </div>
+                      <div class="sub-condition">
+                        <div class="conditions">
+                          <div class="dropdown-plug">
+                            <strong>Condition:</strong>
+                            <select class="form-control">
+                            <option>AND</option>
+                            <option>OR</option>
+                          </select>
+                          </div>
+                          <a class="btn btn-blueouter btn-raised" href="" title="Add Condition"><i class="fa fa-plus-circle"></i> Add Condition</a>                          <a class="btn btn-blueouter btn-raised" href="" title="Add Group"><i class="fa fa-plus-circle"></i> Add Group</a>                          <a class="btn btn-redouter btn-raised" href="" title="Remove Group"><i class="fa fa-minus-circle"></i> Remove Group</a>                          </div>
+                        <div class="drag-area">
+                          <div class="form-inline drag-row">
+                            <input type="text" class="form-control radius-none" id="exampleInputName2" placeholder="Enter Value">                            <select class="form-control">
+                                  <option>Equal
+                                  <option>Not Equal</option>
+                                  <option>Greater Than</option>
+                                  <option>Greater Than or Equal</option>
+                                  <option>Less Than</option>
+                                  <option>Less Than or Equal </option>
+                                </select>
+                            <input type="text" class="form-control radius-none" id="exampleInputName3" placeholder="Enter Value">
+                            <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tags">
+                      <a href="javascript:void(0);" class="btn btn-info btn-raised"> <span><i class="fa fa-times" aria-hidden="true"></i></span> SavedQuery1 </a>
+                      <a href="javascript:void(0);" class="btn btn-default btn-raised"> <span><i class="fa fa-times" aria-hidden="true"></i></span> SavedQuery1 </a>
+                      <a class="btn btn-default btn-raised" href="javascript:void(0);"> <span><i class="fa fa-times" aria-hidden="true"></i></span> SavedQuery1 </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--right side main area end -->

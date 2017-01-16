@@ -1,0 +1,39 @@
+{
+  "block": {
+    "Account Number": "genericAccountNumber",
+    "Account Type": "accountTypeId",
+    "Security Type": "tdaSecurityType",
+    "Action": "tdaOrderActionCode",
+    "Quantity Type": "tdaQuantityTypeCode",
+    "Quantity": "tdaQuantity",
+    "Symbol": "securitySymbol",
+    "Exchange/SWAP symbol": "",
+    "Order Type": "tdaOrderType",
+    "Limit Price": "tdaLimitPrice",
+    "Stop Price": "",
+    "Time in Force": "tdaTimeInForce",
+    "Do Not Reduce": "",
+    "All Or None": "",
+    "Reinvest (Dividends)": "perishingReinvestDividends",
+    "Include Transaction Fee": "includeTransactionFee",
+    "Reinvest (Cap Gains)": "reinvestCapGains"
+  },
+  "allocation": {
+    "header": {
+      "Record Type": "EH",
+      "Block Account Number": "blockAccountNumber",
+      "Transaction Type": "tdaOrderActionCode",
+      "Symbol": "securitySymbol"
+    },
+    "detail": {
+      "Client Account Number": "accountNumber",
+      "Quantity": "tdaQuantity",
+      "Tax Lot ID Method": ""
+    },
+    "trailer": {
+      "Record Type": "ET",
+      "Number of Allocations": "numberOfAllocationDetails",
+      "Quantity": "shareQuantity"
+    }
+  }
+}

@@ -1,0 +1,417 @@
+<span [ngSwitch]="displaypermission">      
+    <span *ngSwitchCase="true">
+<div class="firm-security-setting-header">
+    <div class="row" id="securitypref">
+        <label class="col-sm-4" for="team">Search Securities </label>
+        <div class="col-sm-4">
+
+            <p-autoComplete class="form-control radius-none" class="autocomplete-block" [(ngModel)]="selectedSecurity" [suggestions]="filteredSecurityResult"
+                placeholder="Search Securities" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedSecurity(selectedSecurity)"
+                (keyup)="handleSelectedSecurity(selectedSecurity)"></p-autoComplete>
+        </div>
+
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-info btn-raised customBtn" title="Set Preferences" (click)="setPrefPopup(selectedSecurity)"
+                [disabled]="btnDisableSetPref">Set Preferences</button>
+        </div>
+    </div>
+</div>
+    </span>
+<div class="row mar">
+    <span *ngSwitchCase="true">
+    <ag-grid-ng2 #agGrid style="width: 148%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+    [gridOptions]="gridOptions" rowSelection="single" [columnDefs]="columnDefs" [rowData]="PrefrowData" enableFilter (rowClicked)="rowSelected($event)"
+    enableColResize="true" [getContextMenuItems]="getContextMenuItems" [suppressMenuMainPanel]="true">
+</ag-grid-ng2>
+    </span>
+    <span *ngSwitchCase="false">
+    <ag-grid-ng2 class="ag-material ag-dark" #agGrid style="width: 148%; height: 350px;" [columnDefs]="columnDefs" [rowData]="PrefrowData"
+        [gridOptions]="gridOptions" [suppressContextMenu]="true" [suppressMenuColumnPanel]="true" [suppressMenuFilterPanel]="true" [suppressMenuMainPanel]="true">
+    </ag-grid-ng2>
+</span>
+</div>
+
+
+<p-dialog header="Security Preferences" [resizable]="true" [(visible)]="displaySecPref" responsive="true" showEffect="fade"
+    width="1024">
+
+    <div class="col-sm-12 security-preferences-modal-body">
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Id:<span class="margin-left-05">{{securityId}}</span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Name: <span class="margin-left-05">{{securityName}}</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Type:<span class="margin-left-05">{{securityType}}</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                Security Symbol:<span class="margin-left-05">{{securitySymbol}}</span>
+            </div>
+        </div>
+
+        <!--
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            Redemtion Fee Type: <select id="ddlType" class="form-control" [(ngModel)]="type" (change)="onFeeTypeChange($event)">  
+                           <option value="$">
+                           $
+                        </option>
+                        <option value="%">%</option></select>
+                        </div>
+                    </div>-->
+
+        <div class="row" [hidden]="(fromParentPrefLevel =='model') ||(fromParentPrefLevel =='portfolio') ||(fromParentPrefLevel =='account')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Redemption Fee</legend>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        Redemption Fee Amount:
+                        <div class="form-inline">
+                            <select id="ddlType" [(ngModel)]="type" (change)="onFeeTypeChange($event)" class="form-control">  
+                           <option value="$">$</option>
+                            <option value="%">%</option>
+                            </select>
+                            <input placeholder="Enter amount" *ngIf="type=='$'" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.redemptionFeeAmount"
+                            />
+                            <input placeholder="Enter amount" *ngIf="type=='%'" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.redemptionFeeAmount"
+                                (keyup)="validatePercent(securityPref)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Redemption Fee days:
+                        <input placeholder="Enter days" type="number" min="0" value="0" step="1" class="form-control" [(ngModel)]="securityPref.redemptionFeeDays"
+                        />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="row" [hidden]="!canShow">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Trade Min</legend>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Sell Min Amount:
+                        <input placeholder="Enter min amount" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.sellTradeMinAmtBySecurity"
+                        />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Sell Min Percent:
+                        <input placeholder="Enter min Percent" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.sellTradeMinPctBySecurity"
+                            (keyup)="validatePercent(securityPref)" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Buy Min Amount:
+                        <input placeholder="Enter min amount" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.buyTradeMinAmtBySecurity"
+                        />
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Buy Min Percent:
+                        <input placeholder="Enter min percent" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.buyTradeMinPctBySecurity"
+                            (keyup)="validatePercent(securityPref)" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row" [hidden]="!canShow">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Trade Max</legend>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Sell Max Amount:
+                        <input placeholder="Enter max amount" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.sellTradeMaxAmtBySecurity"
+                        />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Sell Max Percent:
+                        <input placeholder="Enter max percent" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.sellTradeMaxPctBySecurity"
+                            (keyup)="validatePercent(securityPref)" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Buy Max Amount:
+                        <input placeholder="Enter max amount" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.buyTradeMaxAmtBySecurity"
+                        />
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Buy Max Percent:
+                        <input placeholder="Enter max percent" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.buyTradeMaxPctBySecurity"
+                            (keyup)="validatePercent(securityPref)" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="row" [hidden]="fromParentPrefLevel =='custodian'">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Tax Alternates</legend>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        Taxable:
+                        <p-autoComplete class="form-control radius-none" class="autocomplete-block" [(ngModel)]="selectedTax" [suggestions]="filteredAlternates"
+                            placeholder="Search Taxable" (completeMethod)="autoTaxAlternateSearch($event)" field="name" [minLength]="1"
+                            (onSelect)="handleSelectedtax(selectedTax)"></p-autoComplete>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        Tax Deferred:
+                        <p-autoComplete class="form-control radius-none" class="autocomplete-block" [(ngModel)]="selectedDeffered" [suggestions]="filteredTaxDeffered"
+                            placeholder="Search Tax Deffered" (completeMethod)="autoTaxDefferedSearch($event)" field="name" [minLength]="1"
+                            (onSelect)="handleSelectedDeffered(selectedDeffered)"></p-autoComplete>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        Tax Exempt:
+                        <p-autoComplete class="form-control radius-none" class="autocomplete-block" [(ngModel)]="selectedExempt" [suggestions]="filteredTaxExempts"
+                            placeholder="Search Tax Exempt" (completeMethod)="autoTaxExemptSearch($event)" field="name" [minLength]="1"
+                            (onSelect)="handleSelectedExempt(selectedExempt)"></p-autoComplete>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="row" [hidden]="(fromParentPrefLevel =='custodian')||(fromParentPrefLevel =='model')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Tax Preference Dividend Reinvest</legend>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Taxable:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.taxableDivReInvest"
+                          (ngModelChange)="setDropdownSelectedOption($event,'taxableDivReInvest')">
+                                <!--<option value=null>Select</option>-->
+                                  <option *ngFor="let r of yesOrNOoData" [ngValue]="r.value" >
+                            {{r.name}}
+                        </option></select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Taxable Deferred:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.taxDefDivReinvest"
+                         (ngModelChange)="setDropdownSelectedOption($event,'taxDefDivReinvest')">  
+                           <!--<option value=null>Select</option>-->
+                                  <option *ngFor="let r of yesOrNOoData" [ngValue]="r.value" >
+                            {{r.name}}
+                        </option></select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Tax Exempt:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.taxExemptDivReinvest"
+                          (ngModelChange)="setDropdownSelectedOption($event,'taxExemptDivReinvest')">  
+                            <!--<option value={{null}}>Select</option>-->
+                                  <option *ngFor="let r of yesOrNOoData" [ngValue]="r.value">
+                            {{r.name}}
+                        </option></select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row" [hidden]="(fromParentPrefLevel =='custodian')||(fromParentPrefLevel =='model')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Capital Gain Reinvest</legend>
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Taxable:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.capGainReinvestTaxable"
+                          (ngModelChange)="setDropdownSelectedOption($event,'capGainReinvestTaxable')">  
+                           <!--<option value=null>Select</option>-->
+                                  <option *ngFor="let r of yesOrNOoData" [ngValue]="r.value" >
+                            {{r.name}}
+                        </option></select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Taxable Deferred:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.capGainsReinvestTaxDef"
+                        (ngModelChange)="setDropdownSelectedOption($event,'capGainsReinvestTaxDef')">  
+                           <!--<option value=null>Select</option>-->
+                                  <option *ngFor="let r of yesOrNOoData" [ngValue]="r.value">
+                            {{r.name}}
+                        </option></select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Tax Exempt:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.capGainsReinvestTaxExempt"
+                        (ngModelChange)="setDropdownSelectedOption($event,'capGainsReinvestTaxExempt')">  
+                            <!--<option value=null>Select</option>-->
+                                  <option *ngFor="let r of yesOrNOoData" [ngValue]="r.value" >
+                            {{r.name}}
+                        </option></select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="row" [hidden]="(fromParentPrefLevel =='firm') ||(fromParentPrefLevel =='team') ||(fromParentPrefLevel =='model')||(fromParentPrefLevel =='portfolio') ||(fromParentPrefLevel =='account')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Custodian Specific Redemption Fee</legend>
+               
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        Amount:
+                        <div class="form-inline">
+                            <select id="ddlType" [(ngModel)]="custodianFeetype" (change)="oncustodianFeeTypeChangee($event)" class="form-control">  
+                           <option value="$">$</option>
+                            <option value="%">%</option>
+                            </select>
+                            <input placeholder="Enter amount" *ngIf="custodianFeetype=='$'" type="number" min="0" value="0" step="0.01" class="form-control"
+                                [(ngModel)]="securityPref.custodianRedemptionFeeAmount" />
+                            <input placeholder="Enter amount" *ngIf="custodianFeetype=='%'" type="number" min="0" value="0" step="0.01" class="form-control"
+                                [(ngModel)]="securityPref.custodianRedemptionFeeAmount" (keyup)="validatePercent(securityPref)"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Days:
+                        <input placeholder="Enter days" type="number" min="0" value="0" step="1" class="form-control" [(ngModel)]="securityPref.custodianRedemptionDays"
+                        />
+
+                    </div>
+                </div>
+
+            </fieldset>
+        </div>
+
+
+
+        <div class="row" [hidden]="(fromParentPrefLevel =='firm') || (fromParentPrefLevel =='custodian')||(fromParentPrefLevel =='team') ||(fromParentPrefLevel =='model')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Trading</legend>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Exclude Holding:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.excludeHolding"
+                        (ngModelChange)="setDropdownSelectedOption($event,'excludeHolding')">  
+                          <!--<option value=null>Select</option>-->
+                                  <option *ngFor="let r of yesOrNOoData" [ngValue]="r.value" >
+                            {{r.name}}
+                        </option></select>
+
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+
+
+
+           <div class="row" [hidden]="(fromParentPrefLevel =='firm') ||(fromParentPrefLevel =='team') ||(fromParentPrefLevel =='model')||(fromParentPrefLevel =='portfolio')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Transaction Fee</legend>
+
+               
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Sell Transaction fee:
+                        <input placeholder="Enter fee" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.sellTransactionFee"
+                        />
+
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Buy Transaction Fee:
+                        <input placeholder="Enter fee" type="number" min="0" value="0" step="0.01" class="form-control" [(ngModel)]="securityPref.buyTransactionFee"
+                        />
+
+                    </div>
+                </div>
+              
+            </fieldset>
+        </div>
+
+
+
+           <div class="row" [hidden]="(fromParentPrefLevel =='custodian') ||(fromParentPrefLevel =='team') ||(fromParentPrefLevel =='model')||(fromParentPrefLevel =='portfolio') ||(fromParentPrefLevel =='account')">
+            <fieldset class="col-md-12 security-preferences-fieldset">
+                <legend>Trade Settings</legend>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Sell Priority:
+                       <select id="ddlType" class="form-control" [(ngModel)]="securityPref.sellPriority">  
+                            <option value=null>Select</option>
+                                  <option *ngFor="let r of sellPriorityList" [ngValue]="r.id" >
+                            {{r.displayName}}
+                        </option></select>
+
+
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        Buy Priority:
+                        <select id="ddlType" class="form-control" [(ngModel)]="securityPref.buyPriority">  
+                            <option value=null>Select</option>
+                                  <option *ngFor="let r of buyPriorityList" [ngValue]="r.id" >
+                            {{r.displayName}}
+                        </option></select>
+
+
+                    </div>
+                </div>
+              
+            </fieldset>
+        </div>
+    </div>
+    <!--<footer>-->
+
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button type="button" class="btn btn-blueouter btn-raised" icon="fa-close" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-blueouter" icon="fa-check" (click)="addtoGrid()">Add</button>
+    </div>
+    <!--</footer>-->
+
+</p-dialog>
+</span>

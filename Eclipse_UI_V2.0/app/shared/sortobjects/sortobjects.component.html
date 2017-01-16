@@ -1,0 +1,16 @@
+<div [ngSwitch]="displaypermission">
+    <div *ngSwitchCase="true">
+        <ul class="list-drag-group" dnd-sortable-container [sortableData]="model | itemSort">
+            <li *ngFor="let item of model; let i = index" class="list-drag-group-item" dnd-sortable [sortableIndex]="i"><i class="fa fa-arrows"></i> {{item.name}}</li>
+        </ul>
+    </div>
+    <div *ngSwitchCase="false">
+        <ul>
+            <li *ngFor="let item of model; let i = index">
+                <i>
+            {{item.name}}
+            </i>
+            </li>
+        </ul>
+    </div>
+</div>

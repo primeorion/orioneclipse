@@ -1,0 +1,168 @@
+
+    <h4 class="text-info">Which method do you want to use for selecting accounts to trade</h4>
+    <div class="selection-content-container">
+        <div class="row">
+            <div class="col-sm-4 ">
+                <div class="content-box-left">
+                    <div class="margin-top-20" *ngIf="showCalculateAtSleevePf">
+                        <input type="checkbox" [(ngModel)]="isCalculateAtSleevePf" name="" (change)="onChkChange($event)"> Calculate at Sleeve Portfolio (Include All Sleeves in Portfolio) </div>
+
+                    <div class="radio " data-rel="portfolioContent" *ngIf="showPortfolio"> <label><input type="radio" name="optradio" [checked]="portfolio == 1" (click)="radioBtnChange(1, 'portfolio')"><span class="circle"></span><span class="check"></span>Portfolio</label></div>
+                    <div class="radio " data-rel="sleevePortfolioContent" *ngIf="showSleevePortfolio"> <label><input type="radio" name="optradio" [checked]="sleevePortfolio == 1" (click)="radioBtnChange(1, 'sleevePortfolio')"><span class="circle"></span><span class="check"></span>Sleeve Portfolio</label></div>
+                    <div class="radio" data-rel="accountContent" *ngIf="showAccounts"> <label><input type="radio" name="optradio" [checked]="account == 1" (click)="radioBtnChange(1, 'account')"><span class="circle"></span><span class="check"></span>Account</label></div>
+                    <div class="radio" data-rel="modelContent" *ngIf="showModel"> <label><input type="radio" name="optradio" [checked]="model == 1" (click)="radioBtnChange(1, 'model')"><span class="circle"></span><span class="check"></span>Model</label></div>
+                    <div class="radio" data-rel="sleeveContent" *ngIf="showSleeves"> <label><input type="radio" name="optradio" [checked]="sleeves == 1" (click)="radioBtnChange(1, 'sleeves')"><span class="circle"></span><span class="check"></span>Sleeves</label></div>
+                    <div class="radio" data-rel="tradeGroupsPortfolioContent" *ngIf="showtradeGroupsForPortfolio"> <label><input type="radio" name="optradio" [checked]="tradeGroupsForPortfolio == 1" (click)="radioBtnChange(1, 'tradeGroupsForPortfolio')"><span class="circle"></span><span class="check"></span>Trade Groups for Portfolio</label></div>
+                    <div class="radio" data-rel="tradeGroupsAccountContent" *ngIf="showtradeGroupsForAccounts"> <label><input type="radio" name="optradio" [checked]="tradeGroupsForAccount == 1" (click)="radioBtnChange(1, 'tradeGroupsForAccount')"><span class="circle"></span><span class="check"></span>Trade Groups for Accounts</label></div>
+                    <div class="radio" data-rel="excelImportContent" *ngIf="showExcelImport"> <label><input type="radio" name="optradio" [checked]="excelImport == 1" (click)="radioBtnChange(1, 'excelImport')"><span class="circle"></span><span class="check"></span>Excel Import</label></div>
+                    <div class="radio" data-rel="excelImportForPortfolioContent" *ngIf="showExcelImportPortfolio"> <label><input type="radio" name="optradio" [checked]="excelImportForPf == 1" (click)="radioBtnChange(1, 'excelImportForPf')"><span class="circle"></span><span class="check"></span>Excel Import Portfolio</label></div>
+                    <div class="radio" data-rel="excelImportForSleevesContent" *ngIf="showExcelImportSleeves"> <label><input type="radio" name="optradio" [checked]="excelImportForSlvs == 1" (click)="radioBtnChange(1, 'excelImportForSlvs')"><span class="circle"></span><span class="check"></span>Excel Import Sleeves</label></div>
+
+                    <!--<div class="margin-top-20" *ngIf="showSpendContributionSleeveBal && (tradeFilterMethod == 'portfolio' || tradeFilterMethod == 'excelImportForPf')">
+                    <input type="checkbox" [(ngModel)]="spendContribution"  name=""> Spend Contribution Sleeve Balance </div>-->
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="content-container">
+                    <div *ngIf="tradeFilterMethod == 'portfolio' ||
+                                tradeFilterMethod == 'sleevePortfolio' ||
+                                tradeFilterMethod == 'account' ||
+                                tradeFilterMethod == 'model' ||
+                                tradeFilterMethod == 'sleeves' ||
+                                tradeFilterMethod == 'tradeGroupsForPortfolio' ||
+                                tradeFilterMethod == 'tradeGroupsForAccount'" class="">
+                        <div class="">
+                            <div class="col-sm-7">
+                                <div class="form-group is-empty">
+                                    <div class="icon-addon addon-md">
+                                        <div *ngIf="tradeFilterMethod == 'portfolio'">
+                                            <eclipse-portfolio-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-portfolio-autocomplete>
+                                        </div>
+                                        <div *ngIf="tradeFilterMethod == 'sleevePortfolio'">
+                                            <eclipse-sleeveportfolio-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-sleeveportfolio-autocomplete>
+                                        </div>
+                                        <div *ngIf="tradeFilterMethod == 'account'">
+                                            <eclipse-account-autocomplete (parentCallback)="getSelectedItem($event)" [isSpendCash]="isSpendCash"></eclipse-account-autocomplete>
+                                        </div>
+                                        <div *ngIf="tradeFilterMethod == 'model'">
+                                            <eclipse-model-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-model-autocomplete>
+                                        </div>
+                                        <div *ngIf="tradeFilterMethod == 'sleeves'">
+                                            <eclipse-sleeves-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-sleeves-autocomplete>
+                                        </div>
+                                        <div *ngIf="tradeFilterMethod == 'tradeGroupsForPortfolio'">
+                                            <eclipse-tragegroupsportfolio-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-tragegroupsportfolio-autocomplete>
+                                        </div>
+                                        <div *ngIf="tradeFilterMethod == 'tradeGroupsForAccount'">
+                                            <eclipse-tragegroupsaccount-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-tragegroupsaccount-autocomplete>
+                                        </div>
+
+                                        <label for="email" class="glyphicon glyphicon-search addon-top-space" rel="tooltip"></label>
+                                    </div>
+                                    <span class="material-input"></span></div>
+                            </div>
+                            <div class="col-sm-3" *ngIf="showAmountInput">
+                                <div class="form-group">
+                                    <!--[disabled]="isSleevePortfolio"-->
+                                    <input type="number" [(ngModel)]="enteredAmount" placeholder="Enter Amount" class="form-control" (keyup)="validateAmount($event)" min="0.01" step="0.01">
+                                </div>
+                            </div>
+                            <div class="col-sm-2"> <button type="button" (click)="addItem()" class="btn btn-raised btn-add btn-info">ADD</button></div>
+                        </div>
+
+                        <div class="agcontainer">
+                            <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                                [gridOptions]="tradesFilterGridOptions" enableColResize="true" rowSelection="single" [columnDefs]="tradesFilterColumnDefs"
+                                [rowData]="List" enableFilter [suppressMenuMainPanel]="true" suppressContextMenu="true">
+                            </ag-grid-ng2>
+                        </div>
+                    </div>
+
+                    <div *ngIf="tradeFilterMethod == 'excelImport' ||
+                                tradeFilterMethod == 'excelImportForPf' ||
+                                tradeFilterMethod == 'excelImportForSlvs' " class="" id="excelImportContent || excelImportForPortfolioContent || excelImportForSleevesContent">
+                        <h4>Which accounts should be included in this trade ?</h4>
+                        <!--<div class="row top-bottom-30">
+                            <div class="col-sm-7"><img src="assets/img/screen-short.png" alt="Screen Short" class="img-responsive pull-right"></div>
+                            <div class="col-sm-5">
+                                <div class="choose-file-small-box"><i class="fa fa-file-text-o" aria-hidden="true"></i><br> Drop Files Here<br>
+                                    <div class="line-space">Or</div>
+                                    <span class="btn btn-info btn-file btn-raised"> Choose File
+                                        <input type="file">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>-->
+
+                        <div class="row">
+                            <div *ngIf="checkUploadFile">
+                                <div class="col-md-6">
+                                    <div (dragover)='dragFile($event)' (drop)='dropFile($event)'>
+                                        <div class="choose-file-small-box file-upload-input-style">
+                                            <span class="btn btn-info btn-file btn-raised"> Choose File
+                                                    <input type="file" name="model" id ="model-file" 
+                                                    (change)="selectedTemplate($event)">
+                                                </span><br> or drag and drop
+                                            here
+                                            <!--*ngIf="!disableUploadBtn"-->
+                                            <div>
+                                                <p *ngIf="checkDragFile">{{dragFileName}}</p>
+                                                <p *ngIf="!checkDragFile">{{file.name}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <em class="securityError danger" *ngIf="showFiletUploadError">{{fileUploadError}}</em>
+                                    <span class="securityError danger" *ngIf="isNotValidFile">Please upload valid file</span>
+                                    <div *ngIf="!isNotValidFile">
+                                        <div class="table-responsive col-md-12" *ngIf="uploadResults.records.length > 0">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr class="table-heading">
+                                                        <th><strong>ID</strong> </th>
+                                                        <th><strong>Name</strong> </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let r of uploadResults.records">
+                                                        <td class="text-left"> <span><i id={{r.id}} class="fa fa-times red" aria-hidden="true" (click)="deleteRecord(r)"></i></span>                                                            <span [ngClass]="{'text-danger' :!r.isValid }">{{r.id}} </span>                                                            </td>
+                                                        <td> <span [ngClass]="{'text-danger' :!r.isValid }">{{r.name}}</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="modelErrors && !checkUploadFile">
+                                <div class="choose-file-small-box file-upload-input-style import-log">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> There is something wrong
+                                    please check log.
+                                </div>
+
+                                <p><strong>Import Log</strong></p>
+                                <div class="import-log-box">
+                                    <p *ngFor="let error of errorLog">{{error.message}}</p>
+                                </div>
+                            </div>
+                            <div class="choose-file-small-box file-upload-input-style file-successfully-imported" *ngIf="!modelErrors && !checkUploadFile">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i> File is successfully imported
+                            </div>
+                        </div>
+                        <footer>
+                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                <!--<button type="button" class="btn btn-blueouter" icon="fa-close" (click)="cancelModel()">CANCEL</button>-->
+                                <!--<button type="button" class="btn btn-info btn-raised" icon="fa-check" [disabled]="disableUploadBtn" (click)="postFile()"
+                                        *ngIf="checkUploadFile">CREATE MODEL</button>-->
+                                <button type="button" class="btn btn-info btn-raised" icon="fa-check" (click)="modelImport()" *ngIf="modelErrors">TRY AGAIN</button>
+                            </div>
+                        </footer>
+                        <p class="text-info"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> A word about file formats...</p>
+                        <p>The imported file should include an “Account ID” or an “Account Number” column The file’s extension
+                            can be xlsx or csv. Invalid accounts will be highlighted <span class="text-danger">red</span>                            and discarded duribg the calculation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+

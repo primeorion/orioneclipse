@@ -1,0 +1,16 @@
+<div class="row" *ngIf = "model.id > 0">
+	      <div class="col-sm-12">
+                  <h3><i class="fa fa-th icon-color-blue" aria-hidden="true"></i>&nbsp; {{model.name}} &nbsp; ({{model.id}})</h3></div>
+</div>
+<div class="row">
+              <div class="col-sm-12">
+              <div class="form-inline space-top-10">
+              <div class="form-group is-empty">
+                   <p-autoComplete class="radius-none search-security sdinput autocomplete-block"  [(ngModel)]="autoCompleteSelectedModel" [suggestions]="filteredModelResult"
+                    placeholder="Search Model" (completeMethod)="autoModelSearch($event)" field="name" name="modelSearch" [minLength]="1" (onSelect)="handleSelectedModel(autoCompleteSelectedModel)" ></p-autoComplete>
+                   
+              </div>
+              <button type="button" class="btn btn-info btn-raised" [disabled]="btnDisableModel" (click) = "searchModel(autoCompleteSelectedModel)">Search</button>
+              </div>
+              </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="agcontainer">
+<form [ngFormModel]="categoryForm" (ngSubmit)="saveCategory(categoryForm)" >
+<div class="row">
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <strong>Category Name</strong>
+                <input type="text" ngControl ="name" #name="ngForm" [(ngModel)]="category.name" placeholder="Enter Category Name" id="name" class="form-control"  >
+                <em class="securityError danger" *ngIf="!name.valid && submitCategory">Required</em>
+                <em class="securityError danger" *ngIf="isCatgeoryDuplicate">{{categoryDuplicateMessage}}</em>
+            </div>
+         </div>
+         <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <strong>Select Color</strong>
+                <input [(colorPicker)]="category.color" readonly
+                [style.background]="category.color" [cpPosition] = "'bottom'" class="form-control"/>
+      </div>
+    </div>
+    <div class="col-sm-4"> 
+      <!--<a class="addAsset"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>-->
+      
+      <button class="submitButton assetSubmit" title="Add Category"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</form>
+
+<ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                                rowSelection="single" [columnDefs]="columnDefs" [rowData]="categoryData" rowSelection="single"
+                                enableFilter  >
+</ag-grid-ng2>
+
+<span><i class="fa fa-lock"></i>&nbsp;Categories imported from Orion Connect cannot be edited or deleted.</span>
+<p-dialog header="Edit Category" [(visible)]="isEditCategory" modal="modal" responsive="true" showEffect="fade" width="650"
+    height="500" (onAfterHide)="resetForm(categoryUpdateForm)">
+    
+    
+        <form [ngFormModel]="categoryUpdateForm" >
+            <div class="">
+                <div class="col-sm-6">
+                    <div class="form-group is-empty">
+                        <strong>Category Name</strong>
+                        <input type="text" ngControl ="name" #updateName="ngForm" placeholder="Enter Category Name" id="name" class="form-control" [(ngModel)]="category.name" >
+                        <em class="securityError danger assetEditError" *ngIf="!updateName.valid && submitCategory">Required</em>
+                        <em class="securityError danger assetEditError" *ngIf="isCatgeoryDuplicate">{{categoryDuplicateMessage}}</em>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group is-empty">
+                        <strong>Select Color</strong>
+                        <input [(colorPicker)]="category.color" readonly 
+                        [style.background]="category.color" [cpPosition] = "'bottom'" class="form-control"/>
+                    </div>
+               </div>
+    </div>
+    <div class="pop-footer footer-spacer">
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button type="button" pButton icon="fa-close" title="Cancel" (click)="resetForm(categoryForm)" label="Cancel"></button>
+        <button type="button" pButton icon="fa-check"  title="Update" (click)="updateCategory(categoryForm)" label="Update"></button>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+<p-dialog header="Delete Category" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+  <div>
+    <div>Do you want to delete the Category ? </div>
+    <footer>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button type="button" pButton icon="fa-close" title="No" (click)="displayConfirm=false" label="No"></button>
+        <button type="button" pButton icon="fa-check" title="Yes" (click)="deleteCategory()" label="Yes"></button>
+      </div>
+    </footer>
+  </div>
+</p-dialog>
+<p-dialog header="Delete Category" [(visible)]="isAssetDeleteError" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+                       <div class="warning-msg">
+                             <p><strong> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Category {{selectedCategoryName}}</strong>, can not be deleted as it is associated with a security.</p>
+                       </div>
+                        <footer>
+                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                    <button type="button"  pButton icon="fa-check" title="Ok" (click)="isAssetDeleteError = false" label="Ok"></button>
+                                </div>
+                       </footer>
+</p-dialog>
+</div>

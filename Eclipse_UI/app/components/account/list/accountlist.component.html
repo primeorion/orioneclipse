@@ -1,0 +1,68 @@
+<eclipse-account-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-account-tabnav>
+<div class="tab-content">
+    <div id="allaccounts" class="tab-pane fade in active">
+        <div class="row">
+            <div class="product-tabpane-searchArea row">
+                <div class="col-md-8">
+                    <!--<div class="form-inline" role="form">
+                        <div class="form-group add-form-group">
+                            <label for="email">Select Custom View : </label>
+                            <select name="" id="" class="form-control">
+                        <option value="0" hidden>Select Saved View</option>
+                        <option *ngFor="let cvl of customViewsList" value="{{cvl.id}}" > {{cvl.name}}</option>
+                     </select>
+                        </div>
+                        <button type="submit" (click)="saveViewPopup()" class="btn btn-raised btn-info">Save view as</button>
+                    </div>-->
+                    <eclipse-savedviews [model]="savedView" (parentCallback)="onAccountsLoad()" viewTypeId="3"></eclipse-savedviews>
+                </div>
+                <div class="col-md-3">
+                    <div class="add-form-group form-group">
+                        <label for="" class="col-md-3 control-label">Filter: </label>
+                        <div class="col-md-9">
+                            <select id="accFilter" class="form-control" [(ngModel)]="fileterTypeId" style="width:auto" (change)="onFilterChange($event)">
+                           <option value="0">Select Filter</option>
+                           <option *ngFor="let afl of accountFilterList" value={{afl.id}}> {{afl.name}}</option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row margin-top-15">
+            <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                (rowSelected)="onRowSelected($event)" (rowDoubleClicked)="onRowDoubleClicked($event)" [gridOptions]="accountGridOptions"
+                enableColResize="true" rowSelection="multiple" [columnDefs]="columnDefs" [rowData]="accountsData" enableFilter
+                [getContextMenuItems]="getContextMenuItems" (rowClicked)="onRowClicked($event)" (gridReady)="onGridReady($event)"
+                [context]="gridContext">
+            </ag-grid-ng2>
+        </div>
+    </div>
+</div>
+<p-dialog header="Save View As" [(visible)]="displayViewsDialog" modal="modal" responsive="true" showEffect="fade" [resizable]=false
+    width="600">
+    <form [ngFormModel]="editViewGroup">
+        <div class="form-group">
+            <label class="col-md-4 control-label">Save View As</label>
+            <div class="col-md-6">
+                <input type="text" ngControl="name" #name="ngForm" placeholder="Enter View Name" value="" class="form-control" />
+                <em class="securityError danger" *ngIf="!name.valid && submitCategory">View Name Required</em>
+            </div>
+        </div>
+        <div class=" row form-group">
+            <div class="col-md-12">
+                <div class="col-md-6 control-label">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="default" value="Set as default" [(ngModel)]="makeItAsDefault"
+                    /> Set as default
+                </div>
+                <div class="col-md-6">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="default" value="Public" [(ngModel)]="makeItAsPublic" /> Public</div>
+            </div>
+        </div>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix ">
+            <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="closedSaveVeiwAs($event)">CANCEL</button>
+            <button type="button" class="btn btn-blueouter" (click)="saveViewAs($event,editViewGroup)" icon="fa-check">SAVE</button>
+        </div>
+    </form>
+</p-dialog>
+
+<eclipse-assign-accounts-portfolio (parentCallback)="callbackAssignPopup()" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-accounts-portfolio>

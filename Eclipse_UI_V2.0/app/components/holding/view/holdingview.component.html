@@ -1,0 +1,256 @@
+<eclipse-holding-filterby></eclipse-holding-filterby>
+<eclipse-holding-tabnav [model]="tabsModel"></eclipse-holding-tabnav>
+<div class="tab-content">
+<div id="holdingdetails" class="tab-pane fade in active">
+
+		<div class="tab-header">
+			<div class="form-inline">
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="portfoliodetails-search-add">
+						   <p-autoComplete [(ngModel)]="selectedHolding" [suggestions]="holdingSuggestions" placeholder="Search Holding" (completeMethod)="holdingsSearch($event)"
+                            (onSelect)="onHoldingSelection($event)" field="securityName" class="port-search" [minLength]="1">
+
+                            	<template let-selectedHolding>
+						<ul class="ui-helper-clearfix show-hollding-dropdown">
+							<li>
+								<i class="fa fa-cogs text-info"></i>								
+								<span>{{selectedHolding.id + " : " +selectedHolding.securityName +" (" + selectedHolding.securitySymbol + ") "}}</span>
+							</li>
+
+						</ul>
+					</template>
+                        </p-autoComplete>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+    <div class="row" *ngIf="selectedHoldingId">
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Portfolio Name</strong></label>
+                <p>{{holdingDetails.portfolioName}}</p>
+            </div>
+        </div>
+        <!--<div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Registration</strong></label>
+                <p>{{holdingDetails.registrationName}}</p>
+            </div>
+        </div>-->
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Account Name</strong></label>
+                <p>{{holdingDetails.accountName}}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Account Number</strong></label>
+                <p>{{holdingDetails.accountNumber}}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Security</strong></label>
+                <p>{{holdingDetails.securityName}}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Symbol</strong></label>
+                <p>{{holdingDetails.securitySymbol}} </p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Price</strong></label>
+                <p title="{{holdingDetails.price | currency:'USD':true}}">{{holdingDetails.price | currencyMillionfilter : 2}}  <sub style='color:white'>
+                                            {{holdingDetails.price  | currencyAmountfilter}}</sub></p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Units (# shares)</strong></label>
+                <p>{{holdingDetails.shares}}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Current %</strong></label>
+                <p>{{holdingDetails.currentInPer}}%</p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Target %</strong></label>
+                <p>{{holdingDetails.targetInPer}}%</p>
+            </div>
+        </div>
+
+        
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Market Value</strong></label>
+                <p title="{{holdingDetails.value | currency:'USD':true}}">{{holdingDetails.value | currencyMillionfilter : 2}} <sub style='color:white'>
+                                            {{holdingDetails.value  | currencyAmountfilter}}</sub></p>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Pending Value</strong></label>
+                <p title="{{holdingDetails.pendingValue | currency:'USD':true}}">{{holdingDetails.pendingValue | currencyMillionfilter : 2}} <sub style='color:white'>
+                                            {{holdingDetails.pendingValue  | currencyAmountfilter}}</sub></p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Pending %</strong></label>
+                <p>{{holdingDetails.pendingInPer}}%</p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Excluded</strong></label>
+                <p>{{holdingDetails.excluded}}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>Is Cash </strong></label>
+                <p>{{holdingDetails.isCash}} </p>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><strong>In Model </strong></label>
+                <p>{{holdingDetails.inModel}}</p>                
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-no-padding account-realized-gain-box" *ngIf="selectedHoldingId">
+        <div class="col-lg-12 gray95 ">
+            <div class="row ">
+                <div class="col-lg-3 ">
+                    <h4 class="marging-bottom-2x "><b>Transactions Section</b></h4>
+                </div>
+
+            </div>
+            <div class="marging-top-1x ">
+                <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                    [gridOptions]="transactionGridOptions" enableColResize="true" rowSelection="single" [columnDefs]="transactionColumnDefs"
+                    [rowData]="transactionDetails" enableFilter suppressContextMenu="true">
+                </ag-grid-ng2>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row row-no-padding account-realized-gain-box " *ngIf="selectedHoldingId">
+
+        <div class="col-lg-12 gray95">
+            <div class="row ">
+                <div class="col-lg-3 ">
+
+                    <h4 class="marging-bottom-2x "><b>Tax lots Section</b></h4>
+
+                </div>
+
+            </div>
+            <div class="marging-top-1x ">
+                
+                    <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                        [gridOptions]="taxlotsGridOptions" enableColResize="true" rowSelection="single" [columnDefs]="taxlotsColumnDefs"
+                        [rowData]="taxlotsDetails" enableFilter suppressContextMenu="true">
+                    </ag-grid-ng2>
+              
+            </div>
+        </div>
+    </div>
+
+    <div class="row account-realized-gain-box " *ngIf="selectedHoldingId">
+        <div class="col-lg-12 ">
+
+            <div class="row row-no-padding portfolio-aum-tiles ">
+                <div class="col-lg-2 ">
+                    <div class="panel ">
+                        <div [ngClass]="shortermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+
+                            <div class="portfolio-aum-info text-center ">
+                                <div class="count-box count-box-col-12 ">
+                                    <span *ngIf="!shortermflag" title="{{holdingDetails.GLSection.shortTermGL | currency:'USD':true}}">{{holdingDetails.GLSection.shortTermGL | currencyMillionfilter : 2}} <sub style='color:white'>
+                                            {{holdingDetails.GLSection.shortTermGL  | currencyAmountfilter}}</sub></span>
+                                    <span *ngIf="shortermflag" title="({{holdingDetails.GLSection.shortTermGL * (-1) | currency:'USD':true}})">({{holdingDetails.GLSection.shortTermGL * (-1) | currencyMillionfilter : 2}}) <sub style='color:white'>
+                                            {{holdingDetails.GLSection.shortTermGL  * (-1) | currencyAmountfilter}}</sub></span>                                    Short Term
+                                    <div *ngIf="isShortTermGain"><i class="fa fa-arrow-up"></i></div>
+                                    <div *ngIf="!isShortTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 ">
+                    <div class="panel ">
+                        <div [ngClass]="longtermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+                            <div class="portfolio-aum-info text-center ">
+                                <div class="count-box count-box-col-12 ">
+                                    <span *ngIf="!longtermflag" title="{{holdingDetails.GLSection.longTermGL  | currency:'USD':true}}">{{holdingDetails.GLSection.longTermGL  | currencyMillionfilter : 2}} <sub style='color:white'>
+                                            {{holdingDetails.GLSection.longTermGL  | currencyAmountfilter}}</sub></span>
+                                    <span *ngIf="longtermflag" title="({{holdingDetails.GLSection.longTermGL  *(-1)| currency:'USD':true}})">({{holdingDetails.GLSection.longTermGL  *(-1)| currencyMillionfilter : 2}}) <sub style='color:white'>
+                                            {{holdingDetails.GLSection.longTermGL  *(-1)  | currencyAmountfilter}}</sub></span>                                    Long Term
+                                    <div *ngIf="isLongTermGain"> <i class="fa fa-arrow-up"></i></div>
+                                    <div *ngIf="!isLongTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 marging-left-5x ">
+
+                    <h3><strong>YTD Realized Gain/Loss  </strong></h3>
+                    <p>YTD Realized Gain/Loss = (+/- Long Term Realized <br/>Gain/Loss) + (+/- Short Term Realized Gain/Loss)</p>
+                </div>
+                <div class="col-lg-2 pull-right ">
+                    <div class="portfolio-aum-title-clount ">
+                        <h2><strong>  <span *ngIf="!totalLossflag" title="{{holdingDetails.GLSection.totalGainLoss  | currency:'USD':true}}">{{holdingDetails.GLSection.totalGainLoss  | currencyMillionfilter : 2}} <sub style='color:white'>
+                                            {{holdingDetails.GLSection.totalGainLoss  | currencyAmountfilter}}</sub></span>
+                                    <span *ngIf="totalLossflag" title="({{holdingDetails.GLSection.totalGainLoss  *(-1)| currency:'USD':true}})">({{holdingDetails.GLSection.totalGainLoss  *(-1)| currencyMillionfilter : 2}}) <sub style='color:white'>
+                                            {{holdingDetails.GLSection.totalGainLoss  *(-1) | currencyAmountfilter}}</sub></span>      </strong>
+                            <i class="fa fa-arrow-up text-success" *ngIf="isTotalGain"></i>
+                            <i class="fa fa-arrow-down text-danger" *ngIf="!isTotalGain"></i>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>

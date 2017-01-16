@@ -1,0 +1,249 @@
+<form name="formRoleDetails" (submit)="onSave()">
+    <div class="form-container">
+        <div class="row">
+            <div class="col-sm-6" id="autoRoleName" [hidden]="!autoRoles">
+                <div class="row">
+                    <div class="form-group is-empty">
+                        <label class="primar-label" for="roletype" class="col-sm-4">Search Role Name</label>
+                        <div class="col-sm-6">
+                            <p-autoComplete [(ngModel)]="textAutoComplete" [suggestions]="autocompleteResults" placeholder="Search By RoleName" (completeMethod)="autoRoleSearch($event)"
+                                (onSelect)="selectedRoleSearch($event)" class="autocomplete-block" field="name" [minLength]="1"></p-autoComplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [ngStyle]="{'visibility': [(showPanel)]}">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group is-empty">
+                            <label class="primar-label" for="roletype">Role Type</label>
+                            <select class="form-control" [disabled]="isTypeDisabled" required [(ngModel)]="roleTypeId" (change)="onDropDownSelect($event.target.value)">
+                         <option value="0">Select Role Type</option>
+                        <option *ngFor="let rt of roleTypes" value={{rt.userLevel}} >
+                            {{rt.userLevelName}}
+                        </option>
+                    </select>
+                            <div *ngIf="errRoleType" class="error">Please Select Role Type</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group is-empty">
+                            <label class="primar-label" for="rolename">Role Name</label>
+                            <input type="text" [disabled]="isRoleDisabled" placeholder="Enter Role Name" id="rolename" class="form-control" [(ngModel)]="name"
+                                (blur)="roleAlreadyExist()" (keyup)="hideError()" />
+                            <div style="col-sm-1"><span class="error"> <span *ngIf="spaceflag">Please Enter Role Name</span> <br>
+                                <span *ngIf="existingRolesCount > 0">Role already exist with same name</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" *ngIf="isEdit">
+                        <div class="form-group is-empty role-spacer">
+                            <label class="primar-label" for="roletype">Status</label>
+                            <p class="label label-success" *ngIf="isActiveFlag">Active</p>
+                            <p class="label label-default" *ngIf="isActiveFlag == false">In-active</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group is-empty role-spacer">
+                            <label class="primar-label" for="startDate">Start Date</label>
+                            <p-calendar [(ngModel)]="startDate" showAnim="slideDown" [showIcon]="true" [disabled]="showDatePicker" (onSelect)="startDateSelect(startDate) "
+                                [monthNavigator]="true " [yearNavigator]="true " [readonlyInput]="true"></p-calendar>
+                            <!--<span *ngIf="errStardate" class="error"> Start Date should be less than the expiry Date </span>-->
+                            <span *ngIf="shwstrtdatemsg " class="error ">Please select start date</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <div class="form-group is-empty">
+                            <label class="primar-label" for="endDate">Expiry Date</label>
+                            <p-calendar [(ngModel)]="expireDate " showAnim="slideDown" [showIcon]="true" [disabled]="showDatePicker" [monthNavigator]="true"
+                                [yearNavigator]="true" (onSelect)="expiryDateSelect(expireDate)" [readonlyInput]="true"></p-calendar>
+                            <span *ngIf="shwexpdatecomprmsg" class="error">Expiry date should be greater than start date</span>
+                            <span *ngIf="shwexpdatemsg" class="error">Please select Expiry date</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group is-empty" *ngIf="isEdit">
+                        <label class="primar-label" for="roletype">Created On</label>
+                        <div>{{createdOn | date: 'MM/dd/yyyy' }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group is-empty" *ngIf="isEdit">
+                        <label class="primar-label" for="roletype">Last Edit On</label>
+                        <div>{{lastEditedOn | date: 'MM/dd/yyyy'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div [ngStyle]="{'visibility': [(showPanel)]}">
+        <table class="table table-hover premissionTable">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-lock"></i> Privileges </th>
+                    <th class="text-center"> <label>
+                        All  <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [ngModel]="globalAdd" (change) = "onWriteChange($event)">
+                        </label></th>
+                    <th class="text-center"> <label>
+                        All <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [ngModel]="globalRead" (change) = "onReadChange($event)">
+                        </label></th>
+                    <th class="text-center"> <label>
+                        All <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [ngModel]="globalEdit" (change) = "onEditChange($event)"> 
+                        </label></th>
+                    <th class="text-center"> <label>
+                        All <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [ngModel]="globalDelete" (change) = "onDeleteChange($event)">
+                        </label></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="rowhd" *ngIf="securityRecordPrivileges.length > 0">
+                    <td><strong>Security</strong></td>
+                    <td class="text-center">Can Create</td>
+                    <td class="text-center">Can Read</td>
+                    <td class="text-center">Can Edit</td>
+                    <td class="text-center">Can Delete</td>
+                </tr>
+
+                <tr *ngFor="let sp of securityRecordPrivileges">
+                    <th scope="row">{{sp.name}}</th>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="sp.canAdd" (change)="onChkChange($event, sp, paramWrite)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="sp.canRead" (change)="onChkChange($event, sp, paramRead)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="sp.canUpdate" (change)="onChkChange($event, sp, paramEdit)">                        </td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="sp.canDelete" (change)="onChkChange($event, sp, paramDelete)"></td>
+                </tr>
+
+                <tr class="rowhd" *ngIf="modelRecordPrivileges.length > 0">
+                    <td><strong>Model</strong></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                </tr>
+                <tr *ngFor="let mp of modelRecordPrivileges">
+                    <th scope="row">{{mp.name}}</th>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="mp.canAdd" (change)="onChkChange($event, mp, paramWrite)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="mp.canRead" (change)="onChkChange($event, mp, paramRead)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="mp.canUpdate" (change)="onChkChange($event, mp, paramEdit)">                        </td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="mp.canDelete" (change)="onChkChange($event, mp, paramDelete)"></td>
+                </tr>
+
+                <tr class="rowhd" *ngIf="portfolioRecordPrivileges.length > 0">
+                    <td><strong>Portfolio</strong></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                </tr>
+                <tr *ngFor="let pp of portfolioRecordPrivileges">
+                    <th scope="row">{{pp.name}}</th>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pp.canAdd" (change)="onChkChange($event, pp, paramWrite)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pp.canRead" (change)="onChkChange($event, pp, paramRead)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pp.canUpdate" (change)="onChkChange($event, pp, paramEdit)">                        </td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pp.canDelete" (change)="onChkChange($event, pp, paramDelete)"></td>
+                </tr>
+
+                <tr class="rowhd" *ngIf="preferenceRecordPrivileges.length > 0">
+                    <td><strong>Preferences</strong></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+
+                </tr>
+                <tr *ngFor="let pr of preferenceRecordPrivileges">
+                    <th scope="row">{{pr.name}}</th>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pr.canAdd" (change)="onChkChange($event, pr, paramWrite)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pr.canRead" (change)="onChkChange($event, pr, paramRead)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pr.canUpdate" (change)="onChkChange($event, pr, paramEdit)">                        </td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="pr.canDelete" (change)="onChkChange($event, pr, paramDelete)"></td>
+
+
+                </tr>
+
+                <tr class="rowhd" *ngIf="featuresFunctionPrivileges.length > 0">
+                    <td><strong>Features</strong></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                </tr>
+                <tr *ngFor="let fp of featuresFunctionPrivileges">
+                    <th scope="row">{{fp.name}}</th>
+
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="fp.canAdd" (change)="onChkChange($event, fp, paramWrite)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="fp.canRead" (change)="onChkChange($event, fp, paramRead)"></td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="fp.canUpdate" (change)="onChkChange($event, fp, paramEdit)">                        </td>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="fp.canDelete" (change)="onChkChange($event, fp, paramDelete)"></td>
+
+                </tr>
+
+                <tr class="rowhd" *ngIf="dataImportFunctionPrivileges.length > 0">
+                    <td><strong>Data Import</strong></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+
+
+                </tr>
+                <tr *ngFor="let dp of dataImportFunctionPrivileges">
+                    <th scope="row">{{dp.name}}</th>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="dp.canRead" (change)="onChkChange($event, dp, paramRead)"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+
+                </tr>
+
+                <tr class="rowhd" *ngIf="tradeOrdersFunctionPrivileges.length > 0">
+                    <td><strong>Trade Orders</strong></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+
+                </tr>
+                <tr *ngFor="let tp of tradeOrdersFunctionPrivileges">
+                    <th scope="row">{{tp.name}}</th>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="tp.canRead" (change)="onChkChange($event, tp, paramRead)"></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+
+                </tr>
+                <tr class="rowhd" *ngIf="modelFunctionPrivileges.length > 0">
+                    <td><strong>Model </strong></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                </tr>
+                <tr *ngFor="let tp of modelFunctionPrivileges">
+                    <th scope="row">{{tp.name}}</th>
+                    <td class="text-center"><input type="checkbox" name="" [ngModel]="tp.canRead" (change)="onChkChange($event, tp, paramRead)"></td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+                    <td class="text-center">&nbsp; </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div class="button-footer">
+            <!--<a class="btn btn-info btn-raised " href="javascript:void(0)"><i aria-hidden="true" class="fa fa-check-circle-o"></i> Save</a>-->
+            <input type="submit" name="roleSave" class="btn btn-info btn-raised " value="{{btnValue}}" *ngIf="hdnSaveRole" [disabled]="btnSaveDisable"
+            />
+            <a class="btn btn-default btn-raised " href="javascript:void(0)" (click)='onCancel()'> Cancel</a>
+        </div>
+    </div>
+</form>

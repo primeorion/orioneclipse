@@ -1,0 +1,239 @@
+<eclipse-portfolio-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-portfolio-tabnav>
+<div class="tab-content">
+    <div id="dashboard" class="tab-pane fade in active" *ngIf="portfolioSummary != undefined">
+        <p class="dataAvailable"> <strong>Based on data available on : </strong>{{portfolioSummary.analyticsOn}}</p>
+        <div class="">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row row-no-padding portfolio-tiles">
+                        <div class="col-lg-7">
+                            <div class="panel">
+                                <div class="panel-body dash-bg-color-9">
+                                    <p class="lead">AUM</p>
+                                    <div class="panel-actions-fly">
+                                        <span class="textcaret"> 
+                                        <span *ngIf="portfolioSummary.AUM.status == 'high'"><i class="fa fa-caret-up text-success"></i></span>
+                                        <span *ngIf="portfolioSummary.AUM.status == 'low'"><i class="fa fa-arrow-down text-danger"></i></span>{{portfolioSummary.AUM.changePercent}}%
+                                        </span>
+                                    </div>
+                                    <p class="text-50"><strong>{{portfolioSummary.AUM.total | currency:'USD':true}}</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="panel">
+                                <div class="panel-body dash-bg-color-10">
+                                    <div class="dif-controls">
+                                        <div class="count-box"><span class="text-center">{{portfolioSummary.AUM.changeValue | currency:'USD':true}}</span>                                            Change in AUM
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-no-padding portfolio-tiles">
+                        <div class="col-lg-7">
+                            <div class="panel">
+                                <div class="panel-body dash-bg-color-7">
+                                    <p class="lead">Portfolio</p>
+                                    <p class="text-50  "><strong>{{portfolioSummary.portfolio.total}}</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="panel">
+                                <div class="panel-body dash-bg-color-8">
+                                    <div class="dif-controls">
+                                        <div class="count-box count-box-right-brd"><span>{{portfolioSummary.portfolio.existing}}</span> Existing</div>
+                                        <div class="count-box"><span>{{portfolioSummary.portfolio.new}}</span> New</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 row-no-padding">
+                    <div class="panel">
+                        <div class="panel-body portfolio-issues-tile">
+                            <div class="col-lg-7">
+                                <p class="lead">Issues</p>
+                                <p class="text-62"><strong>{{portfolioSummary.issues.total}} </strong><span>Total</span></p>
+                            </div>
+                            <div class="col-lg-5 error-count-disp">
+                                <div class="issues-controls">
+                                    <div class="count-box count-box-right-brd error-color"><span>{{portfolioSummary.issues.errors}}</span> Errors</div>
+                                    <div class="count-box warning-color"><span>{{portfolioSummary.issues.warnings}}</span> Warnings</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-content gray95">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Out of Tolerance </h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.outOfTolerance}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', outOfToleranceStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar tolerance" [style.width]="outOfTolerancePerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">No Model</h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.noModel}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', noModelStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar model" [style.width]="noModelPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Cash Need </h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.cashNeed}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', cashNeedStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar cashneed" [style.width]="cashNeedPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Blocked </h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.blocked}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', blockedStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar blocked" [style.width]="blockedPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Set for Auto Rebalance </h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.setForAutoRebalance}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', setForAutoRebalanceStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar rebalance" [style.width]="setForAutoRebalancePerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Tax Loss Harvesting Opportunity </h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.TLHOpportunity}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', TLHOpportunityStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar harvesting" [style.width]="TLHOpportunityPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Contribution</h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.contribution}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', contributionsStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar contributions" [style.width]="contributionsPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Data Errors</h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.dataErrors}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', dataErrorsStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar dataerrors" [style.width]="dataErrorsPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Distribution </h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.distribution}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', distributionStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar distribution" [style.width]="distributionPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Pending Trades</h4>
+                        <div class="bs-component">
+                            <span class="count">{{portfolioSummary.pendingsTradesStatusId}}</span>
+                            <a [routerLink]="['/eclipse', 'portfolio', 'list', portfolioTypeId]">
+                                <div class="progress">
+                                    <div class="progress-bar trades" [style.width]="pendingsTradesPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{portfolioSummary.portfolio.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        <!--<div class="row">
+            <div class="bs-component pull-right"> <a href="javascript:void(0)" class="btn btn-raised btn-info">Save</a> <a href="javascript:void(0)" class="btn btn-raised btn-default">Cancel</a>                </div>
+        </div>-->
+    </div>
+</div>
+
+<eclipse-assign-accounts-portfolio (parentCallback)="callbackAssignPopup()" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-accounts-portfolio>

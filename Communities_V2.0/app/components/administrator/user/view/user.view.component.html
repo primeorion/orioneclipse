@@ -1,0 +1,47 @@
+<community-user-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></community-user-tabnav>
+<div class="tab-content">
+    <div id="tab1" class="tab-pane fade in active grid-height">
+        <div class="tab-header">
+            <div class="">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <button type="button" title="ADD NEW USER" (click)="addNewUser()" class="btn btn-info btn-raised button-space">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> ADD NEW USER 
+                    </button>
+                    </div>
+                    <div class="col-sm-9 text-right">
+                        <communities-savedviews [model]="savedView" (parentCallback)="getUserList()" viewTypeId="2"></communities-savedviews>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="userList" enableFilter [getContextMenuItems]="getContextMenuItems" (rowDoubleClicked)="onRowDoubleClicked($event)"
+            (selectionChanged)="selectRows($event)" rowSelection="multiple" (gridReady)="onGridReady($event)" (modelUpdated)="onModelUpdated()" [context]="gridContext">
+        </ag-grid-ng2>
+    </div>
+</div>
+<p-dialog header="Delete User" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="600">
+    <div>
+        <div>
+            <p>The action will completely delete the user. He/She will not be able to login to the the application.</p>
+            <p>Do you wish to continue?</p>
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button pButton type="button" (click)="displayConfirm=false" label="No" title="No"></button>
+                <button pButton type="button" (click)="deleteUsers()" label="Yes" title="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="displayDeleteErrorMessage" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="400">
+    <div>
+        <div>{{deletedUserCount}} out of {{selectedUserCount}} users have been deleted.
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter" pButton (click)="displayDeleteErrorMessage=false" label="Ok"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

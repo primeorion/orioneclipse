@@ -1,0 +1,84 @@
+<div class="agcontainer grid-height">
+    <form #subClassForm="ngForm" novalidate *ngIf="tabsModel.canAdd">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group is-empty">
+                    <strong>Sub Class Name</strong>
+                    <input type="text" name="subClassName" #subClassName="ngModel" required placeholder="Enter Sub Class Name" id="name" class="form-control" [(ngModel)]="subClass.name">
+                    <em class="securityError danger" *ngIf="!subClassName.valid && (!subClassName.pristine || submitSubClass)">Required</em>
+                    <em class="securityError danger" *ngIf="isSubClassDuplicate">{{subClassDuplicateMessage}}</em>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group is-empty">
+                    <strong>Select Color</strong>
+                    <input [(colorPicker)]="subClass.color" readonly [style.background]="subClass.color" [cpPosition]="'bottom'" class="form-control" />
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <button class="submitButton assetSubmit" title="Add Sub Class" (click)="saveSubClass(subClassForm)"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </form>
+    <div class="grid-height">
+        <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions" rowSelection="single" [columnDefs]="columnDefs" [rowData]="subClassData" rowSelection="single" enableFilter>
+        </ag-grid-ng2>
+    </div>
+    <span><i class="fa fa-lock"></i>&nbsp;Sub Classes imported from Orion Connect cannot be edited or deleted.</span>
+    <p-dialog header="Edit Sub-Class" [(visible)]="isEditSubClass" modal="modal" responsive="true" showEffect="fade" width="650" height="500" (onAfterHide)="resetForm()">
+
+
+        <form #subClassUpdateForm="ngForm" novalidate>
+            <div class="">
+                <div class="col-sm-6">
+                    <div class="form-group is-empty">
+                        <strong>Sub Class Name</strong>
+                        <input type="text" name="subClassUpdateName" #subClassUpdateName="ngModel" required placeholder="Enter Sub-Class Name" id="name" class="form-control" [(ngModel)]="subClass.name">
+                        <em class="securityError danger assetEditError" *ngIf="!subClassUpdateName.valid && (!subClassUpdateName.pristine || submitSubClass)">Required</em>
+                        <em class="securityError danger assetEditError" *ngIf="isSubClassDuplicate">{{subClassDuplicateMessage}}</em>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group is-empty">
+                        <strong>Select Color</strong>
+                        <input [(colorPicker)]="subClass.color" readonly [style.background]="subClass.color" [cpPosition]="'bottom'" class="form-control" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pop-footer footer-spacer">
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    <button type="button" pButton icon="fa-close" title="Cancel" (click)="resetForm()" label="Cancel"></button>
+                    <button type="button" pButton icon="fa-check" title="Update" (click)="updateSubClass(subClassUpdateForm)" label="Update"></button>
+                </div>
+            </div>
+        </form>
+
+    </p-dialog>
+
+    <p-dialog header="Delete Sub Class" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="600">
+        <div>
+            <div>Are you sure you want to delete the Sub-Class ?
+            </div>
+            <footer>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    <button type="button" pButton icon="fa-close" title="No" (click)="displayConfirm=false" label="No"></button>
+                    <button type="button" pButton icon="fa-check" title="Yes" (click)="deleteSubClass()" label="Yes"></button>
+                </div>
+            </footer>
+        </div>
+    </p-dialog>
+
+    <p-dialog header="Delete Sub Class" [(visible)]="isAssetDeleteError" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="600">
+        <div class="warning-msg">
+            <p><strong> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Sub-Class {{selectedSubClassName}}</strong>, can not be deleted as it is associated with a security.</p>
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-check" title="Ok" (click)="isAssetDeleteError = false" label="Ok"></button>
+            </div>
+        </footer>
+    </p-dialog>
+</div>

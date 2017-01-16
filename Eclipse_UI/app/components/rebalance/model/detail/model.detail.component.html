@@ -1,0 +1,88 @@
+ <div class="dashboard-content">       
+    <form [ngFormModel]="modelForm"  (ngSubmit)="saveModel()" class="modelForm">
+        <div class= "row">
+            <div class="col-sm-3">
+                <label class="primar-label" ><h4>Model Structure</h4>
+                </label>
+            </div>
+        
+            <div class="col-sm-3"><label class="primar-label" for="modelName" style="margin-top:35px;">Model Name</label></div>
+            <div class="col-sm-3">
+              <div class="form-group is-empty">            
+                <input type="text"  id="modalName" ngControl = "modelName" class="form-control priceInput" 
+                [(ngModel)]="selectedModel.name" #modelName = "ngForm" maxlength="255">
+                 <em class="modelError danger" *ngIf="!modelName.valid && submitModel">Required</em>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              
+               <div class="bs-component pull-right"  style="margin-top:10px;"> 
+                 <input type="submit" name="Save" class="btn btn-info btn-raised " value="Save" title="Save" />
+                  <a href="javascript:void(0)" class="btn btn-raised btn-default" (click) = "navigateToModelListView()">Cancel</a> </div>
+               </div>
+        </div>
+        </form>
+      <div class="model-container">
+        <!--<h2 class="model-sub-header">
+        LEVEL 1
+        </h2>-->
+        <div class="modelError" *ngIf="invalidNameError">
+          <span >Model Element name is required.</span><br>
+           
+        </div>
+        <div class="modelError" *ngIf="invalidModelElementError">
+           <span >Every Leaf node must be security set.</span>
+          </div>
+        <div class="modelError" *ngIf="isTargetPercentInValid">
+           <span>Sum of target% of all siblings must be equals to 100%.</span>
+          </div>
+         
+        <div class="modelError" *ngIf="isTargetPercentNull">
+           <span>Target% can not be zero.</span>
+          </div> 
+          
+        <div class="modelError" *ngIf="isSecuritySet">
+           <span>You can not add child of security set</span>
+          </div> 
+        <div class="table-responsive"	>
+          <div class="">
+            <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="modelGridOptions"
+              rowSelection="single" [columnDefs]="modelColumnDefs" [rowData]="selectedModel.modelDetail.children" 
+              (rowClicked) = "rowSelected($event)"
+              enableFilter>
+            </ag-grid-ng2>
+    
+          </div>
+        </div>
+      </div>
+      <div class="model-container">
+        <h2 class="model-sub-header">
+            Security Set
+        </h2>
+         <!-- <div class="bs-component pull-right"> 
+                  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "EditSecuritySet()">Edit SecuritySet</a> 
+             
+       </div>--> 
+        <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+              rowSelection="single" [columnDefs]="columnDefs" [rowData]="securitySetDetail.securities" 
+              enableFilter>
+        </ag-grid-ng2>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+       
+      </div>
+    </div>
+    
+    <p-dialog header="Delete Category" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+    <div>
+      <div>Do you want to delete the Model Element ? It will delete all child element also. </div>
+      <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+          <button type="button" pButton icon="fa-close" title="No" (click)="displayConfirm=false" label="No"></button>
+          <button type="button" pButton icon="fa-check" title="Yes" (click)="deleteModelElement()" label="Yes"></button>
+        </div>
+      </footer>
+    </div>
+  </p-dialog>

@@ -1,0 +1,585 @@
+<eclipse-account-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-account-tabnav>
+<div class="tab-content">
+	<div id="accountdetails" class="tab-pane fade in active">
+		<div class="tab-header">
+			<div class="form-inline">
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="portfoliodetails-search-add">
+							<p-autoComplete [(ngModel)]="selectedAccount" [suggestions]="accountSuggestions" placeholder="Search Account" (completeMethod)="loadAccountSuggestions($event)"
+								(onSelect)="onAccountSelect($event)" field="name" class="port-search" [minLength]="1">
+								<template let-selectedAccount>
+									<ul class="ui-helper-clearfix show-hollding-dropdown">
+										<li>
+											<i class="fa fa-calculator text-info"></i>
+											<span>{{selectedAccount.id + " : " +selectedAccount.name +" (" + selectedAccount.accountNumber +") "}}</span>
+										</li>
+									</ul>
+								</template>
+							</p-autoComplete>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="accountId >0">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>Account Name</strong></label>
+								<p>{{account.name}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>Account Number</strong></label>
+								<p>{{account.accountNumber}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>Sleeved Type</strong></label>
+								<p>{{account.sleeveType}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>Billing Account</strong></label>
+								<p>{{account.billingAccount}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>Portfolio</strong></label>
+								<p>{{account.portfolio}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>SSN</strong></label>
+								<p>{{account.ssn}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>Custodian</strong></label>
+								<p>{{account.custodian}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label><strong>Advisor</strong></label>
+								<p>{{account.advisior}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4" *ngIf="account.errorAndWarnings.sma == 'Yes'">
+							<div class="form-group">
+								<label><strong>SMA</strong></label>
+								<p>{{account.smaTradeable == 0 ? "Non-Tradable" : "Tradable"}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4" *ngIf="account.sleeveType!='None'">
+							<div class="form-group">
+								<label><strong>Model</strong></label>
+								<p>{{account.model}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4" *ngIf="account.sleeveType!='None'">
+							<div class="form-group">
+								<label><strong>Target(%)</strong></label>
+								<p>{{account.sleeveTarget}}</p>
+							</div>
+						</div>
+
+						<div class="col-lg-4" *ngIf="account.sleeveType!='None'">
+							<div class="form-group">
+								<label><strong>Current(%)</strong></label>
+								<p>{{account.sleeveCureent}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4" *ngIf="account.sleeveType!='None'">
+							<div class="form-group">
+								<label><strong>Contribution(%)</strong></label>
+								<p>{{account.sleeveContributionPercent}}</p>
+							</div>
+						</div>
+
+						<div class="col-lg-4" *ngIf="account.sleeveType!='None'">
+							<div class="form-group">
+								<label><strong>Upper Tolerance</strong></label>
+								<p>{{account.sleeveToleranceUpper}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4" *ngIf="account.sleeveType!='None'">
+							<div class="form-group">
+								<label><strong>Lower Tolerance</strong></label>
+								<p>{{account.sleeveToleranceLower}}</p>
+							</div>
+						</div>
+						<div class="col-lg-4" *ngIf="account.sleeveType!='None'">
+							<div class="form-group">
+								<label><strong>Distribution(%)</strong></label>
+								<p>{{account.sleeveDistributionPercent}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<label><strong>Errors and Warnings  </strong></label>
+					<table class="error-table">
+						<tbody>
+							<tr>
+								<td>Systematic</td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.systematic == 'Yes' }"><span>{{account.errorAndWarnings.systematic}}</span> </td>
+							</tr>
+							<tr>
+								<td>Merge In </td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.mergeIn > 0 }" title="{{account.errorAndWarnings.mergeIn | currency:'USD':true}}"><span>{{account.errorAndWarnings.mergeIn |  currencyMillionfilter : 2}} <sub style='color:white'>{{account.errorAndWarnings.mergeIn | currencyAmountfilter}}</sub></span></td>
+								<!--<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.mergeIn > 0 }"><span>{{account.errorAndWarnings.mergeIn | currency:'USD':true}}</span></td>								-->
+							</tr>
+							<tr>
+								<td>Merge Out </td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.mergeOut > 0 }" title="{{account.errorAndWarnings.mergeOut | currency:'USD':true}}"><span>{{account.errorAndWarnings.mergeOut |  currencyMillionfilter : 2}} <sub style='color:white'>{{account.errorAndWarnings.mergeOut | currencyAmountfilter}}</sub></span></td>
+								<!--<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.mergeOut > 0 }"><span>{{account.errorAndWarnings.mergeOut | currency:'USD':true}}</span></td>								-->
+							</tr>
+							<tr>
+								<td>New Account</td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.newAccount == 'Yes'  }"><span>{{account.errorAndWarnings.newAccount}}</span> </td>
+							</tr>
+							<tr>
+								<td>Has Portfolios </td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.hasPortfolios == 'Yes'  }"><span>{{account.errorAndWarnings.hasPortfolios}}</span> </td>
+							</tr>
+							<tr>
+								<td>Custodial Restrictions</td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.custodialRestrictions == 'Yes'  }"><span>{{account.errorAndWarnings.custodialRestrictions}}</span> </td>
+							</tr>
+							<tr>
+								<td>SMA </td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.sma == 'Yes'  }"><span>{{account.errorAndWarnings.sma}}</span> </td>
+							</tr>
+							<tr>
+								<td>Import Errors</td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.importError > 0 }"><span>{{account.errorAndWarnings.importError}}</span> </td>
+							</tr>
+							<tr>
+								<td>Has Pending Trades </td>
+								<td class="text-right" [ngClass]="{'text-danger' :account.errorAndWarnings.hasPendingTrades == 'Yes'  }"><span>{{account.errorAndWarnings.hasPendingTrades}}</span> </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="marging-top-4x"></div>
+			<div class="row account-realized-gain-box" *ngIf="accountId >0">
+				<div class="col-lg-12">
+					<div class="row row-no-padding account-summary">
+						<div class="col-lg-4 text-center">
+							<!--<img src="app/assets/img/accounts1.png" width=" " height=" " alt="" />-->
+							<div id='accountDonut' class="margin-top-20"></div>
+						</div>
+						<div class="col-lg-8">
+							<div class="col-lg-8 row">
+								<h3><strong>Account Summary </strong></h3>
+								<p>(Total Value + Total Cash)</p>
+							</div>
+							<div class="col-lg-4 pull-right">
+								<div class="portfolio-aum-info text-right">
+									<h2 title="{{account.summarySection.grandTotal | currency:'USD':true}}"><strong>{{account.summarySection.grandTotal | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.grandTotal | currencyAmountfilter}}</sub></strong> </h2>
+									<!--<h2><strong>{{account.summarySection.grandTotal | currency:'USD':true}}</strong> </h2>-->
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div class="panel-body dash-bg-color-11">
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box count-box-col-12"  title="{{account.summarySection.totalValue | currency:'USD':true}}"><span>{{account.summarySection.totalValue | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.totalValue | currencyAmountfilter}}</sub></span> Total Value<br>
+											<!--<div class="count-box count-box-col-12"><span>{{account.summarySection.totalValue | currency:'USD':true}}</span> Total Value<br>											-->
+												<small>(Managed + Excluded)</small> </div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div class="panel-body dash-bg-color-12">
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box count-box-col-12"  title="{{account.summarySection.managedValue | currency:'USD':true}}"><span>{{account.summarySection.managedValue | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.managedValue | currencyAmountfilter}}</sub></span> Managed</div>
+											<!--<div class="count-box count-box-col-12"><span>{{account.summarySection.managedValue | currency:'USD':true}}</span> Managed</div>											-->
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div class="panel-body dash-bg-color-18 ">
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box count-box-col-12"  title="{{account.summarySection.excludedValue | currency:'USD':true}}"><span>{{account.summarySection.excludedValue | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.excludedValue | currencyAmountfilter}}</sub></span> Excluded </div>
+											<!--<div class="count-box count-box-col-12"><span>{{account.summarySection.excludedValue | currency:'USD':true}}</span> Excluded </div>											-->
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix">&nbsp;</div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div class="panel-body dash-bg-color-13">
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box count-box-col-12"  title="{{account.summarySection.totalCashValue | currency:'USD':true}}"><span>{{account.summarySection.totalCashValue | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.totalCashValue | currencyAmountfilter}}</sub></span> Total Cash<br>
+											<!--<div class="count-box count-box-col-12"><span>{{account.summarySection.totalCashValue | currency:'USD':true}}</span> Total Cash<br>											-->
+												<small>(Reserve + Set Aside Cash)</small></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div class="panel-body dash-bg-color-14">
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box count-box-col-12"  title="{{account.summarySection.cashReserve | currency:'USD':true}}"><span>{{account.summarySection.cashReserve | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.cashReserve | currencyAmountfilter}}</sub></span> Reserve </div>
+											<!--<div class="count-box count-box-col-12"><span>{{account.summarySection.cashReserve | currency:'USD':true}}</span> Reserve </div>											-->
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 tile-click">
+								<div class="dropdown" id="context-dd-menu">
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<li><a href="javascript:void(0)" (click)="setReplenish()">Replenish : {{getReplenishText()}}</a></li>
+									</ul>
+								</div>
+								<div class="panel" (click)="onAsideCashClick()">
+									<div class="panel-body dash-bg-color-19">
+										<!-- p-contextMenu [(ngModel)]="items"></p-contextMenu -->
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box count-box-col-12"  title="{{account.summarySection.setAsideCash | currency:'USD':true}}"><span>{{account.summarySection.setAsideCash | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.setAsideCash | currencyAmountfilter}}</sub></span> Set Aside </div>
+											<!--<div class="count-box count-box-col-12"><span>{{account.summarySection.setAsideCash | currency:'USD':true}}</span> Set Aside </div>											-->
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div class="panel-body dash-bg-color-20">
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box count-box-col-12"  title="{{account.summarySection.cashAvailable | currency:'USD':true}}"><span>{{account.summarySection.cashAvailable | currencyMillionfilter : 2}} <sub style='color:white'>{{account.summarySection.cashAvailable | currencyAmountfilter}}</sub></span> Cash Available </div>
+											<!--<div class="count-box count-box-col-12"><span>{{account.summarySection.cashAvailable | currency:'USD':true}}</span> Cash Available </div>											-->
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="clearfix"></div>
+							<p class="m-t-5"><i class="fa fa-1x fa-file-text-o"></i> Please click on Set Aside Cash tile for adding new setting</p>
+							<hr/>
+
+							<div class="col-lg-8 row">
+								<h3><strong>YTD Realized Gain/Loss</strong></h3>
+								<p>YTD Realized Gain/Loss = (+/- Long Term Realized Gain/Loss) + (+/- Short Term Realized Gain/Loss)</p>
+							</div>
+							<div class="col-lg-3 pull-right">
+								<div class="portfolio-aum-info text-center">
+									<h2><strong *ngIf="!totalglflag"  title="{{account.ytdGl.totalGainLoss | currency:'USD':true}}">{{account.ytdGl.totalGainLoss | currencyMillionfilter : 2}} <sub style='color:white'>{{account.ytdGl.totalGainLoss | currencyAmountfilter}}</sub></strong>
+										<strong *ngIf="totalglflag"  title="{{account.ytdGl.totalGainLoss | currency:'USD':true}}">({{account.ytdGl.totalGainLoss * (-1) | currencyMillionfilter : 2}}) <sub style='color:white'>{{account.ytdGl.totalGainLoss | currencyAmountfilter}}</sub></strong>
+										<!--<strong *ngIf="!totalglflag">{{account.ytdGl.totalGainLoss | currency:'USD':true}}</strong>
+										<strong *ngIf="totalglflag">({{account.ytdGl.totalGainLoss * (-1) | currency:'USD':true}})</strong>-->
+										<i *ngIf="(account.ytdGl.totalGainLossStatus=='High' || account.ytdGl.totalGainLossStatus=='high')" class="fa fa-arrow-up"></i>
+										<i *ngIf="(account.ytdGl.totalGainLossStatus=='Low' || account.ytdGl.totalGainLossStatus=='low')" class="fa fa-arrow-down text-danger"></i>
+									</h2>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div [ngClass]="shortermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+										<div class="portfolio-aum-info text-center">
+											<div class="count-box">
+												<span *ngIf="!shortermflag"  title="{{account.ytdGl.shortTermGL  | currency:'USD':true}}">{{account.ytdGl.shortTermGL | currencyMillionfilter : 2}} <sub style='color:white'>{{account.ytdGl.shortTermGL | currencyAmountfilter}}</sub></span>
+												<span *ngIf="shortermflag"  title="{{account.ytdGl.shortTermGL  | currency:'USD':true}}">({{account.ytdGl.shortTermGL  * (-1) | currencyMillionfilter : 2}}) <sub style='color:white'>{{account.ytdGl.shortTermGL | currencyAmountfilter}}</sub></span> Short Term
+												<!--<span *ngIf="!shortermflag">{{account.ytdGl.shortTermGL  | currency:'USD':true}}</span>
+												<span *ngIf="shortermflag">({{account.ytdGl.shortTermGL  * (-1) | currency:'USD':true}})</span> Short Term-->
+												<div *ngIf="isShortTermGain"><i class="fa fa-arrow-up"></i></div>
+												<div *ngIf="!isShortTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<div class="panel">
+									<div [ngClass]="longtermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+										<div class="portfolio-aum-info text-center">
+
+											<div class="count-box">
+												<span *ngIf="!longtermflag"  title="{{account.ytdGl.longTermGL  | currency:'USD':true}}">{{account.ytdGl.longTermGL | currencyMillionfilter : 2}} <sub style='color:white'>{{account.ytdGl.longTermGL | currencyAmountfilter}}</sub></span>
+												<span *ngIf="longtermflag"  title="{{account.ytdGl.longTermGL  | currency:'USD':true}}">({{account.ytdGl.longTermGL  *(-1) | currencyMillionfilter : 2}}) <sub style='color:white'>{{account.ytdGl.longTermGL | currencyAmountfilter}}</sub></span> Long Term
+												<!--<span *ngIf="!longtermflag">{{account.ytdGl.longTermGL  | currency:'USD':true}}</span>
+												<span *ngIf="longtermflag">({{account.ytdGl.longTermGL  *(-1)| currency:'USD':true}})</span> Long Term-->
+												<div *ngIf="isLongTermGain"> <i class="fa fa-arrow-up"></i></div>
+												<div *ngIf="!isLongTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row account-realized-gain-box account-summary">
+				<div *ngIf="accountId >0">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-inline tabs-data form-group">
+								<h3><strong>Set Aside Cash Details </strong></h3>
+								<div class="radio rcRadio">
+									<label for="1">
+										<input id="1" type="radio" checked name="op1" (click)="filterAsideGrid(0)" value="option1"  (ngModelChange)="{checked: selectedRadioVal == '0'}"><span class="circle"></span><span class="check"></span>
+										Active
+									</label>
+								</div>
+								<div class="radio rcRadio">
+									<label for="2">
+										<input type="radio" value="option1" name="op1" (click)="filterAsideGrid(1)" id="2" (ngModelChange)="{checked: selectedRadioVal == '1'}"><span class="circle"></span><span class="check"></span>
+										All
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-5 text-right">
+							<h4 class="margin-top-10">
+								<b>REPLENISH : {{getCurrentReplenish()}}</b>
+							</h4>
+						</div>
+					</div>
+					<div class="row margin-top-15" style="margin-left:9px;margin-right:9px;">
+<ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [rowData]="asideCashData" enableColResize="true" rowSelection="single"
+[gridOptions]="asideCashGridOptions" [columnDefs]="columnDefs" [getContextMenuItems]="getContextMenuItems" enableFilter [suppressMenuMainPanel]="true">
+</ag-grid-ng2>
+</div>
+<p class="m-t-5"><i class="fa fa-1x fa-file-text-o"></i> Only single selection will be allowed. </p>
+<hr/>
+</div>
+</div>
+<div class="clearfix"></div>
+
+<!--Start Top 10 holdings-->
+<div class="row account-realized-gain-box gray95">
+
+	<div class="col-lg-4 text-center">
+
+		<!--<img src="app/assets/img/accounts-pie-chat.jpg " class="img-responsive " alt=" " title=" ">-->
+		<div class='accountDonutTopHoldings margin-top-20'></div>
+	</div>
+
+	<div class="col-lg-8" *ngIf="accountId >0">
+		<div class="row ">
+			<div class="col-lg-4">
+				<h4 class="marging-top-2x text-center ">
+					<p class="text-left">Top 10 Holdings <br/>
+						<small>Total value on: {{account.accountValue.totalValueOn | date: 'MM/dd/yyyy'}}</small></p>
+				</h4>
+			</div>
+			<div class="col-lg-6 pull-right ">
+				<div class="portfolio-aum-title-clount ">
+					<h2>
+						<strong  title="{{account.accountValue.totalValue| currency:'USD':true}}">{{account.accountValue.totalValue | currencyMillionfilter : 2}} <sub style='color:white'>{{account.accountValue.totalValue | currencyAmountfilter}}</sub></strong>
+						<!--<strong>{{account.accountValue.totalValue| currency:'USD':true}}</strong>-->
+						<i class="fa fa-arrow-up text-success" *ngIf="isAccountTotalValue"></i>
+						<i class="fa fa-arrow-down text-danger" *ngIf="!isAccountTotalValue"></i>
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="marging-top-1x ">
+			<div class="table-responsive ">
+				<table class="table account-portfolioAUM-table">
+					<thead>
+						<tr>
+							<th>Holdings </th>
+							<th class="text-right">Market value </th>
+							<th class="text-right">Unit</th>
+							<th class="text-right">Price</th>
+							<th class="text-right">%</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of account.accountValue.holdings">
+							<td class=" "><span [ngStyle]="{'background': [item.color]}"></span>{{item.securityName}}</td>
+							<td class="text-right" title="{{item.marketValue| currency:'USD':true}}">{{item.marketValue| currency:'USD':true}}</td>
+							<td class="text-right">{{item.unit}}</td>
+							<td class="text-right" title="{{item.price| currency:'USD':true}}">{{item.price| currency:'USD':true}}</td>
+							<td class="text-right">{{item.percentage}}<span>%</span></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>Total </th>
+							<th class="text-right" title="{{account.accountValue.totalValue| currency:'USD':true}}">{{account.accountValue.totalValue| currency:'USD':true}}</th>
+							<th class="text-right"></th>
+							<th class="text-right"></th>
+							<th class="text-right">{{totalPercentage}}<span>%</span></th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--end top 10 holdings-->
+</div>
+</div>
+
+<p-dialog header="Set Aside Cash Details" [(visible)]="displayAsideCash" modal="modal" responsive="true" showEffect="fade"
+	[draggable]=false [resizable]=false width="1000">
+	<div>
+		<div class="col-md-5">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="label-fontsize">Set Aside Cash Amount</label>
+						<select class="form-control" [(ngModel)]="asideCash.cashAmountTypeId" (change)="asideCashAmount($event.target.value)"> 
+								<option *ngFor="let ca of cashType" value={{ca.id}}> {{ca.name}}</option>
+							</select>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group margin-top-18">
+						<label>	</label>
+						<input type="number" [(ngModel)]="asideCash.cashAmount" (keyup)="validatePercent($event)" style="width:106px" min="0" step="0.01" placeholder="Enter Amount" class="form-control"/>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-7">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group">
+				<label class="label-fontsize">Expiration Type</label>
+				<select class="form-control" (change)="onExpirationChange($event.target.value)" [(ngModel)]="asideCash.expirationTypeId">
+							<option *ngFor="let ce of cashExpiration" value={{ce.id}}> {{ce.name}}</option> 
+						</select>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group margin-top-18">
+				<label> </label>
+				<div *ngIf="asideCash.expirationTypeId == 1">
+					<div *ngIf="datepicker">
+						<p-calendar showAnim="slideDown" [showIcon]="true" [monthNavigator]="true " placeholder="Select Expiry Date" [yearNavigator]="true "
+							minDate="0m" [(ngModel)]="asideCash.expirationValue" [readonlyInput]="true"></p-calendar>
+					</div>
+				</div>
+				<div *ngIf="asideCash.expirationTypeId == 2">
+					<div>
+						<select class="form-control ng-pristine ng-valid ng-touched" [(ngModel)]="asideCash.expirationValue" (change)="onTransactionExpirationChange($event)">
+										 <!--<option value="0"> Select Trasaction Type </option> -->
+								   		<option *ngFor="let ct of cashTransaction" value="{{ct.id}}"> {{ct.name}}</option>  
+                            		</select>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="col-md-4" *ngIf="toleranceBand">
+			<div class="form-group">
+				<label class="label-fontsize">Tolerance Band (%)</label>
+				<input type="number" max="100" style="width:158px" [(ngModel)]="asideCash.toleranceValue" (keyup)="validatePercent($event)" placeholder="Enter Tolerance Value" class="form-control"
+/>
+</div>
+
+
+<!--<div class="">
+								</div>-->
+</div>
+</div>
+</div>
+<div class="col-md-12">
+	<div class="form-group">
+		<label class="label-fontsize">Description</label>
+		<textarea maxlength="50" class="form-control" [(ngModel)]="asideCash.description" placeholder="50 Characters Only"></textarea>
+	</div>
+
+</div>
+</div>
+<footer>
+	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="resetAsideCash();">CANCEL</button>
+		<button type="button" class="btn btn-blueouter" icon="fa-check" (click)="onAsideCashSave()" [disabled]="!enableSaveButton()">SAVE</button>
+	</div>
+</footer>
+</p-dialog>
+
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]="false" [resizable]="false"
+	width="355">
+	<div>
+		<div>This action will Delete the AsideCash permanently. <br /> Do you wish to continue?</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" pButton icon="fa-close" (click)="displayConfirm=false" label="No"></button>
+				<button type="button" pButton icon="fa-check" (click)="deleteAside()" label="Yes"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>
+
+<eclipse-assign-accounts-portfolio (parentCallback)="callbackAssignPopup()" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-accounts-portfolio>
+
+<p-dialog [(visible)]="showSmaWeightingsPopup" header="SMA Weightings" modal="modal" responsive="true" showEffect="fade"
+	[draggable]="false" [resizable]="false" width="655">
+	<div id="SMA-Weightings" class="" role="dialog">
+		<!-- Modal content-->
+		<div class="">
+			<!--<button type="button" class="btn model-btn-default" data-dismiss="modal" (click)="addRow()">Add Row</button>-->
+			<div class="col-md-4">
+				<div class="add-row-text text-info"> Add Row
+					<a href="javascript:void(0)" (click)="addRow()" class="text-info"> <i class="fa fa-plus-circle" aria-hidden="true"></i> </a>
+				</div>
+			</div>
+			<div class="col-md-8 pull-right">
+				<div class="text-right">
+					<div class="form-group form-inline">
+						<label for="rg-from" class="cate-lable">Select Level </label>
+						<select [(ngModel)]="selectedLevel" class="form-control" style="width:200px;" (change)="onSelectLevelDdlChange($event.target.value)">
+<!--<option value=0> Select Level</option>-->
+<option *ngFor="let mt of accountModelTypes" value={{mt.id}}> {{mt.name}}</option>
+</select>
+</div>
+<!-- rest of form -->
+</div>
+</div>
+<div class="sma-weightings-table">
+	<div class="margin-top-15">
+		<ag-grid-ng2 #agGrid style="width: 100%; height: 180px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [rowData]="smaWeightings" enableColResize="true" [gridOptions]="smaWeightingsGridOptions"
+[columnDefs]="smaWeightingsColumnDefs" [suppressMenuMainPanel]="true">
+</ag-grid-ng2>
+</div>
+<span class="col-sm-5 col-sm-push-3 margin-left-05" *ngIf="selectedLevel != 0">TotalPercent : {{smaTotalPercent}} %</span>
+</div>
+</div>
+<footer class="text-right clearfix">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-8  margin-top-05">
+				<span *ngIf="isNodeNotSelected" class="text-danger">Please select sub node.</span>
+				<span *ngIf="isZeroPercent" class="text-danger">0% weightings are not allowed to be added.</span>
+				<span *ngIf="isPercentEmpty" class="text-danger">Enter weightings percentage.</span>
+				<span *ngIf="!isValidPercent" class="text-danger">Total <> 100%. Cannot save.</span>
+				<span *ngIf="isDuplicateNode" class="text-danger">Duplicate nodes are not allowed.</span>
+				<span *ngIf="noOfRowsCheck" class="text-danger">Number of rows should be equals to number of nodes available under the selected Level.</span>
+			</div>
+			<div class="col-md-4 pull-right">
+				<button type="button" class="btn btn-info btn-raised btn" data-dismiss="modal" (click)="onSave()">Save </button>
+				<button type="button" class="btn model-btn-default" data-dismiss="modal" (click)="cancelClick()">CANCEL</button>
+			</div>
+		</div>
+	</div>
+</footer>
+</div>
+</p-dialog>

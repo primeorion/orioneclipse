@@ -1,0 +1,137 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Custodian" existingLabel="Active" newLabel="Pending" isCustodian=true [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-custodian-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-admin-custodian-tabnav>
+    <div class="tab-content">
+        <!--<form name="formCustodianDetails" (submit)="saveCustodian()">-->
+        <div style="padding: 15px;">
+            <div class="">
+                <div class="row">
+                    <div class="col-sm-6" *ngIf="custodianId == undefined">
+                        <div class="row">
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label class="primar-label" for="custodian" class="col-sm-4">Search Custodian</label>
+                                <div class="col-sm-8">
+                                    <p-autoComplete [suggestions]="custodianSuggestions" placeholder="Search By Name" (completeMethod)="loadCustodianSuggestions($event)"
+                                        field="name" (onSelect)="onCustodianSelect($event)" class="autocomplete-block" [minLength]="1">
+                                    </p-autoComplete>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" [hidden]="custodianId == undefined">
+                    <div class="col-sm-3" *ngIf="custodianId > 0">
+                        <div class="form-group">
+                            <label class="primar-label">Custodian ID</label>
+                            <span>{{custodian.id}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group is-empty role-spacer">
+                            <label class="primar-label">Custodian Name</label>
+                            <input type="text" [(ngModel)]="custodian.name" (blur)="checkValidation()" class="form-control" placeholder="Enter Custodian Name">
+                            <span class="error" *ngIf="nameErrorMsg">Please enter name</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group is-empty">
+                            <label class="primar-label">Custodian Code</label>
+                            <input type="text" [(ngModel)]="custodian.code" (blur)="checkValidation()" class="form-control" placeholder="Enter Custodian Code">
+                            <span class="error" *ngIf="codeErrorMsg">Please enter code</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group is-empty">
+                            <label class="primar-label">Master Account</label>
+                            <input type="text" [(ngModel)]="custodian.accountNumber" class="form-control" placeholder="Enter Master Account" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group1 is-empty">
+                            <div class="col-sm-12 row">
+                                <div class="col-sm-4 row"><label class="primar-label">Trade Execution Type</label></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="radio-inline">
+                                            <input type="radio" name="tradeExecutionType" id="1" [checked]="tradeExecutionVal==1" (click)="sameForAllRadioBtnChange(1)"
+                                            />
+                                            <label>Same For All </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select class="form-control" [disabled]="!sameForAllSelected" [(ngModel)]="custodian.tradeExecutionTypeId" (change)="onTradeExecutionTypesChange($event.target.value)">
+                                        <option value="0">Select Trade Execution Type</option>
+                                        <option *ngFor="let item of tradeExecutionTypes" value={{item.id}}>{{item.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="is-empty col-sm-8">
+                                    <div class="radio-inline">
+                                        <input type="radio" name="tradeExecutionType" id="2" [checked]="tradeExecutionVal==0" (click)="securityTypeRadioBtnChange(0)"
+                                        />
+                                        <label>Based Upon Security Type (Except Cash)</label><br/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">&nbsp;</div>
+                                <div class="col-sm-12">
+                                    <div *ngIf="!sameForAllSelected">
+                                        <div class="col-sm-4">
+                                            <label class="primar-label"> Select Security Type</label>
+                                            <select class="form-control" [(ngModel)]="tradeExecution.securityTypeId" (change)="onSecurityTypeChange($event.target.value)">
+                                                <option value="0">Select Security Type</option>
+                                                <option *ngFor="let item of securityTypes" value={{item.id}}>{{item.name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="primar-label"> Select Trade Execution Type </label>
+                                            <select class="form-control" [(ngModel)]="tradeExecution.tradeExecutionTypeId" (change)="onTradeExecutionTypeChange($event.target.value)">
+                                                <option value="0">Select Trade Execution Type</option>
+                                                <option *ngFor="let item of tradeExecutionTypes" value={{item.id}}>{{item.name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label class="primar-label"> Option </label>
+                                            <button type="button" (click)="addTradeExecution()" [disabled]="tradeExecution.securityTypeId <= 0 || tradeExecution.tradeExecutionTypeId <= 0"
+                                                class="btn btn-mr-0 btn-info btn-raised">Add</button>
+                                        </div>
+                                        <div>
+                                            <ag-grid-ng2 #agGrid suppressContextMenu="true" [showToolPanel]="fasle" style="width: 100%; height: 350px;" class="ag-material ag-dark"
+                                                [gridOptions]="gridOptions" [columnDefs]="columnDefs" enableFilter enableSorting
+                                                [rowData]="custodian.tradeExecutions">
+                                            </ag-grid-ng2>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-footer">
+                <input type="submit" name="custodianSave" [disabled]="disableSaveBtn" class="btn btn-info btn-raised" value="Save" (click)="saveCustodian()"
+                />
+                <a [routerLink]="['/eclipse', 'admin', 'custodian', 'list']" class="btn btn-default btn-raised">Cancel</a>
+            </div>
+            <!--</form>-->
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Delete Custodian Security" [(visible)]="deleteConfirm" modal="modal" responsive="true" showEffect="fade"
+    [draggable]="false" [resizable]="false" width="355">
+    <div>
+        <div>This action will Delete the Security and Trade. <br /> Do you wish to continue?</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="deleteConfirm=false" label="No"></button>
+                <button type="button" pButton icon="fa-check" (click)="deleteTradeExecution()" label="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

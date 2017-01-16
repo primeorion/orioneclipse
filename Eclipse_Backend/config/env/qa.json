@@ -1,0 +1,54 @@
+{
+	"orion": {
+		"db": {
+			"connectionLimit": 10,
+			"host": "orionqaandalpha-cluster.cluster-cwz3dqtcj9ax.us-east-1.rds.amazonaws.com",
+			"user": "oEAQA",
+			"password": "b2VhcWFAYXVyb3JhIWRtaW4jIyMjIw==",
+			"database": "qa3_orionEclipseCommon",
+			"port" : 3306
+		},
+		"redis" : {
+			"host" :"54.167.240.71",
+			"port" : 6379
+		},
+		"aws" : {
+			"accessKeyId" :"AKIAJGVS4663WQJQURLQ",
+			"secretAccessKey" : "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",
+			"region": "us-east-1",
+			"s3":{
+				"bucket" : "orioneclipsedata",
+				"host" : "s3.amazonaws.com/",
+				"imageRoot" : "qa/images"
+			},
+			"ses":{
+				"senderMail" : "orion.notification@paxcel.net"
+			}
+		},
+		"import": {
+			"host": "172.31.8.254",
+			"username": "root",
+			"privateKey": "/config/env/importServerKey/dev-openssh-key",
+			"envConfig":"/home/etl_config/qa ",
+			"fullImportConfig":"/home/import_config/qa",
+			"partialImportConfig":"/home/import_config_partial/qa",
+			"etl_config":"/home/orion_config_qa"
+		},
+		"allowed-origins": true,
+		"req-logger": "combined"
+	},
+	"port": 3000,
+	"sessionsecret": "orioneclipse",
+	"log-level": "debug",
+	"logging-path": "/var/log/orioneclipse",
+	"uploaded-temp-path" : "/tmp/orionEclipse/",
+	"rebalanceUrl": "http://54.167.240.71:9090/rebalancer/",
+	"generateTradeInstanceId": "/v1/tradetool/tradeInstance/action/generateinstance",
+	"community":{
+		"protocol": "http://",
+		"host": "54.167.240.71",
+		"port": 4000,
+		"getCommunityToken" : "/v1/admin/token",
+		"communityModelImport" : "/v1/community/strategists/models/"
+	}
+}

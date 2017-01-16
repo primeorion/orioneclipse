@@ -1,0 +1,20 @@
+<div id="subtab1" class="tab-pane fade in  active ">
+
+    <form #agreementForm="ngForm" class="securityForm" novalidate>
+        <span [hidden] = '!isViewMode' [innerHTML]="agreement.legalAgreement"></span> 
+        <p-editor [hidden] = 'isViewMode' [(ngModel)]="agreement.legalAgreement" [style]="{'height':'320px'}" name="strategistAgreement" #strategistAgreement="ngModel"
+            required></p-editor>
+        <em class="securityError danger" *ngIf="!strategistAgreement.valid && (!strategistAgreement.pristine || submitAgreement)">Required</em>
+
+        <div class="row text-right" [hidden] = 'isViewMode'>
+            <div class="col-sm-12">
+
+                <button class="btn model-btn-primary" type="submit" (click) = "saveAgreement(agreementForm)">Save</button>
+                <button class="btn btn-danger btn-delete-style" (click) = "agreement.legalAgreement = ''">Clear</button>
+                <!--<button class="btn model-btn-default" (click) = "cancel(agreementForm)">Cancel</button>-->
+                <button [routerLink]="['/community', 'administrator','strategist', 'list']" class="btn model-btn-default">Cancel</button>
+                
+            </div>
+        </div>
+    </form>
+</div>

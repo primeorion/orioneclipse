@@ -1,0 +1,226 @@
+<eclipse-account-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-account-tabnav>
+<div class="tab-content">
+    <div id="accountdetails" class="tab-pane fade in active">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="portfoliodetails-search-add">
+                    <!--<label class="primar-label" for="roletype" >Search Account</label>-->
+                    <div class="portfoliodetails-search-add">
+                        <p-autoComplete [(ngModel)]="selectedAccount" [suggestions]="accountSuggestions" placeholder="Search Account" (completeMethod)="loadAccountSuggestions($event)"
+                            (onSelect)="onAccountSelect($event)" field="name" class="port-search" [minLength]="1">
+                        </p-autoComplete>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="accountId >0">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>Name</strong></label>
+                            <p>{{account.name}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>Number</strong></label>
+                            <p>{{account.accountNumber}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>Sleeved Type</strong></label>
+                            <p>{{account.sleeveType}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>Billing Account</strong></label>
+                            <p>{{account.billingAccount}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>Portfolio</strong></label>
+                            <p>{{account.portfolio}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>SSN</strong></label>
+                            <p>{{account.ssn}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>Custodian</strong></label>
+                            <p>{{account.custodian}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label><strong>Advisor</strong></label>
+                            <p>{{account.advisor}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label><strong>Errors and Warnings  </strong></label>
+                <table class="error-table">
+                    <tbody>
+                        <tr>
+                            <td>Systematic</td>
+                            <td class="text-danger text-right"><span>{{account.issues.systematic}}</span> </td>
+                        </tr>
+                        <tr>
+                            <td>Merge In </td>
+                            <td class="text-danger text-right"><span>{{account.issues.mergeIn | currency:'USD':true}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Merge Out </td>
+                            <td class="text-danger text-right"><span>{{account.issues.mergeOut | currency:'USD':true}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>New Account</td>
+                            <td class="text-danger text-right"><span>{{account.issues.newAccount}}</span> </td>
+                        </tr>
+                        <tr>
+                            <td>Has Portfolios </td>
+                            <td class="text-right"><span>{{account.issues.hasPortfolios}}</span> </td>
+                        </tr>
+                        <tr>
+                            <td>Custodial Restrictions</td>
+                            <td class="text-right"><span>{{account.issues.custodialRestrictions}}</span> </td>
+                        </tr>
+                        <tr>
+                            <td>SMA </td>
+                            <td class="text-danger  text-right"><span>{{account.issues.sma}}</span> </td>
+                        </tr>
+                        <tr>
+                            <td>Import Errors</td>
+                            <td class="text-danger  text-right"><span>{{account.issues.importError}}</span> </td>
+                        </tr>
+                        <tr>
+                            <td>Has Pending Trades </td>
+                            <td class="text-danger text-right"><span>{{account.issues.hasPendingTrades}}</span> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="marging-top-4x"></div>
+        <div class="row account-realized-gain-box" *ngIf="accountId >0">
+            <div class="col-lg-12">
+                <div class="row row-no-padding portfolio-aum-tiles">
+                    <div class="col-lg-2">
+                        <div class="panel">
+                            <div [ngClass]="shortermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+                                <div class="portfolio-aum-info text-center">
+                                    <div class="count-box count-box-col-12">
+                                        <span *ngIf="!shortermflag">{{account.ytdGl.shortTermGL | currency:'USD':true}}</span>
+                                        <span *ngIf="shortermflag">({{account.ytdGl.shortTermGL * (-1) | currency:'USD':true}})</span>                                        Short Term
+                                        <div *ngIf="isShortTermGain"><i class="fa fa-arrow-up"></i></div>
+                                        <div *ngIf="!isShortTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="panel">
+                            <div [ngClass]="longtermflag ? 'panel-body dash-bg-color-17' : 'panel-body dash-bg-color-16'">
+                                <div class="portfolio-aum-info text-center">
+                                    <div class="count-box count-box-col-12">
+                                        <span *ngIf="!longtermflag">{{account.ytdGl.longTermGL | currency:'USD':true}}</span>
+                                        <span *ngIf="longtermflag">({{account.ytdGl.longTermGL * (-1) | currency:'USD':true}})</span>                                        Long Term
+                                        <div *ngIf="isLongTermGain"> <i class="fa fa-arrow-up"></i></div>
+                                        <div *ngIf="!isLongTermGain"><i class="fa fa-arrow-down text-danger"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 marging-left-5x">
+                        <h3><strong>YTD Realized Gain/Loss  </strong></h3>
+                        <p>YTD Realized Gain/Loss = (+/- Long Term Realized <br/>Gain/Loss) + (+/- Short Term Realized Gain/Loss)</p>
+                    </div>
+                    <div class="col-lg-2 pull-right">
+                        <div class="portfolio-aum-title-clount">
+                            <h2>
+                                <strong *ngIf="!totalglflag">{{account.ytdGl.totalGainLoss | currency:'USD':true}}</strong>
+                                <strong *ngIf="totalglflag">({{account.ytdGl.totalGainLoss *(-1)| currency:'USD':true}})</strong>
+                                <i class="fa fa-arrow-up text-success" *ngIf="isTotalGain"></i>
+                                <i class="fa fa-arrow-down text-danger" *ngIf="!isTotalGain"></i>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-no-padding account-realized-gain-box" *ngIf="accountId >0">
+            <div class="col-lg-3 ">
+                <div class="gray95 ">
+                    <!--<img src="app/assets/img/accounts-pie-chat.jpg " class="img-responsive " alt=" " title=" " />-->
+                    <div class="img-responsive" id="accountDonut"></div>
+                </div>
+            </div>
+            <div class="col-lg-9 gray95 ">
+                <div class="row ">
+                    <div class="col-lg-4">
+                        <h4 class="marging-top-2x text-center ">
+                            <p>Total value on: {{account.accountValue.totalValueOn}}</p>
+                        </h4>
+                    </div>
+                    <div class="col-lg-6 pull-right ">
+                        <div class="portfolio-aum-title-clount ">
+                            <h2>
+                                <strong>{{account.accountValue.totalValue| currency:'USD':true}}</strong>
+                                <i class="fa fa-arrow-up text-success" *ngIf="isAccountTotalValue"></i>
+                                <i class="fa fa-arrow-down text-danger" *ngIf="!isAccountTotalValue"></i>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="marging-top-1x ">
+                    <div class="table-responsive ">
+                        <table class="table account-portfolioAUM-table">
+                            <thead>
+                                <tr>
+                                    <th>Holdings </th>
+                                    <th class="text-right">Market value </th>
+                                    <th class="text-right">Unit</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of account.accountValue.holdings">
+                                    <td class=" "><span [ngStyle]="{'background': [item.color]}"></span>{{item.name}}</td>
+                                    <td class="text-right">{{item.marketValue| currency:'USD':true}}</td>
+                                    <td class="text-right">{{item.units}}</td>
+                                    <td class="text-right">{{item.price| currency:'USD':true}}</td>
+                                    <td class="text-right">{{item.percentage}}<span>%</span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Total </th>
+                                    <th class="text-right">{{account.accountValue.totalValue| currency:'USD':true}} </th>
+                                    <th class="text-right"></th>
+                                    <th class="text-right"></th>
+                                    <th class="text-right">{{totalPercentage}}<span>%</span></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Accountdetails-->
+</div>
+
+<eclipse-assign-accounts-portfolio (parentCallback)="callbackAssignPopup()" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-accounts-portfolio>

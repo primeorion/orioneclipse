@@ -1,0 +1,105 @@
+<!--<eclipse-modelInformation-tabnav></eclipse-modelInformation-tabnav>-->
+<div class="nav-tabs-container dropdown-style">
+	<ul class="nav nav-tabs pull-left">
+		<li class="active"><a (click)="routeModelInfo()">MODEL INFORMATION</a> </li>
+		<li><a (click)="routeModelStructure()">MODEL STRUCTURE</a></li>
+	</ul>
+</div>
+<div id="modelDetail" class="tab-pane fade in">
+	<div class="panel panel-default">
+		<div class="clearfix"></div>
+		<div class="col-sm-4" *ngIf="isDynamicReadOnly">
+			<div class="form-group is-empty">
+				<label class="primar-label">Model ID</label>
+				<label class="control-label">{{modelId}}</label>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group is-empty">
+				<label class="primar-label">Owner ID</label>
+				<label class="control-label">{{userId}}</label>
+			</div>
+		</div>
+		<div class="col-sm-4" *ngIf="isDynamicReadOnly">
+			<div class="form-group is-empty">
+				<label class="primar-label">Last Modified</label>
+				<label class="control-label">{{lastModified | date: 'MM/dd/yyyy'}}</label>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group is-empty">
+				<label class="primar-label">Model Name*</label>
+				<input type="text" class="form-control placeholder-input" required placeholder="Enter Model Name" [(ngModel)]="modelSaveData.name"
+				/>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group  is-empty">
+				<label class="primar-label">Model Description</label>
+				<input type="text" class="form-control placeholder-input" required placeholder="Enter Model description" [(ngModel)]="modelSaveData.description"
+				/>
+
+			</div>
+		</div>
+		<div class="col-sm-4" *ngIf="!modelSaveData.currentStatusId">
+			<div class="form-group is-empty">
+				<label class="primar-label">Status*</label>
+				<select class="form-control" [(ngModel)]="modelSaveData.statusId">     
+                               <option *ngFor="let itemStatus of modelStatusList" [ngValue]="itemStatus.id">{{itemStatus.displayName}}</option>
+                                                        
+                         </select>
+			</div>
+		</div>
+		<div class="col-sm-4" *ngIf="modelSaveData.currentStatusId">
+			<div class="form-group is-empty">
+				<label class="primar-label">Status*</label>
+				<select class="form-control" [(ngModel)]="modelSaveData.currentStatusId">     
+                               <option *ngFor="let itemCurrentStatus of modelCurrentStatusList" [ngValue]="itemCurrentStatus.id">{{itemCurrentStatus.displayName}}</option>
+                                                        
+                         </select>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group  is-empty">
+				<label class="primar-label">Dynamic</label>
+				<input type="Checkbox" [(ngModel)]="modelSaveData.isDynamic" [disabled]="isDynamicReadOnly">Select
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group is-empty">
+				<label class="primar-label">Management Style</label>
+				<select class="form-control" [(ngModel)]="modelSaveData.managementStyleId">      
+                         <option [ngValue]="0">Select</option>
+                            <option *ngFor="let itemStyles of managementStylesList" [ngValue]="itemStyles.id"  >{{itemStyles.name}}</option>
+                         </select>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group is-empty">
+				<label class="primar-label">Namespace*</label>
+				<input type="text" class="form-control placeholder-input" [(ngModel)]="modelSaveData.nameSpace" />
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="primar-label">Tags</label>
+				<rl-tag-input placeholder="Add an tag" [(ngModel)]="tagsLst" delimiterCode="188">
+				</rl-tag-input>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="clearfix"></div>
+	<div class="row">
+		<div class="col-sm-9 text-right">
+			<span class="dialog-error">
+			<div *ngIf="nameSpaceValidation" class="margin-top-20">Model Name + Model Namespace must be unique</div></span>
+		</div>
+		<div class="col-sm-3 text-right">
+			<button type="button" name="modelInfoSave" class="btn btn-info btn-raised " (click)='onSubmit(modelSaveData)' [disabled]="!IsValidForm()">Save</button>
+			<button (click)="onCancel()" class="btn btn-raised btn-default">Cancel</button>
+		</div>
+	</div>
+</div>

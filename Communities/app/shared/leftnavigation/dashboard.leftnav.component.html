@@ -1,0 +1,25 @@
+<!--sidebar started-->
+<div class="menu-li">
+  <a href="javascript:void(0);" class="left-close"> <i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
+</div>
+<div class="sidebar">
+  <div class="left-nav-block">
+    <h3><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</h3>
+    <ul class="nav nav-sidebar">
+
+      <li [routerLinkActive]="['active']"><a [routerLink]="['overview']" title="Overview"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Overview </a>
+        <!--<ul class="submenu">
+          <li><a [routerLink]="['/community', 'overview', 'firm']">Firm</a></li>
+        </ul>-->
+      </li>
+
+      <li [routerLinkActive]="['active']"><a [routerLink]="['administrator','dashboard']" title="Administrator"><i class="fa fa-user" aria-hidden="true"></i> Administrator</a>
+        <!--<ul class="submenu">
+          <li class="dropdown-submenu"> <a tabindex="1" href="javascript:void(0);"><i class="fa fa-angle-right" aria-hidden="true"></i> Create User</a></li>
+          <!--<li><a [routerLink]="['/eclipse', 'admin', 'firmpreference']">Firm Preferences</a></li>-->
+        <!--</ul>-->
+      </li>
+    </ul>
+  </div>
+</div>
+<!--sidebar end-->

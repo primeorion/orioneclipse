@@ -1,0 +1,43 @@
+<div id="subtab3" class="tab-pane fade in  active  ">
+ <form #salesDetailForm="ngForm" (ngSubmit)="saveSalesDetail(salesDetailForm)" class="securityForm" novalidate>
+    <div class="col-sm-5">
+        <div class="form-group is-empty">
+            <label for="email" class="primar-label">Contact Address   </label>
+            <textarea placeholder="Enter your address" class="form-control textarea-style" [disabled] = 'isViewMode'
+            [(ngModel)]="salesDetail.salesContact" name="salesContact" #salesContact="ngModel" ></textarea>
+            
+        </div>
+    </div>
+
+
+    <div class="col-sm-5">
+        <div class="form-group is-empty">
+            <label for="email" class="primar-label">Phone </label>
+            <input type="text" class="form-control" placeholder="Enter your phone number"
+            [(ngModel)]="salesDetail.salesPhone" name="salesPhone" #salesPhone="ngModel" [disabled] = 'isViewMode'
+            onkeypress='if((event.charCode>=48 && event.charCode<=57) ||event.charCode ==0) return true; else return false' >
+            
+        </div>
+    </div>
+
+    <div class="col-sm-5">
+        <div class="form-group is-empty">
+            <label for="email" class="primar-label">Email </label>
+            <input type="text" class="form-control" placeholder="Enter your valid email address"
+            [(ngModel)]="salesDetail.salesEmail" name="salesEmail" #salesEmail="ngModel" [disabled] = 'isViewMode'>
+            
+        </div>
+    </div>
+    <div class="divider pull-left" [hidden] = 'isViewMode'></div>
+    <div class="row text-right" [hidden] = 'isViewMode'>
+        <div class="col-sm-12">
+
+            <button class="btn model-btn-primary" type="submit">Save</button>
+
+            <!--<button class="btn model-btn-default" (click) = 'cancel(salesDetailForm)'>Cancel</button>-->
+            <button [routerLink]="['/community', 'administrator','strategist', 'list']" class="btn model-btn-default">Cancel</button>
+            
+        </div>
+    </div>
+</form>
+</div>

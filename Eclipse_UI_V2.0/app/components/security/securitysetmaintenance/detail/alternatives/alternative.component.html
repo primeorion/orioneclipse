@@ -1,0 +1,46 @@
+<div style="height:300px;overflow:auto">
+<table class="datatable">
+    <tr class="datatablehd">
+        <th>Name</th>
+        <th>T</th>
+        <th>TD</th>
+        <th>TE</th>
+    </tr>
+    <tr class="dataheading">
+        <td>{{security.name}}</td>
+        <td>
+            <p-autoComplete class="form-control radius-none" class="autocomplete-block g-i-p" name="securityT" [(ngModel)]="security.taxableSecurity" [suggestions]="security.taxableFilteredSearchResult"
+                placeholder="Search Security" (completeMethod)="autoSecuritySearch($event, '' , 'T')" field="symbol" [minLength]="1"></p-autoComplete>
+        </td>
+        <td>
+            <p-autoComplete class="form-control radius-none" class="autocomplete-block g-i-p" name="securityTD" [(ngModel)]="security.taxDeferredSecurity" [suggestions]="security.taxDeferredFilteredSearchResult"
+                placeholder="Search Security" (completeMethod)="autoSecuritySearch($event, '' , 'TD')" field="symbol" [minLength]="1"></p-autoComplete>
+        </td>
+        <td>
+            <p-autoComplete class="form-control radius-none" class="autocomplete-block g-i-p" name="securityTE" [(ngModel)]="security.taxExemptSecurity" [suggestions]="security.taxExemptFilteredSearchResult"
+                placeholder="Search Security" (completeMethod)="autoSecuritySearch($event, '' , 'TE')" field="symbol" [minLength]="1"></p-autoComplete>
+        </td>
+    </tr>
+    
+    
+    <tr *ngFor='let security of security.equivalences' class="datachild" >
+        <td><div class="" style="padding-left:20px;">{{security.name}}</div></td>
+        <td>
+            <p-autoComplete class="form-control radius-none" class="autocomplete-block  g-i-p" name="equivalenceT" [(ngModel)]="security.taxableSecurity" [suggestions]="security.taxableFilteredSearchResult"
+                placeholder="Search Security" (completeMethod)="autoSecuritySearch($event, security.id , 'T')" field="symbol" [minLength]="1"></p-autoComplete>
+        </td>
+        <td>
+            <p-autoComplete class="form-control radius-none" class="autocomplete-block  g-i-p" name="equivalenceTD" [(ngModel)]="security.taxDeferredSecurity" [suggestions]="security.taxDeferredFilteredSearchResult"
+                placeholder="Search Security" (completeMethod)="autoSecuritySearch($event, security.id , 'TD')" field="symbol" [minLength]="1"></p-autoComplete>
+        </td>
+        <td>
+            <p-autoComplete class="form-control radius-none" class="autocomplete-block  g-i-p" name="equivalenceTE" [(ngModel)]="security.taxExemptSecurity" [suggestions]="security.taxExemptFilteredSearchResult"
+                placeholder="Search Security" (completeMethod)="autoSecuritySearch($event, security.id , 'TE')" field="symbol" [minLength]="1"></p-autoComplete>
+        </td>
+    </tr>
+</table>
+  </div> 
+ <div class="button-footer-security">
+        <input type="submit" name="securitySave" class="btn btn-info btn-raised " title="Save Alternatives" value="Save" (click) = "save()" />
+        <a class="btn btn-default btn-raised " (click) = "cancel()" title="Cancel"> Cancel</a>
+     </div>

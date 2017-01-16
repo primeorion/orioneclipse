@@ -1,0 +1,43 @@
+<trade-leftmenu></trade-leftmenu>
+<div class="grid-container">
+    <eclipse-trade-tabnav [model]="tabsModel"></eclipse-trade-tabnav>
+    <div class="tab-content">
+        <div id="Orders" class="tab-pane fade active in grid-height">
+            <div class="hbox-container grid-height">
+                <div class="tab-header">
+                    <div class="form-inline">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="form-group">
+                                    <label class="label-right-space">Show Files From: </label>
+                                    <div class="form-control">
+                                        <p-calendar showAnim="slideDown" [showIcon]="true" [monthNavigator]="true " placeholder="Select Start Date" [yearNavigator]="true " [(ngModel)]="selectedDate" (onSelect)="startDateSelect($event)"
+                                        maxDate=" 0m " [readonlyInput]="true"></p-calendar>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="agcontainer">
+                    <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [suppressContextMenu]="true" [showToolPanel]="false" enableSorting [gridOptions]="tradeFileGridOptions" enableColResize="true" [columnDefs]="columnDefs" [rowData]="tradeFile" enableFilter [suppressMenuMainPanel]="true">
+                    </ag-grid-ng2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p-dialog header="" [(visible)]="showDeletePopup" modal="modal" responsive="true" showEffect="fade" width="720">
+        <div>
+            <div>This action will remove pendings and update the trade status to not sent. <br/> Are you sure you want to reset <span> {{fileName}}</span>? <br /></div>
+            <footer>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    <button type="button" icon="fa-close" (click)="showDeletePopup=false" class="btn btn-info btn-raised">No</button>
+                    <button type="button" icon="fa-check" (click)="deleteTradeFiles()" class="btn btn-blueouter">Yes</button>
+                </div>
+            </footer>
+        </div>
+    </p-dialog>
+</div>

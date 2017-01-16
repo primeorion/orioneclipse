@@ -1,0 +1,128 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Roles" [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-role-tabnav [model]="tabsModel"></eclipse-admin-role-tabnav>
+    <div class="tab-content">
+        <!--<form name="formRoleDetails" (submit)="onSave()">-->
+        <div style="padding: 15px;">
+            <div class="row" *ngIf="roleId == undefined">
+                <div class="col-sm-12" id="autoRoleName">
+                    <div class="row">
+                        <div class="form-group is-empty">
+                            <div class="col-sm-6">
+                                <label class="primar-label" for="roletype" class="col-sm-6">Search Role Name</label>
+                                <p-autoComplete [(ngModel)]="selectedRole" [suggestions]="roleSuggestions" placeholder="Search By RoleName" class="autocomplete-block"
+                                    (onSelect)="onRoleSelect($event)" (completeMethod)="loadRoleSuggestions($event)" field="name"
+                                    [minLength]="1">
+                                </p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [hidden]="roleId == undefined">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="form-group is-empty">
+                                <label class="primar-label" for="roletype">Role Type</label>
+                                <div>{{role.roleType}}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group is-empty">
+                                <label class="primar-label" for="rolename">Role Name</label>
+                                <div>{{role.name}}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group is-empty role-spacer">
+                                <label class="primar-label" for="roletype">Status</label>
+                                <p class="label label-success" *ngIf="role.status">Active</p>
+                                <p class="label label-default" *ngIf="!role.status">In-active</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="form-group is-empty role-spacer">
+                                <label class="primar-label" for="startDate">Start Date</label>
+                                <div>{{role.startDate | date: 'MM/dd/yyyy' }}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 ">
+                            <div class="form-group is-empty">
+                                <label class="primar-label" for="endDate">Expiry Date</label>
+                                <div>{{role.expireDate | date: 'MM/dd/yyyy' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="form-group is-empty">
+                                <label class="primar-label" for="roletype">Created On</label>
+                                <div>{{role.createdOn | date: 'MM/dd/yyyy' }}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group is-empty">
+                                <label class="primar-label" for="roletype">Last Edit On</label>
+                                <div>{{role.editedOn | date: 'MM/dd/yyyy'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <table class="table table-hover premissionTable" [hidden]="roleId == undefined">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="text-center">
+                                <label>All <span [ngClass]="{'priv-check': globalAdd, 'priv-uncheck': !globalAdd}"></span></label>
+                            </th>
+                            <th class="text-center">
+                                <label>All <span [ngClass]="{'priv-check': globalRead, 'priv-uncheck': !globalRead}"></span></label>
+                            </th>
+                            <th class="text-center">
+                                <label>All <span [ngClass]="{'priv-check': globalEdit, 'priv-uncheck': !globalEdit}"></span></label>
+                            </th>
+                            <th class="text-center">
+                                <label>All <span [ngClass]="{'priv-check': globalDelete, 'priv-uncheck': !globalDelete}"></span></label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-lock"></i> Privileges </th>
+                            <th class="text-center">Can Create</th>
+                            <th class="text-center">Can Read</th>
+                            <th class="text-center">Can Edit</th>
+                            <th class="text-center">Can Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template ngFor [ngForOf]="categoryPrivileges" let-cat="$implicit">
+                            <tr class="rowhd">
+                                <td><strong>{{cat.category == 'Modeling' ? 'Model' : cat.category}}</strong></td>
+                                <td class="text-center">&nbsp; </td>
+                                <td class="text-center">&nbsp; </td>
+                                <td class="text-center">&nbsp; </td>
+                                <td class="text-center">&nbsp; </td>
+                            </tr>
+                            <tr *ngFor="let item of cat.privileges">
+                                <th scope="row">{{item.name}}</th>
+                                <td class="text-center"><span *ngIf="item.type == 0" [ngClass]="{'priv-check': item.canAdd, 'priv-uncheck': !item.canAdd}"></span></td>
+                                <td class="text-center"><span [ngClass]="{'priv-check': item.canRead, 'priv-uncheck': !item.canRead}"></span></td>
+                                <td class="text-center"><span *ngIf="item.type == 0" [ngClass]="{'priv-check': item.canUpdate, 'priv-uncheck': !item.canUpdate}"></span></td>
+                                <td class="text-center"><span *ngIf="item.type == 0" [ngClass]="{'priv-check': item.canDelete, 'priv-uncheck': !item.canDelete}"></span></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="button-footer">
+                    <a [routerLink]="['/eclipse', 'admin', 'role', 'list']" class="btn btn-default btn-raised">Cancel</a>
+                </div>
+            </div>
+            <!--</form>-->
+        </div>
+    </div>
+</div>

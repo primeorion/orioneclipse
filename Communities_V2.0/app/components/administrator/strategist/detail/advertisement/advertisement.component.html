@@ -1,0 +1,20 @@
+<div id="subtab1" class="tab-pane fade in  active ">
+
+    <form #advertisementForm="ngForm" class="securityForm" novalidate>
+        <span [hidden] = '!isViewMode' [innerHTML]="advertisement.advertisementMessage"></span> 
+        <p-editor  [hidden] = 'isViewMode' [(ngModel)]="advertisement.advertisementMessage" [style]="{'height':'320px'}" 
+        name="advertisementMessage" #advertisementMessage="ngModel"></p-editor>
+        <!--<em class="securityError danger" *ngIf="!advertisementMessage.valid && (!advertisementMessage.pristine || submitAdvertisement)">Required</em>-->
+
+        <div class="row text-right" [hidden] = 'isViewMode'>
+            <div class="col-sm-12">
+
+                <button class="btn model-btn-primary" type="submit" (click) = "saveAdvertisement(advertisementForm)">Save</button>
+                <button class="btn btn-danger btn-delete-style" (click) = "advertisement.advertisementMessage = ''">Clear</button>
+                <!--<button class="btn model-btn-default" (click) = "cancel(advertisementForm)">Cancel</button>-->
+                 <button [routerLink]="['/community', 'administrator','strategist', 'list']" class="btn model-btn-default">Cancel</button>
+                
+            </div>
+        </div>
+    </form>
+</div>

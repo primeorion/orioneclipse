@@ -1,0 +1,99 @@
+<div class="nav-tabs-container dropdown-style">
+    <ul class="nav nav-tabs pull-left step-process-tab-style">
+        <li id="selectionFilter" class="active" [ngClass]="{'active': viewName == 'SelectionTab'}">
+            <a aria-expanded="false" data-toggle="tab" href="#SelectionTab"> <i>1</i> Selection and Filter </a>
+        </li>
+        <li id="createTrades" class="tab-disabled" [ngClass]="{'active': viewName == 'createTradesTab'}">
+            <a aria-expanded="true" data-toggle="tab" href="#createTradesTab"> <i>2</i> Create Trades</a>
+        </li>
+        <li id="Final" class="tab-disabled" [ngClass]="{'active': viewName == 'finalTab'}">
+            <a aria-expanded="true" data-toggle="tab" href="#finalTab"> <i>3</i> Spend Cash Options</a>
+        </li>
+    </ul>
+</div>
+<div class="tab-content">
+    <div id="SelectionTab" class="tab-pane fade in active " *ngIf="viewName == 'SelectionTab'">
+        <eclipse-tradeorder-tradefilter (tradeFilterCallback)="getTradeFiltersData($event)" [parentModel]="selectedModelData"></eclipse-tradeorder-tradefilter>
+        <button [disabled]="disableFilterNextBtn" class="btn btn-info btn-raised pull-right" (click)="getSelectedView('createTradesTab')">NEXT</button>
+    </div>
+    <div id="createTradesTab" class="" *ngIf="viewName == 'createTradesTab'">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Spend Cash Method: </label>
+                        <select class="form-control watermarked gray" [(ngModel)]="selectedMethodId" (change)="changeCalculateMethod($event.target.value)"> 
+                               <option *ngFor="let cm of calculationMethods" value={{cm.id}}>{{cm.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs-container custom-tab-container fullList-scroll" *ngIf="isBuyRebalancewithEmphasis">
+            <ul class="nav nav-pills">
+                <li class="active">
+                    <a href="javascript:void()" (click)="emphasisTabsClick('withOutEmphasisTab')" data-toggle="tab" aria-expanded="false">Portfolio without Emphasis Pre-Selected </a>
+                </li>
+                <li>
+                    <a href="javascript:void()" (click)="emphasisTabsClick('withEmphasisTab')" data-toggle="tab" aria-expanded="true">Portfolio with Emphasis Pre-Selected</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="withoutEmphasis" class="tab-pane fade active in">
+                    <div class="agcontainer">
+                        <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                            [gridOptions]="emphasisGridOptions" enableColResize="true" rowSelection="single" [columnDefs]="emphasisGridColDefs"
+                            [rowData]="selectedModelData.selectedAccountsList" enableFilter [suppressMenuMainPanel]="true" (gridReady)="onGridReady($event)">
+                        </ag-grid-ng2>
+                    </div>
+                </div>
+                <div id="Emphasis" class="tab-pane fade">
+                    <div class="agcontainer">
+                        <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                            [gridOptions]="preSelectedEmphasizedGridOptions" enableColResize="true" rowSelection="single" [columnDefs]="emphasisGridColDefs"
+                            [rowData]="preSelectedEmphasizedAccounts" enableFilter [suppressMenuMainPanel]="true">
+                        </ag-grid-ng2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive space-top-10" style=" height:250px;" *ngIf="!isBuyRebalancewithEmphasis">
+            <div class="agcontainer">
+                <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                    [gridOptions]="spendcashGridOptions" enableColResize="true" rowSelection="single" [columnDefs]="spendcashColDefs"
+                    [rowData]="selectedModelData.selectedAccountsList" enableFilter [suppressMenuMainPanel]="true" (gridReady)="onGridReady($event)">
+                </ag-grid-ng2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right ">
+                <button class="btn btn-black " id="btnBack2" (click)="getSelectedView('SelectionTab')">BACk</button>
+                <button [disabled]="disableCreateTradeNextBtn" class="btn btn-info btn-raised " id="btnNext2" (click)="getSelectedView('finalTab')">NEXT</button>                </div>
+        </div>
+    </div>
+    <div id="finalTab" class="" *ngIf="viewName == 'finalTab'">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Spend Full Amount </label>
+                        <select [(ngModel)]="selectedSpendFullAmountOption" class="form-control watermarked gray"> 
+                               <option *ngFor="let o of spendFullAmountOptions" value={{o.name}}>{{o.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" row col-sm-8 top-space-70">
+            <textarea [(ngModel)]="reasonNote" class="form-control" placeholder="Please add optional note or reasons for the trades"></textarea>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right ">
+                <button class="btn btn-black " id="btnBack3" (click)="getSelectedView('createTradesTab')">BACK</button>
+                <button class="btn btn-info btn-raised" (click)="generateTrade()">CALCULATE</button> </div>
+        </div>
+        <div class="divider"></div>
+    </div>
+</div>

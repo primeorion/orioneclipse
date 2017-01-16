@@ -1,0 +1,13 @@
+<div>
+	<a href="javascript:void(0)" class="notification-item-list" >
+		<div class="notification-item">
+			<h4 class="item-title"  [ngClass]="{'unread': !notice.readStatus}" (click)="viewNotificationStory(notice.id)"><img src='app/assets/img/{{notice.notificationCategoryType.code}}.png'> {{notice.subject}} </h4>
+			<span class="item-time-stamp">{{notice.createdOn | date :'shortTime'}}</span>
+		</div>
+		<div class="item-slide-menu">
+			<span *ngIf="!notice.readStatus">   <button class="btn-read" title="Unread" (click)="takeAction(notice.id,'UnRead')"><img src="app/assets/img/unread-icon.png"></button></span>
+			<span *ngIf="notice.readStatus">   <button class="btn-read" title="Read" (click)="takeAction(notice.id,'Read')"><img src="app/assets/img/read-icon.png"></button></span>			
+			<button class="btn-trash" title="Delete" (click)="takeAction(notice.id,'Delete')"><i class="fa  fa-trash-o"></i></button>
+		</div>
+	</a>
+</div>

@@ -1,0 +1,206 @@
+<div class="form-group">
+    <div class="custom-form-group">
+        <div class="text-left row">
+            <label class="radio-inline">Search By : </label>
+            <label class="radio-inline"><input type="radio" name="optradio" [checked]="true" (click)="radioBtnChange('account')">Account</label>
+            <label class="radio-inline"><input type="radio" name="optradio" (click)="radioBtnChange('portfolio')">Portfolio</label>
+        </div>
+    </div>
+</div>
+<div class="form-group is-empty">
+    <div class="custom-form-group">
+        <label class="label-right-space" *ngIf="tradeFilterMethod == 'account'">Account</label>
+        <label class="label-right-space" *ngIf="tradeFilterMethod == 'portfolio'">Portfolio</label>
+        <!--<span class="addon-group">
+            <input type="text" placeholder="Search" class="form-control" />
+            <label for="email" class="glyphicon glyphicon-search custom-icon-addon" title="search"></label>
+        </span>-->
+    </div>
+    <span class="material-input"></span>
+    <div *ngIf="tradeFilterMethod == 'portfolio'">
+        <eclipse-portfolio-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-portfolio-autocomplete>
+    </div>
+    <div *ngIf="tradeFilterMethod == 'account'">
+        <eclipse-account-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-account-autocomplete>
+    </div>
+
+</div>
+<div class="form-group">
+    <div class="custom-form-group">
+        <label class="label-right-space">Action</label>
+        <select class="form-control" (change)=onActionChange($event.target.value) [(ngModel)]="quickTradeData.actionId">      
+                  <option *ngFor="let item of actions" value={{item.id}}  >{{item.name}}</option>
+                         </select>
+    </div>
+    <span class="material-input"></span>
+</div>
+
+<!--<div class="form-group is-empty" *ngIf="showSecuritySearch">
+    <div class="custom-form-group">
+        <label class="label-right-space">{{placeHolderAction}}</label>
+        <span class="addon-group">
+            <input type="text" placeholder={{placeHolder}} class="form-control" />
+            <label for="" class="glyphicon glyphicon-search custom-icon-addon" title="buy"></label>
+        </span>
+    </div>
+    <span class="material-input"></span>
+</div>-->
+<div class="form-group is-empty" *ngIf="showSellSecuritySearch">
+    <div class="form-group">
+        <div class="icon-addon addon-md">
+            <label class="label-right-space">{{placeHolderAction}}</label>
+            <p-autoComplete [(ngModel)]="selectedSellSecurity" [suggestions]="sellSecuritySuggessions" placeholder="product or ticker to sell "
+                (completeMethod)="sellSecuritySearch($event)" (onSelect)="onSellSecuritySelect($event)" field="name" class="form-control"
+                [minLength]="1">
+            </p-autoComplete>
+            <label for="email" class="glyphicon glyphicon-search" rel="tooltip"></label>
+        </div>
+    </div>
+</div>
+<div class="form-group is-empty" *ngIf="showBuySecuritySearch">
+    <div class="form-group">
+        <div class="icon-addon addon-md">
+            <label class="label-right-space">{{placeHolderAction}}</label>
+            <p-autoComplete [(ngModel)]="selectedBuySecurity" [suggestions]="buySecuritySuggessions" placeholder="product or ticker to buy "
+                (completeMethod)="buySecuritySearch($event)" (onSelect)="onBuySecuritySelect($event)" field="name" class="form-control"
+                [minLength]="1">
+            </p-autoComplete>
+            <label for="email" class="glyphicon glyphicon-search" rel="tooltip"></label>
+        </div>
+    </div>
+</div>
+<div class="form-group is-empty" *ngIf="showDollor">
+    <div class="custom-form-group">
+        <div class="">
+            <label><input type="radio" [checked]="selectDollar == 1" (click)="disableShares(1)" name="opradio"> Dollars</label>
+        </div>
+        <input type="text" [disabled]="isDisableDollor" placeholder={{dollorsPlaceHolder}} [(ngModel)]="quickTradeData.dollarAmount" class="form-control" />
+    </div>
+    <span class="material-input"></span>
+</div>
+<div class="form-group is-empty" *ngIf="showShares">
+    <div class="custom-form-group">
+        <div class="">
+            <label><input type="radio"  [checked]="selectShares == 1" (click)="disableDollor(1)" name="opradio"> Shares</label>
+        </div>
+        <input type="text" [disabled]="isDisableShare" placeholder={{placeHolderShares}} class="form-control" [(ngModel)]="quickTradeData.quantity" />
+    </div>
+    <span class="material-input"></span>
+</div>
+<div class="form-group is-empty" *ngIf="isTradeActionSell">
+    <div class="custom-form-group">
+        <div class="">
+            <label><input type="radio" name="radiopercent"> Percent</label>
+        </div>
+        <input type="text" placeholder="percent to sell" class="form-control" [(ngModel)]="quickTradeData.percentage" />
+    </div>
+    <span class="material-input"></span>
+</div>
+<!--<div class="form-group" *ngIf="showTradeType">
+    <div class="custom-form-group">
+        <label class="label-right-space">Trade Type</label>
+        <select class="form-control" (change)=onTradeTypeChange($event.target.value) >      
+                  <option *ngFor="let item of actions" value={{item.id}}  >{{item.name}}</option>
+                         </select>
+    </div>
+    <span class="material-input"></span>
+</div>-->
+<div class="form-group">
+    <div class="custom-form-group">
+        <div class="">
+            <label><input type="checkbox" [(ngModel)]="quickTradeData.isSendImmediately"> Send Trade Immediately</label>
+        </div>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="pull-right">
+        <button type="submit" *ngIf="showValidate" class="btn btn-raised btn-sm btn-info" (click)="validateTrade(quickTradeData)">Validate</button>
+        <button type="button" [disabled]="showErrorMessage" class="btn btn-raised btn-sm btn-success" (click)="saveTrade(quickTradeData)">Add</button>
+        <button type="reset" class="btn btn-raised btn-sm btn-default" (click)="resetForm()">Reset</button>
+    </div>
+</div>
+
+
+<div class="alert alert-danger"  *ngIf="showErrorMessage" role="alert">
+    <h4><i class="fa fa-exclamation-circle"></i> Error</h4>
+    {{errorMessage}}</div>
+
+<div class="nav-tabs-container custom-tab-container fullList-scroll" *ngIf="isSearchSelected">
+    <ul class="nav nav-pills nav-justified nav-pills-sm">
+        <li class="active">
+            <a data-toggle="tab" href="#Account" aria-expanded="true">Account </a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#Assets" aria-expanded="true">Assets </a>
+        </li>
+        <li>
+            <a data-toggle="tab" *ngIf="showPriceTab" href="#Price" aria-expanded="true">Price</a>
+        </li>
+    </ul>
+    <div class="tab-content" *ngIf="showTabs">
+        <div id="Account"  class="tab-pane fade in  active">
+            <div class="row" *ngIf="showAccountsTab">
+                <div class="col-md-6">Acct ID </div>
+                <div class="col-md-6">{{accountId}} </div>
+                <div class="col-md-6">Acct Value</div>
+                <div class="col-md-6">{{accountValue}}</div>
+                <div class="col-md-6">Current </div>
+                <div class="col-md-6">$ {{currentCash}}</div>
+                <div class="col-md-6">Post Trade </div>
+                <div class="col-md-6">$ {{postTrade}}</div>
+                <div class="col-md-6">Minimum </div>
+                <div class="col-md-6">$ {{cashReserv}}</div>
+                <div class="col-md-6">Instructions</div>
+                <div class="col-md-6"> </div>
+            </div>
+
+                  <div class="row" *ngIf="showPortfolioTab">
+                <div class="col-md-6">Portfolio ID</div>
+                <div class="col-md-6">{{accountId}} </div>
+                <div class="col-md-6">Portfolio Value</div>
+                <div class="col-md-6">{{accountValue}}</div>
+                <div class="col-md-6">Current </div>
+                <div class="col-md-6">$ {{currentCash}}</div>
+                <div class="col-md-6">Post Trade </div>
+                <div class="col-md-6">$ {{postTrade}}</div>
+                <div class="col-md-6">Minimum</div>
+                <div class="col-md-6">$ {{cashReserv}}</div>
+                <div class="col-md-6">Model </div>
+                <div class="col-md-6">{{modelName}}</div>
+                <div class="col-md-6">Instructions</div>
+                <div class="col-md-6"> </div>
+            </div>
+        </div>
+     
+        <div id="Assets" class="tab-pane fade">
+            <table class="table table-small">
+                <thead>
+                    <tr class="">
+                        <th><strong>Ticker</strong> </th>
+                        <th><strong>Shares</strong> </th>
+                        <th><strong>Value</strong> </th>                      
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of accountAssets">
+                        <td class="text-left"> <span>{{item.securityName}}</span>
+                            <td> <span>{{item.shares}}</span></td>
+                            <td> <span>{{item.value}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="Price" *ngIf="showPriceTab" class="tab-pane fade">
+            <div class="row">
+                <div class="col-md-6">Ticker </div>
+                <div class="col-md-6">{{tickerSymbol}} </div>
+                <div></div>
+                <div class="col-md-6">Last</div>
+                <div class="col-md-6">{{LastPrice}}</div>
+                <div></div>
+                <div class="col-md-6">As of </div>
+                <div class="col-md-6">{{asof | date }}</div>
+            </div>
+        </div>
+    </div>
+</div>

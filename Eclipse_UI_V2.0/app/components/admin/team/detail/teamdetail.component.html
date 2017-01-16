@@ -1,0 +1,85 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Teams" [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-team-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-admin-team-tabnav>
+    <div class="tab-content">
+        <!--<form name="formTeamDetails" (submit)="onSave()">-->
+           <div style="padding: 15px;">
+            <div class="form-container">
+                <div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="primar-label">Team Name</label>
+                            <div class="form-inline tabs-data">
+                                <div>
+                                    <input type="text" [(ngModel)]="team.name" (blur)="teamAlreadyExist()" placeholder="Enter Team Name" class="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div><span *ngIf="nameValidation" class="validationerror">Please enter team name</span></div>
+                            <div><span *ngIf="matchingTeamsExists" class="validationerror">Team already exists with same name</span></div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="teamId != undefined">
+                            <label class="primar-label">Team Id</label>
+                            <div class="form-inline tabs-data form-group">
+                                <div><span>{{team.id}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row marging-bottom-2x">
+                        <div class="col-sm-4">
+                            <label class="primar-label">Portfolio Permission</label>
+                            <div class="form-inline tabs-data">
+                                <div class="radio">
+                                    <label for="1"><input id="1" type="radio" name="portfolioAccess" [checked]="team.portfolioAccess == 1" value="1" (click)="portfoiloPermissionChange(1)" /><span class="circle"></span><span class="check"></span> Permission</label>
+                                </div>
+                                <div class="radio">
+                                    <label for="2"><input id="2" type="radio" name="portfolioAccess" [checked]="team.portfolioAccess == 0" value="0" (click)="portfoiloPermissionChange(0)"/><span class="circle"></span><span class="check"></span> All</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="primar-label">Model Permission</label>
+                            <div class="form-inline tabs-data">
+                                <div class="radio">
+                                    <label for="3"><input id="3" type="radio" name="modelAccess" [checked]="team.modelAccess == 1" value="1" checked (click)="modelPermissionChange(1)"/><span class="circle"></span><span class="check"></span> Permission</label>
+                                </div>
+                                <div class="radio">
+                                    <label for="4"><input id="4" type="radio" name="modelAccess" [checked]="team.modelAccess == 0" value="0" id="4" (click)="modelPermissionChange(0)"/><span class="circle"></span><span class="check"></span> All</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="primar-label" for="roletype">Status</label>
+                            <select [(ngModel)]="team.status" class="form-control ng-pristine ng-valid ng-touched" style="width: 30%;">
+                                <option *ngFor="let status of statusTypes" value={{status.typeId}} >{{status.typeName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <tab-set>
+                            <tab tabTitle="Users" tabName="tabUsers">
+                                <eclipse-admin-teamusers></eclipse-admin-teamusers>
+                            </tab>
+                            <tab tabTitle="Portfolio" tabName="tabPortfolio" [className]="team.portfolioAccess == 0 ? 'hide-tab':'show-tab'" [displaytabdiv]="team.portfolioAccess == 0 ? 'hide-tab':'show-tab'">
+                                <eclipse-admin-teamportfolios></eclipse-admin-teamportfolios>
+                            </tab>
+                            <tab tabTitle="Advisor" tabName="tabAdvisor">
+                                <eclipse-admin-teamadvisors></eclipse-admin-teamadvisors>
+                            </tab>
+                            <tab tabTitle="Model" tabName="tabModel" [className]="team.modelAccess == 0 ? 'hide-tab':'show-tab'" [displaytabdiv]="team.modelAccess == 0 ? 'hide-tab':'show-tab'" >
+                                <eclipse-admin-teammodels></eclipse-admin-teammodels>
+                            </tab>
+                        </tab-set>
+                    </div>
+                    <div class="button-footer">
+                        <input type="submit" name="roleSave" [value]="(activeRoute == 'edit' ? 'Save' : 'Add')" [disabled]="matchingTeamsExists" (click)="onSave()"
+                            class="btn btn-info btn-raised" />
+                        <a [routerLink]="['/eclipse', 'admin', 'team', 'list']" class="btn btn-default btn-raised">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        <!--</form>-->
+           </div>
+    </div>
+</div>

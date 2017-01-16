@@ -1,0 +1,12 @@
+<div class="body-404">
+    <div class="row-404">
+        <div class="container-404">
+            <h1 class="title-404">404</h1>
+            <p class="sub-heading-404">Page Not Found</p>
+            <hr class="hr-style-404" />
+            <p class="redirect-style-404">Ohh... You requested the page that is no longer available.</p>
+            <p *ngIf="isAuthenticated" class="redirect-style-404">Please click here to go to <a [routerLink]="['/eclipse', 'dashboard']">Dashboard</a>.</p>
+            <p *ngIf="!isAuthenticated" class="redirect-style-404">Please click here to go to <a [routerLink]="['/login']">login</a> page.</p>
+        </div>
+    </div>
+</div>

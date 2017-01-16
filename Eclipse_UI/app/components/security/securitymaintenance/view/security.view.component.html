@@ -1,0 +1,45 @@
+ <div class="agcontainer">
+ <div class="row seccontainer">
+ 
+            <div class="col-sm-4 form-inline  form-group">
+                <p-autoComplete class=" radius-none search-security  autocomplete-block"  [(ngModel)]="selectedSecurity" [suggestions]="filteredSecurityResult"
+                    placeholder="Search Securities" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedSecurity(selectedSecurity)" (keyup)="handleSelectedSecurity(selectedSecurity)"></p-autoComplete>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-info btn-raised customBtn" title="Add Security" (click)="addSecurity(selectedSecurity)" [disabled]="btnDisableSecurity">Add</button>
+            </div>
+            
+             
+    </div>
+    <span class="securityError danger" *ngIf = "saveError">{{errorMessage}}</span>
+ <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                                rowSelection="single" [columnDefs]="columnDefs" [rowData]="securityData" 
+                                enableFilter [getContextMenuItems]="getContextMenuItems" (rowClicked) = "rowSelected($event)">
+            </ag-grid-ng2>
+  
+</div>
+
+<p-dialog header="Delete Securities" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+                        <div>
+                            <div>Are you sure you want to delete the Securities ? 
+                            </div>
+                            <footer>
+                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                    <button pButton type="button" (click)="displayConfirm=false" label="No" title="No"></button>
+                                    <button pButton type="button" (click)="deleteSecurity()" label="Yes" title="Yes"></button>
+                                </div>
+                            </footer>
+                        </div>
+</p-dialog>
+<p-dialog header="Delete Securities" [(visible)]="isSecurityDeleteError" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+                       <div class="warning-msg">
+                             <p><strong> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Security {{selectedSecurityName}}</strong>, can not be deleted as it is associated with a security set.</p>
+                       </div>
+                        <footer>
+                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                    <button type="button"  pButton icon="fa-check" title="Ok" (click)="isSecurityDeleteError = false" label="Ok"></button>
+                                </div>
+                       </footer>
+</p-dialog>

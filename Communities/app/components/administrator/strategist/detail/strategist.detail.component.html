@@ -1,0 +1,21 @@
+<div class="tab-content">
+    <div id="tab2" class="fade in bg-none">
+        <ul class="nav nav-tabs pull-left strategists-details">
+             <li [class.active]="viewName == 'generalInfo'" (click) = "viewName = 'generalInfo'"><a>General Information</a> </li>
+             <li [class.active]="viewName == 'commentary'" (click) = "viewName = 'commentary'"><a>Commentary </a></li>
+             <li><a>Sales </a></li>
+             <li><a>Support</a></li>
+             <li><a>Legal Agreement  </a></li>
+             <li><a>Advertisement Message  </a></li>
+              <li><a> Download </a></li>
+         </ul>
+    </div>
+    <div class="tab-content">
+        <div *ngIf = "viewName == 'generalInfo'">
+            <community-strategist-general-info [strategistId] = 'strategistId'></community-strategist-general-info>
+        </div>
+        <div *ngIf = "viewName == 'commentary'">
+            <community-strategist-commentary [strategistId] = 'strategistId'></community-strategist-commentary>
+        </div>
+    </div>
+</div>

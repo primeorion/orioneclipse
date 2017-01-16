@@ -1,0 +1,18 @@
+<div class="admin-sub-left">
+    <div class="info-box">
+        <p class="title" style="font-size: 27px;">{{menuName}}</p>
+        <p>{{model.all}}</p>
+    </div>
+    <div class="status">
+        <div class="col-sm-6 divider-line">
+            <p>{{existingLabel}}<br /><strong>{{model.existingOrActive}}</strong></p>
+        </div>
+        <div class="col-sm-6" *ngIf="!isCustodian">
+            <p>{{newLabel}}<br /><strong>{{model.newOrPending}}</strong></p>
+        </div>
+    </div>
+    <ul class="admin-menu">
+        <li><a title="Users" title="Users">Users</a></li>
+        <li><a title="Strategists" [routerLink]="['/community', 'administrator', 'strategist']" [class.leftNavigationActiveLink]="getLinkStyle('/strategist')" title="Strategists">Strategists</a></li>
+    </ul>
+</div>

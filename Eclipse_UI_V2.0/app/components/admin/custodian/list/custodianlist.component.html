@@ -1,0 +1,40 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Custodian" existingLabel="Active" newLabel="Pending" isCustodian=true [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-custodian-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-admin-custodian-tabnav>
+    <div class="tab-content">
+        <div class="agcontainer">
+            <ag-grid-ng2 #agGrid [showToolPanel]="false" enableSorting enableFilter  class="ag-material ag-dark grid-height" 
+                (rowClicked)="onRowClicked($event)" [gridOptions]="gridOptions" rowBuffer="100" (rowDoubleClicked)="onRowDoubleClicked($event)"
+               [suppressMenuMainPanel]="true" (rowSelected)= "onRowSelected($event)" [columnDefs]="custodianColumnDefs" [rowData]="custodians" [getContextMenuItems]="getContextMenuItems" rowSelection="multiple"
+                enableColResize="true">
+            </ag-grid-ng2>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]="false" [resizable]="false"
+    width="355">
+    <div>
+        <div>This action will Delete the Custodian permanently. <br /> Do you wish to continue?</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="displayConfirm=false" label="No"></button>
+                <button type="button" pButton icon="fa-check" (click)="deleteCustodian()" label="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteCheck" modal="modal" responsive="true" showEffect="fade" [draggable]="false" [resizable]="false"
+    width="355">
+    <div>
+        <div>You can't Delete the Custodian as there are Accounts associated to the Custodian.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton (click)="deleteCheck=false" label="Ok"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+

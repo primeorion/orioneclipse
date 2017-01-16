@@ -1,0 +1,25 @@
+ <div class="row">
+        <div class="col-sm-12">
+           <br>
+        </div>
+    </div>
+ <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                                rowSelection="single" [columnDefs]="columnDefs" [rowData]="securitySetData" 
+                                enableFilter [getContextMenuItems]="getContextMenuItems" (rowClicked) = "rowSelected($event)">
+            </ag-grid-ng2>
+<div class="button-container">
+      <button class="btn btn-blueouter btn-raised pull-left" title= "Add a Securities Set" (click)="addNewSecuritySet()"><i class="fa fa-plus-circle blue"></i> ADD A SECURITIES SET</button>
+  </div>
+<p-dialog header="Delete Securities Set" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+                        <div>
+                            <div>Are you sure,  you want to delete the Securities Set ? 
+                            </div>
+                            <footer>
+                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                    <button pButton type="button" (click)="displayConfirm=false" label="No" title="No"></button>
+                                    <button pButton type="button" (click)="deleteSecuritySet()" label="Yes" title="Yes"></button>
+                                </div>
+                            </footer>
+                        </div>
+</p-dialog>

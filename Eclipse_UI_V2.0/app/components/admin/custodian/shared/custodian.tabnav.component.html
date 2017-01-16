@@ -1,0 +1,29 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left">
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'admin', 'custodian', 'list']">All Custodians</a> </li>
+        <li [routerLinkActive]="['active']"><a *ngIf="model.canRead && (model.action == 'L' || model.action == 'V')" [routerLink]="['/eclipse', 'admin', 'custodian', 'view']">Custodian Details</a></li>
+        <li [routerLinkActive]="['active']"><a *ngIf="model.canAdd && model.action == 'A'" [routerLink]="['/eclipse', 'admin', 'custodian', 'add']">Custodian Details</a></li>
+        <li [routerLinkActive]="['active']"><a *ngIf="model.canUpdate && model.action == 'E'" [routerLink]="['/eclipse', 'admin', 'custodian', 'edit', model.id]">Custodian Details</a></li>
+    </ul>
+    <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0);" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown"
+            aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu submenu-list">
+            <div [hidden]="model.id == undefined || !model.canRead || model.action == 'V'">
+                <li><a [routerLink]="['/eclipse', 'admin', 'custodian', 'view' , model.id]">View details</a></li>
+            </div>
+            <div [hidden]="model.id == undefined || !model.canUpdate || model.action == 'E'">
+                <li><a [routerLink]="['/eclipse', 'admin', 'custodian', 'edit' ,  model.id]">Edit</a></li>
+            </div>
+            <div [hidden]="model.id == undefined || isDeleted || !model.canDelete || model.action != 'L'">
+                <li><a href="javascript:void(0)" (click)="onMenuClick('DELETE')">Delete</a></li>
+            </div>
+            <div [hidden]="!(model.id == undefined || model.ids == undefined) || !model.canUpdate">
+                <li><a href="javascript:void(0)" (click)="onMenuClick('PREFERENCES')">Edit Preferences</a></li>
+            </div>
+        </ul>
+    </div>
+</div>

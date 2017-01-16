@@ -1,0 +1,8 @@
+<div id="tab2" class="fade in">
+        <ul class="nav nav-tabs pull-left strategists-details no-mrgn">
+             <li *ngIf="isStrategistAdmin" [class.active]="getLinkStyle('/commentary')"><a [routerLink]="['/community', 'model','marketing', 'commentary', (modelId || '')]">COMMENTARY</a></li>
+             <li *ngIf="isStrategistAdmin" [class.active]="getLinkStyle('/advertisement')"><a [routerLink]="['/community', 'model','marketing', 'advertisement' , (modelId || '')]">ADVERTISEMENT MESSAGE </a></li>
+             <li *ngIf="isStrategistAdmin" [class.active]="getLinkStyle('/downloads')"><a [routerLink]="['/community', 'model','marketing', 'downloads' , (modelId || '')]">DOWNLOADS </a></li>
+             <li  [class.active]="getLinkStyle('/performance')"><a [routerLink]="['/community', 'model','marketing', 'performance' , (modelId || '')]">PERFORMANCE</a></li>
+         </ul>
+</div>

@@ -1,0 +1,144 @@
+<div id="subtab1" class="tab-pane fade in  active">
+    <form #generalInfoForm="ngForm" (ngSubmit)="saveGeneralInfo(generalInfoForm)" class="securityForm" novalidate>
+         <div class="col-sm-12" *ngIf="strategistError">
+           <em class="securityError danger">{{strategistError}}</em>
+        </div>
+        <div class="col-sm-4" *ngIf="strategist.id != undefined">
+            <div class="form-group is-empty">
+                <label for="email" class="primar-label ">Strategist ID </label>
+                <p>{{strategist.id}} </p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label for="email" class="primar-label">Name </label>
+                <input type="text" [disabled]='isViewMode' class="form-control" [(ngModel)]="strategist.name" name="strategistName" #strategistName="ngModel" placeholder="Enter Name" required>
+                <em class="securityError danger" *ngIf="!strategistName.valid && (!strategistName.pristine || submitGeneralInfo)">Required</em>
+
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group is-empty" *ngIf='!hideSelectStatus'>
+                <label for="email" class="primar-label">Status </label>
+                <select class="form-control" [(ngModel)]="strategist.status" name="status" #status="ngModel" [disabled]='isViewMode'
+                (change)="onStatusChange($event.target.value)">
+                        <option value="undefined" *ngIf="!strategist.status">Select Status</option>
+                        <option *ngFor="let status of strategistStatus" value={{status.status}} >
+                            {{status.statusLabel}}
+                        </option>
+                  </select>
+            </div>
+            <div class="form-group is-empty" *ngIf='hideSelectStatus'>
+                <label for="email" class="primar-label">Status </label>
+                <p>{{StrategistStatus}}</p>
+            </div>
+        </div>
+        <div class="col-sm-12">
+
+        </div>
+
+        <div class="add-logo">
+            <div class="col-sm-4">
+                <p class="logo-text-style">Large Logo<span> (Max size 1 mb)</span></p>
+
+                <div class="logo-larg-box">
+                    <label for="file-input" class="flieinput">
+                 <img src="app/assets/img/logo-img.png" alt="#" class="img-responsive" id = "largeLogo">
+               </label>
+
+                    <input type="file" id="file-input" class="hidden" accept="image/*" data-type='image' (change)="selectLargeLogoFile($event)" [disabled]='isViewMode'>
+
+                </div>
+                <em class="securityError danger" *ngIf="showLargeLogoError">{{largeLogoUploadError}}</em>
+                <!--<span class="successful-msg">Uploaded Successfully</span>-->
+            </div>
+            <div class="col-sm-4">
+                <p class="logo-text-style">Small Logo <span>(Max size 1 mb)</span></p>
+                <div class="logo-small-box">
+                    <label for="file-input-small" class="flieinput">
+                  <img src="app/assets/img/logo-img.png" alt="#" class="img-responsive" id = "smallLogo"s>
+                </label>
+                    <input type="file" id="file-input-small" class="hidden" accept="image/*" data-type='image' (change)="selectSmallLogoFile($event)" [disabled]='isViewMode'>
+
+                </div>
+                <em class="securityError danger" *ngIf="showSmallLogoError">{{smallLogoUploadError}}</em>
+            </div>
+            <div class="col-sm-4">
+                <label for="dbId" class="primar-label">Eclipse Database ID</label>
+                <select [disabled]="!enableSelectEclipseDbId || isViewMode" class="form-control" [(ngModel)]="strategist.eclipseDatabaseId" name="dbId" #eclipseDbName="ngModel" required>
+                        <option value="undefined" *ngIf="!strategist.eclipseDatabaseId">Choose Eclipse Database ID</option>
+                        <option *ngFor="let db of eclipseDBIds" value={{db.id}} >
+                            {{db.database}}
+                        </option>
+                    </select>
+                <em class="securityError danger" *ngIf="!eclipseDbName.valid && (!eclipseDbName.pristine || submitUserDetail)">Required</em>
+            </div>
+        </div>
+        <div class="row" [hidden]='isViewMode'>
+            <div class="col-sm-12">
+                <h3 class="userTitle">Users</h3>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-inline space-top-10">
+                    <div class="form-group is-empty">
+                        <p-autoComplete class="radius-none search-security sdinput autocomplete-block" [(ngModel)]="autoCompleteSelectedUser" [ngModelOptions]="{standalone: true}" ngDefaultControl [suggestions]="filteredUserResult" placeholder="Search User" (completeMethod)="autoUserSearch($event)"
+                            field="name" [minLength]="1" (onSelect)="handleSelectedUser(autoCompleteSelectedUser)"></p-autoComplete>
+
+                    </div>
+                    <button type="button" class="btn btn-info btn-raised" [disabled]="btnDisableUser" (click)="addUser(autoCompleteSelectedUser)">ADD</button>
+                    <em class="securityError danger" *ngIf="showAddUserError">{{addUserError}}</em>
+                </div>
+            </div>
+        </div>
+        <ag-grid-ng2 #agGrid class="ag-material ag-dark" style="width:100%; height:300px;" suppressContextMenu="true" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions" enableColResize="true" [columnDefs]="columnDefs" [rowData]="strategist.users"
+            enableFilter>
+        </ag-grid-ng2>
+        <em class="securityError danger" *ngIf="!isUserDetailValid">At least one user with role Admin should be associated with the strategist.</em>
+        <div class="divider" [hidden]='isViewMode'></div>
+        <div class="row text-right" [hidden]='isViewMode'>
+            <div class="col-sm-12">
+                <em class="securityError danger" *ngIf="showSaveError">{{saveError}}</em>
+                <button class="btn model-btn-primary" title="Save" type="submit">Save</button>
+                <!--<button class="btn model-btn-default" type="button" title="Cancel" (click)='cancel(generalInfoForm)'>Cancel</button>-->
+                <button [routerLink]="['/community', 'administrator','strategist', 'list']" class="btn model-btn-default" type="button" title="Cancel">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+<p-dialog header="Dissociate User" [(visible)]="displayConfirm" modal="modal" responsive="true" class="model-popup-index" showEffect="fade" [draggable]=false [resizable]=false width="600">
+    <div>
+        <div>The action will dissociate the user from Strategist and he/she will not be able to login to the application unless reassigned to a strategist. Do you wish to continue?
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button pButton type="button" (click)="displayConfirm=false" label="No" title="No"></button>
+                <button pButton type="button" (click)="deleteUser()" label="Yes" title="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<p-dialog header="Dissociate User" [(visible)]="displayUserDeleteError" modal="modal" responsive="true" class="model-popup-index" showEffect="fade" [draggable]=false [resizable]=false width="600">
+    <div>
+        <div>You can not dissociate the user from Strategist as he/she is the only admin available currently.
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button pButton type="button" (click)="displayUserDeleteError=false" label="Ok" title="Ok"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<p-dialog header="Deactivate Strategist" [(visible)]="statusChangeConfirmation" modal="modal" responsive="true" class="model-popup-index" showEffect="fade" [draggable]=false [resizable]=false width="600">
+    <div>
+        <div>This action will diactivate the Strategist and all associated users. He/She will not be able to login to the application unless get an approval.
+            Do you wish to continue?
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button pButton type="button" (click)="confirmDeactivateStrategist(0)" label="No" title="No"></button>
+                <button pButton type="button" (click)="confirmDeactivateStrategist(1)" label="Yes" title="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

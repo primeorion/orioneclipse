@@ -1,0 +1,10 @@
+<!--<nav>
+    <a [routerLink]="['/']"></a>
+</nav>-->
+<router-outlet></router-outlet>
+
+<!--<spinner class="hide-spinner"></spinner>-->
+<spinner *ngIf="showLoader"></spinner>
+<spinner *ngIf="!showLoader" class="hide-spinner"></spinner>
+
+

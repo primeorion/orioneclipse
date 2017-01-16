@@ -1,0 +1,302 @@
+<!--<eclipse-modelInformation-tabnav></eclipse-modelInformation-tabnav>-->
+<div class="nav-tabs-container dropdown-style">
+    <ul class="nav nav-tabs pull-left">
+        <li><a (click)="routeModelInfo()">MODEL INFORMATION</a> </li>
+        <li class="active"><a (click)="routeModelStructure()">MODEL STRUCTURE</a></li>
+    </ul>
+</div>
+<div class="tab-content">
+    <div id="ModelStructure" class="tab-pane fade in active overflow-hidden">
+        <div class="hbox-container">
+            <div class="ease left-hbox-container">
+
+                <div class="btn-bar">
+                    <div class="row">
+                        <div class="col-sm-6 text-left gridspacer">
+                            <button id="rdb1" href="javascript:void(0);" class="btnnone active" name="toggler" value="1" (click)="showToggle(1)">
+                    <i class="fa fa-share-alt chart-view-icon" aria-hidden="true" ></i></button>
+                            <button id="rdb2" href="javascript:void(0);" class="btnnone" name="toggler" value="2" (click)="showToggle(2)"><i class="fa fa-bars grid-list-icon" aria-hidden="true"  ></i></button>
+
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <button *ngIf="toggleIdShow ==2" class="btn btn-sm btn-blue" (click)="createModel()">+ CREATE NEW SUB-MODEL</button>
+                            <button class="btn  btn-sm btn-blue" name="SaveToDraft" (click)="checkValidationsToSaveData()" [disabled]="!isValidStructure()"> Save</button>
+                            <button class="btn  btn-gary btn-sm" (click)="onCancel()">cancel</button>
+
+                        </div>
+                    </div>
+                </div>
+                <!--plot Tree chart Here-->
+                <d3treechart [(ModelId)]="modelId" [(displayMode)]="displayviewMode" [(modelStatus)]="modelStatus" [(saveTreeData)]="saveTreeData"
+                    [(submodelcollection)]="submodelsData" (saveTreeDataChange)="showData($event)" (isUpdateData)="showData($event)"
+                    (subModelCollectionEvent)="getSubModels($event)" (modelData)="getModelDataEmit($event)" (postTreeChartData)="getTreeData($event)"
+                    (isChangeDetectionRef)="isChangeDetection"></d3treechart>
+            </div>
+            <div class="right-hbox-container ease" id="viewstructure_container">
+                <a href="javascript:void(0);" class="right-hbox right-hbox-model" data-target="viewstructure_container"> <i class="glyphicon-menu-right glyphicon" aria-hidden="true"></i> </a>
+                <div class="right-tab-box">
+                    <div class="nav-tabs-container">
+                        <ul class="nav nav-tabs pull-left" *ngIf="isDynamicModel">
+                            <li class="disabled"><a data-toggle="tab" href="#displayTab" disabled="isDynamicModel" (click)="displaySubModelsByTypes(1)">Category</a>                                </li>
+                            <li class="disabled"><a data-toggle="tab" href="#displayTab" (click)="displaySubModelsByTypes(2)">Class </a> </li>
+                            <li class="disabled"><a data-toggle="tab" href="#displayTab" (click)="displaySubModelsByTypes(3)">Subclass </a> </li>
+                            <li [class]="securityCssByIsdynamic()"><a data-toggle="tab" href="#displayTab" (click)="displaySubModelsByTypes(4)">Security Set </a>                                </li>
+                        </ul>
+                        <ul class="nav nav-tabs pull-left" *ngIf="!isDynamicModel">
+                            <li [class]="categoryCssByIsdynamic()"><a data-toggle="tab" href="#displayTab" disabled="isDynamicModel" (click)="displaySubModelsByTypes(1)">Category</a>                                </li>
+                            <li><a data-toggle="tab" href="#displayTab" (click)="displaySubModelsByTypes(2)">Class </a> </li>
+                            <li><a data-toggle="tab" href="#displayTab" (click)="displaySubModelsByTypes(3)">Subclass </a> </li>
+                            <li [class]="securityCssByIsdynamic()"><a data-toggle="tab" href="#displayTab" (click)="displaySubModelsByTypes(4)">Security Set </a>                                </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div id="category" class="tab-pane fade in active">
+                            <div class="form-group">
+                                <div class="icon-addon addon-lg ">
+                                    <input type="text" id="filtersubmodelData" placeholder="Search" [(ngModel)]="filterSubModel" class="form-control custom-search-bar"
+                                        (keyup)="onFilterkeyUp($event)" (keypress)="filterModelNodes($event)">
+                                </div>
+                            </div>
+                            <div class="text-select-multiple"></div>
+                            <div class="nav-tabs-container custom-tab-container fullList-scroll">
+                                <ul class="nav nav-tabs pull-left" id="spktabs">
+                                    <li>
+                                        <a data-toggle="tab" href="#favorites" (click)="displaySubmodelByCategory('Favorites')"> <i class="glyphicon glyphicon-heart"></i> Favorites </a>
+                                    </li>
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#fullList" (click)="displaySubmodelByCategory('FullList')"> <i class="glyphicon glyphicon-list"></i> Full List </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="fullList" class="tab-pane list-scroll-box  fade in fullList-container  active">
+                                        <ul *ngFor="let itemsubmodel of modelNodeslst" class="list-menu-button">
+                                            <li><a draggable="true" class="drag_list active" (dblclick)="showSubModelChilderns(itemsubmodel)"
+                                                    type={{itemsubmodel.modelType}} name={{itemsubmodel.id}}>{{itemsubmodel.name}}</a></li>
+                                            <li> <i [class]="loadisfavorites(itemsubmodel.isFavorite)" aria-hidden="false" (click)="setsubmodelasFavorite(itemsubmodel.id,itemsubmodel.isFavorite)"></i>                                                </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-create-close-model" (click)="createModel()">+ CREATE NEW SUB-MODEL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-dialog header="Create New Model" [(visible)]="createNewModel" modal="modal" responsive="true" showEffect="fade" width="900"
+        [resizable]="false">
+        <div class="">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Select Sub-Model Type *</label>
+                <div class="col-md-6">
+                    <select class="form-control" (change)="onsubModelChange($event.target.value)" [(ngModel)]="selectedSubModel">
+                    <option value="0" selected>Select Sub-Model Type</option>
+                    <option *ngFor="let vs of secuirtySubModelList" value="{{vs}}" >{{vs}}</option>
+          </select>
+                    <span *ngIf="subModelValidation" class="dialog-error">Please Select Sub-Model</span>
+                </div>
+                <label class="col-md-4 control-label">Select Asset Class Type(optional)</label>
+                <div class="col-md-6">
+                    <select class="form-control watermarked gray" [(ngModel)]="selectedAsset">
+                    <option value="0" selected>Select Asset Class Type</option>
+                     <option *ngFor="let sm of submodelList" [ngValue]="sm.id">{{sm.name}}</option>
+          </select>
+                </div>
+                <label class="col-md-4 control-label">Enter Sub-Model *</label>
+                <div class="col-md-6">
+                    <input type="text" [(ngModel)]="subModelName" placeholder="Enter Name of the New Sub-Model" (keyup)="hideError()" class="form-control placeholder-input"
+                    />
+                    <span *ngIf="subModelNameValidation" class="dialog-error">Please enter Asset Sub-Model Name</span>
+                </div>
+                <label class="col-md-4 control-label">Namespace *</label>
+                <div class="col-md-6">
+                    <input type="text" [(ngModel)]="modelNamespace" placeholder="Enter Namespace" class="form-control placeholder-input" (keyup)="hideError()"
+                    />
+                    <span *ngIf="nameSpaceValidation" class="dialog-error">Please enter Namespace</span>
+                    <span *ngIf="subModelnameSpaceValidation" class="dialog-error">Duplicate Name, please use different name to save the model</span>
+                </div>
+            </div>
+
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="resetnewModel()" class="btn btn-blueouter" label="CANCEL"></button>
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="OnSave()" label="SAVE"></button>
+            </div>
+        </footer>
+    </p-dialog>
+    <p-dialog header="Delete Model" [(visible)]="deleteNodeModel" modal="modal" responsive="true" showEffect="fade" width="600"
+        [resizable]="false">
+        <div>
+            This action will delete the Model permanently.Do you wish to continue?
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="Yes"></button>
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="No" (click)="closeInfoPopUp()"></button>
+            </div>
+        </footer>
+    </p-dialog>
+    <p-dialog header="Delete Sub-Model" [(visible)]="deleteNodeSubModel" modal="modal" responsive="true" showEffect="fade" width="600"
+        [resizable]="false">
+        <div>
+            This action will delete the Sub-Model permanently.Do you wish to continue?
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="Yes"></button>
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="No" (click)="closeInfoPopUp()"></button>
+            </div>
+        </footer>
+    </p-dialog>
+    <p-dialog [(visible)]="showSaveToDraftPopup" modal="modal" responsive="true" showEffect="fade" width="600" [resizable]="false">
+        <div class="info_lowestLevelpopup text-center">
+            All the lowest levels in the Model are not TickerSet. The Model is not complete. It will be saved as "DRAFT".
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" [disabled]="substituteForModelSave" label="Save As Draft"
+                    (click)="SaveDataToDraft()"></button>
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="Cancel" (click)="closeInfoPopUp()"></button>
+            </div>
+        </footer>
+    </p-dialog>
+    <p-dialog [resizable]="false" [(visible)]="InfoPopup" modal="modal" responsive="true" showEffect="fade" width="600">
+        <p class="info_popup text-center"></p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CLOSE" (click)="closeInfoPopUp()"></button>
+            </div>
+        </footer>
+    </p-dialog>
+    <p-dialog [resizable]="false" [(visible)]="isSubModelChilderns" modal="modal" class="money-market-model" responsive="true"
+        showEffect="fade" width="750">
+        <div class="title-bar">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" required [(readonly)]="isreadonlyName" (dblclick)="eventEmitDoubleClickName($event)" class="form-control"
+                            [(ngModel)]="subModelNameValue" (ngModelChange)="isChangedObject()">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>Namespace *</label>
+                            <input type="text" required [(ngModel)]="subModelNamespaceValue" placeholder="Enter Namespace" class="form-control placeholder-input"
+                                [(readonly)]="isreadonlyNameSpace" (dblclick)="eventEmitDoubleClickNameSpace($event)" (ngModelChange)="isChangedObject()"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-body">
+            <div class="form-group-style" id="Absolute" *ngIf="submodelDetailslst.length > 0">
+                <div class="row ">
+                    <div class="col-sm-4"> </div>
+                    <div class="col-sm-2"> <strong>Target % </strong> </div>
+                    <div class="col-sm-2"> <strong>Band/Range </strong> </div>
+                    <div class="col-sm-2"><strong>Upper % </strong></div>
+                    <div class="col-sm-2"><strong>Lower % </strong> </div>
+                </div>
+                <div class="row" *ngFor="let submodeldata of submodelDetailslst">
+                    <div class="col-sm-4"> <strong>{{submodeldata.name}} </strong> </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">{{submodeldata.targetPercent}}</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            {{submodeldata.toleranceTypeValue}}
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">{{submodeldata.upperModelTolerancePercent}}
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            {{submodeldata.lowerModelTolerancePercent}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="info_topLevelpopup text-center" *ngIf="submodelDetailslst.length == 0">
+                No children nodes found</div>
+        </div>
+        <footer>
+            <div class="col-sm-6 text-right dialog-error ui-helper-clearfix">
+                <div *ngIf="SubModelChildernsValidation" class="margin-top-20">{{errorMessage}}</div>
+            </div>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" label="Save" (click)="updateSubModel()" [disabled]="!IsValidSubModel()"></button>
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CANCEL" (click)="cancelPopUp()"></button>
+            </div>
+        </footer>
+    </p-dialog>
+    <p-dialog [resizable]="false" [(visible)]="isSubModelChildernSecurity" modal="modal" class="money-market-model" responsive="true"
+        showEffect="fade" width="750">
+        <div class="title-bar">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        {{subModelNameValue}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-body">
+            <div class="form-group-style" id="Absolute" *ngIf="submodelDetailslst.length > 0">
+                <div class="row ">
+                    <div class="col-sm-4"> </div>
+                    <div class="col-sm-2"> <strong>Target % </strong> </div>
+                    <div class="col-sm-2"><strong>Upper % </strong></div>
+                    <div class="col-sm-2"><strong>Lower % </strong> </div>
+                    <div class="col-sm-2"> <strong>Rank</strong> </div>
+                </div>
+                <div class="row margin-top-8" *ngFor="let submodeldata of submodelDetailslst">
+                    <div class="col-sm-4 word-wrap"> <strong> {{submodeldata.name}} </strong> </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">{{submodeldata.targetPercent}}</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">{{submodeldata.upperModelTolerancePercent}}
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            {{submodeldata.lowerModelTolerancePercent}}
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            {{submodeldata.rank}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="info_topLevelpopup text-center" *ngIf="submodelDetailslst.length == 0">
+                No children nodes found</div>
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="Close" (click)="cancelPopUp()"></button>
+            </div>
+        </footer>
+    </p-dialog>
+    <p-dialog [(visible)]="savedView.exitWarning.show" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+        width="400">
+        <div>
+            <div>You seem to have made some change(s) in the view. Do you want to save the new view ?.</div>
+            <footer>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="confirmClick(true)" label="No"></button>
+                    <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="confirmClick(false)" label="Yes"></button>
+                </div>
+            </footer>
+        </div>
+    </p-dialog>
+</div>

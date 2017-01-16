@@ -1,0 +1,82 @@
+<eclipse-model-tabnav [model]="tabsModel"></eclipse-model-tabnav>
+<div class="tab-content">
+	<div id="modelDashboard" class="tab-pane fade in active" *ngIf="modelSummary != undefined">
+
+		<div class="models-container">
+			<p class="model-dataAvailable basedon"> <strong>Based on data available on : </strong>{{modelSummary.analyticsOn | date: 'MM/dd/yyyy'}}</p>
+			<div class="col-md-6">
+				<div class="panel dash-bg-color1">
+					<div class="panel-body">
+						<div class="col-sm-4">
+							<p class="lead">Total # of Model</p>
+							<p class="text-left text-50"><strong>{{modelSummary.totalNumberOfModels}}</strong></p>
+						</div>
+						<div class="col-sm-8">
+							<div class="subnote row">
+								<div class="col-sm-6">Approved<br><span><strong>{{modelSummary.approvedModels}}</strong></span></div>
+								<div class="col-sm-6">Waiting for Approval<br><span><strong>{{modelSummary.waitingForApprovalModels}}</strong></span></div>
+								<div class="col-sm-6">Not-Active<br><span><strong>{{modelSummary.notActiveModels}}</strong></span></div>
+								<div class="col-sm-6">Draft<br><span><strong>{{modelSummary.draftModels}}</strong></span></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="controls">
+									<div class="contorl-active">Existing<span><strong>{{modelSummary.existingModels}}</strong></span></div>
+									<div class="contorl-active">New Model<span><strong>{{modelSummary.newModels}}</strong></span></div>
+								</div>
+							</div>
+						</div>
+						<!--<div class="goto-link"><a href="javascript:void(0);">View Detail <i class="fa fa-arrow-circle-o-right"></i></a></div>-->
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="portfolio-report-component">
+							<h4 class="title">Model Out of Tolerance </h4>
+							<div class="bs-component">
+								<span class="count">{{modelSummary.OUBalanceModels}}</span>
+								<a [routerLink]="['/eclipse', 'model', 'list', outOfToleranceStatusId]">
+									<div class="progress">
+										<div class="progress-bar tolerance" [style.width]="outOfTolerancePerc + '%'"></div>
+									</div>
+								</a>
+								<span class="total-count">{{modelSummary.totalNumberOfModels}}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="portfolio-report-component">
+							<h4 class="title">Model Needs Approval</h4>
+							<div class="bs-component">
+								<span class="count">{{modelSummary.waitingForApprovalModels}}</span>
+								<a [routerLink]="['/eclipse', 'model', 'list', waitingForApprovalStatusId]">
+									<div class="progress">
+										<div class="progress-bar trades" [style.width]="modelsWaitingForAprovalPerc + '%'"></div>
+									</div>
+								</a>
+								<span class="total-count">{{modelSummary.totalNumberOfModels}}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="portfolio-report-component">
+							<h4 class="title">Model in Draft </h4>
+							<div class="bs-component">
+								<span class="count">{{modelSummary.draftModels}}</span>
+								<a [routerLink]="['/eclipse', 'model', 'list', draftStatusId]">
+									<div class="progress">
+										<div class="progress-bar cashneed" [style.width]="draftModelsPerc + '%'"></div>
+									</div>
+								</a>
+								<span class="total-count">{{modelSummary.totalNumberOfModels}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

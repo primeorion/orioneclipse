@@ -1,0 +1,29 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left">
+        <li [routerLinkActive]="['active']"><a [routerLink] = "['/community', 'administrator', 'strategist','list']">ALL STRATEGISTS</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'V'"><a [routerLink]="['/community', 'administrator', 'strategist', 'view' , (model.id || '')]">STRATEGIST DETAIL</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'L'"><a [routerLink]="['/community', 'administrator', 'strategist', 'view']">STRATEGIST DETAIL</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'A'"><a [routerLink]="['/community', 'administrator', 'strategist', 'add']">STRATEGIST DETAIL</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'E'"><a [routerLink]="['/community', 'administrator', 'strategist', 'edit' , model.id]">STRATEGIST DETAIL</a></li>
+    </ul>
+    <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu">
+            <li [hidden]="model.id == undefined || model.action == 'V'">
+                <a [routerLink]="['/community', 'administrator', 'strategist', 'view' , (model.id || '')]">View Strategist</a>
+            </li>
+            <li [hidden]="model.id == undefined || model.action == 'E'">
+                <a href="javascript:void(0)" [routerLink]="['/community', 'administrator', 'strategist', 'edit', model.id]">Edit Strategist</a>
+            </li>
+            <li [hidden]="!(model.id != undefined || model.ids != undefined) || model.action != 'L'" *ngIf="isSuperAdmin">
+                <a href="javascript:void(0)" (click)="onMenuClick('Delete')">Delete</a>
+            </li>
+            <li [hidden]="(model.id != undefined || model.ids != undefined ) || model.action != 'L'" *ngIf="isSuperAdmin">
+                <a [routerLink]="['/community', 'administrator', 'strategist', 'add']">Add New Strategist</a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="row-404">
+    <div class="container-404">
+        <h1 class="title-404">401</h1>
+        <p class="sub-heading-404">Unauthorized Access</p>
+        <hr class="hr-style-404" />
+        <p class="redirect-style-404">You have attempted to access a page that you are not authorized to view.<br />
+            If you have any questions, please contact the site administrator.</p>
+        <p *ngIf="isAuthenticated" class="redirect-style-404">Please click here to go to <a [routerLink]="['/eclipse', 'dashboard']">Dashboard</a>.</p>
+        <p *ngIf="!isAuthenticated" class="redirect-style-404">Please click here to go to <a [routerLink]="['/login']">login</a> page.</p>
+    </div>
+</div>

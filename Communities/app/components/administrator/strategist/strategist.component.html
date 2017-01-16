@@ -1,0 +1,50 @@
+<div class="main">
+    <breadcrumb pageName="Strategist">
+        <li class="crumb-link"><a [routerLink]="['/community', 'administrator', 'dashboard']">Administrator</a></li>
+    </breadcrumb>
+    <div class="dashboard-content">
+     
+        <community-administrator-leftnav menuName="Strategists"></community-administrator-leftnav>
+        
+        <div class="grid-container">
+            <div class="nav-tabs-container tactical-trade-menu-container">
+                <ul class="nav nav-tabs pull-left">
+                    <li><a title="All Strategists" (click) = 'navigateToStrategistView()' [class.active] = "isAllStrategistView">All Strategists</a></li>
+                    <li><a title="Strategists Detail" (click) = 'navigateToStrategistDetail()' [class.active] = "!isAllStrategistView">Strategists Detail</a></li>
+                </ul>
+                <div class="actionBtn btn-group pull-right tactical-trade-menu-icon">
+                    <a data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                        <i class="material-icons">more_vert</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                    <ul class="dropdown-menu submenu-list">
+                            <div>
+                                <li><a href="javascript:void(0)">Create Strategist</a></li>
+                            </div>
+                            <div>
+                                <li><a href="javascript:void(0)">View Details</a></li>
+                            </div>
+                            <div>
+                                <li><a href="javascript:void(0)">Edit Details</a></li>
+                            </div>
+                            <div>
+                                <li><a href="javascript:void(0)">Delete Strategist</a></li>
+                            </div>
+                            <div>
+                                <li><a href="javascript:void(0)">Delete Strategists</a></li>
+                            </div>
+                     </ul>
+                </div>
+            </div>
+           <div *ngIf = 'isAllStrategistView'>
+                <community-strategist-view (setSelectedStrategist) = "setSelectedStrategist($event)"></community-strategist-view>
+            </div>
+            <div *ngIf = '!isAllStrategistView'>
+                <community-strategist-detail [strategistId] = 'strategistId'></community-strategist-detail>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>

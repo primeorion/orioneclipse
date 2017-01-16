@@ -1,0 +1,14 @@
+<p-autoComplete [(ngModel)]="selectedItem" [suggestions]="suggestions" placeholder="Portfolio ID / Portfolio Name / Tags or Account Number"
+    (completeMethod)="loadSuggestions($event)" (onSelect)="onPortfolioSelect($event)" field="name" class="form-control trade-order-search"
+    [minLength]="1">
+    <template let-selectedItem>
+        <ul class="ui-helper-clearfix show-hollding-dropdown">
+            <li>
+                <i class="fa fa-suitcase text-warning"></i>
+                <!--<span>{{selectedItem.id + " : " +selectedItem.name +" - " +" $ " + selectedItem.value}}</span>-->
+                <span *ngIf="selectedItem.accountNumber != null">{{selectedItem.id + " : " +selectedItem.name +" ( " +" $ " + selectedItem.value + ", " + selectedItem.accountNumber + " )"}}</span>
+                <span *ngIf="selectedItem.accountNumber == null">{{selectedItem.id + " : " +selectedItem.name +" ( " +" $ " + selectedItem.value + " ) "}}</span>
+            </li>
+        </ul>
+    </template>
+</p-autoComplete>

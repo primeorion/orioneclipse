@@ -1,0 +1,109 @@
+<div class="main">
+	<div class="topbar">
+		<subscriptionbreadcrumb-breadcrumb pageName="Marketing">
+			<li class="crumb-link"><a [routerLink]="['/community', 'subscription','profiles']">Subscription</a></li>
+		</subscriptionbreadcrumb-breadcrumb>
+	</div>
+	<div class="dashboard-content">
+
+		<div class="dark-bg-container">
+			<p [innerHTML]="strategist.commentary"></p>
+
+			<div class="dotted-spacer"></div>
+			<div class="row">
+				<div class="col-lg-8 col-md-6 col-sm-12">
+					<div class="available-providers">
+						<h3>AVAILABLE PROVIDERS</h3>
+						<div class="table-responsive">
+							<table class="table table-hover marketing-table">
+								<thead class="header">
+									<tr class="header">
+										<th>Model ID</th>
+										<th>Model Name</th>
+										<th></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr *ngFor="let model of strategist.models">
+										<th scope="row"><i class="fa fa-suitcase" aria-hidden="true"></i> {{model.id}}</th>
+										<td>{{model.name}}</td>
+										<td><button class="btn btn-bg-blue pull-right" [routerLink]="['/community', 'subscription', 'modelmarketing',model.id,strategistId]"><i class="fa fa-plus" aria-hidden="true"></i> Details</button></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-lg-4 col-md-6 col-sm-12">
+					<h3>YOUR STRATEGIST</h3>
+					<div class="content-box min-heght-a">
+						<div class="row">
+							<div class="col-lg-5 col-md-6  col-sm-4  ">
+								<div class="logo-larg-box">
+									<img src="app/assets/img/logo-img.png" alt="#" class="img-responsive" id="smallLogo">
+								</div>
+								<input type="file" id="file-input-small" class="hidden" accept="image/*" data-type='image'>
+							</div>
+							<div class="col-lg-7 col-md-6  col-sm-8">
+								<div class="heading">{{strategist.name}}</div>
+								<!--<p class="details">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essenase of Letraset
+									sheets It has survived not only five centuries, but also the leap into electronic typesetting, remaining essenase
+									of Letraset sheets</p>-->
+							</div>
+						</div>
+						<div class="divider"></div>
+						<div class="row">
+
+							<div class="col-xs-6"><strong>Sales</strong>
+								<p>{{strategist.salesContact}}</p>
+							</div>
+							<div class="col-xs-6"><strong>Support</strong>
+								<p>{{strategist.supportContact}}</p>
+							</div>
+						</div>
+
+						<div class="row">
+
+							<div class="col-xs-6"><strong><i class="fa fa-mobile" aria-hidden="true"></i> {{strategist.salesPhone}}</strong>
+								<a class="email-style" target="_blank">{{strategist.salesEmail}}</a></div>
+							<div class="col-xs-6"><strong><i class="fa fa-mobile" aria-hidden="true"></i> {{strategist.supportPhone}}</strong>
+								<a class="email-style" target="_blank">{{strategist.supportEmail}} </a></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="col-lg-8 col-md-6 col-sm-12">
+					<h3>AVAILABLE DOWNLOADS</h3>
+					<div class="file-list-outer min-height-a">
+						<div class="file-list">
+							<div class=" heading">File Name</div>
+							<ul>
+								<li *ngFor="let item of downloads">
+									<div class="heading text-info">
+										<a href="{{item[item.displayName]}}"> {{item.documentName}}</a>
+									</div>
+									{{item.description}}
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 col-sm-12">
+					<div class="dotted-spacer"></div>
+					<p class="text-size-20" [innerHTML]="strategist.advertisementMessage"></p>
+				</div>
+			</div>
+			<div class="divider"></div>
+			<div class="row text-right">
+				<div class="col-sm-12">
+					<button [routerLink]="['/community', 'subscription', 'profiles']" class="btn model-btn-default">Cancel</button>
+				</div>
+			</div>
+		</div>
+
+	</div>

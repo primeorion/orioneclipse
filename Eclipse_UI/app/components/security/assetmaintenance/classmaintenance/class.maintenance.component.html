@@ -1,0 +1,89 @@
+<div class="agcontainer">
+<form [ngFormModel]="classForm" (ngSubmit)="saveClass(classForm)">
+<div class="row">
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <strong>Class Name</strong>
+                <input type="text" ngControl ="name" #name="ngForm" placeholder="Enter Class Name" id="name" class="form-control" [(ngModel)]="class.name" >
+                <em class="securityError danger" *ngIf="!name.valid && submitClass">Required</em>
+                <em class="securityError danger" *ngIf="isClassDuplicate">{{classDuplicateMessage}}</em>
+            </div>
+         </div>
+         <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <strong>Select Color</strong>
+                <input [(colorPicker)]="class.color" readonly
+                       [style.background]="class.color" [cpPosition] = "'bottom'" class="form-control"/>
+            </div>
+          </div>
+         <div class="col-sm-4">
+            <button class="submitButton assetSubmit" title="Add Class"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        </div>
+</div>
+</form>
+    
+   <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                                rowSelection="single" [columnDefs]="columnDefs" [rowData]="classData" rowSelection="single"
+                                enableFilter>
+            </ag-grid-ng2>
+  <span><i class="fa fa-lock"></i>&nbsp;Classes imported from Orion Connect cannot be edited or deleted.</span>          
+<p-dialog header="Edit Class" [(visible)]="isEditClass" modal="modal" responsive="true" showEffect="fade" width="650"
+    height="500" (onAfterHide)="resetForm(classUpdateForm)">
+    
+    
+        <form [ngFormModel]="classUpdateForm" >
+            <div class="">
+                <div class="col-sm-6">
+                    <div class="form-group is-empty">
+                        <strong>Class Name</strong>
+                        <input type="text" ngControl ="name" #updateName="ngForm" placeholder="Enter Class Name" id="name" class="form-control" [(ngModel)]="class.name" >
+                        <em class="securityError danger assetEditError" *ngIf="!updateName.valid && submitClass">Required</em>
+                        <em class="securityError danger assetEditError" *ngIf="isClassDuplicate">{{classDuplicateMessage}}</em>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group is-empty">
+                        <strong>Select Color</strong>
+                        <input [(colorPicker)]="class.color" readonly 
+                            [style.background]="class.color" [cpPosition] = "'bottom'" class="form-control"/>
+                    </div>
+                </div>
+        
+            </div>
+
+        <div class="pop-footer footer-spacer">
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" title="Cancel" (click)="resetForm(classForm)" label="Cancel"></button>
+                <button type="button" pButton icon="fa-check" title="Update" (click)="updateClass(classForm)" label="Update"></button>
+            </div>
+        </div>
+        </form>
+
+</p-dialog>
+
+<p-dialog header="Delete Class" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+                        <div>
+                            <div>Do you want to delete the Class ? 
+                            </div>
+                            <footer>
+                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                    <button type="button" pButton icon="fa-close" title="No" (click)="displayConfirm=false" label="No"></button>
+                                    <button type="button" pButton icon="fa-check" title="Yes" (click)="deleteClass()" label="Yes"></button>
+                                </div>
+                            </footer>
+                        </div>
+</p-dialog>
+
+<p-dialog header="Delete Class" [(visible)]="isAssetDeleteError" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+                       <div class="warning-msg">
+                             <p><strong> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Class {{selectedClassName}}</strong>, can not be deleted as it is associated with a security.</p>
+                       </div>
+                        <footer>
+                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                    <button type="button"  pButton icon="fa-check" title="Ok" (click)="isAssetDeleteError = false" label="Ok"></button>
+                                </div>
+                       </footer>
+</p-dialog>
+</div>

@@ -1,0 +1,39 @@
+<div class="panel panel-default">
+    <div *ngFor="let category of categories;let i = index">
+        <div class="panel-heading" role="tab" id="heading{{category.name}}">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{category.id}}" aria-expanded="false" aria-controls="Rebalance">
+                           {{category.name}}
+                           </a>
+            </h4>
+        </div>
+        <div id="{{category.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="Rebalance">
+            <div class="category-fieldset category-form">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <form [formGroup]="form" class="form-horizontal">
+                            <div *ngFor="let preference of preferences | itemfilter : 'categoryType' : category.name ">
+                                <span [ngSwitch]="perfpermissionMode">
+                                    <span *ngSwitchCase="'ADDUPDATE'">
+                                          <dynamic-control [dynamicControlData]="preference" [(communityStrategies)]="preferenceCommunities" [form]="form" [LocationOptimizations]="locationOptimizations"
+                                    [(SecurityPrefResult)]="SecurityPrefResultWrapper" [levelName]="levelName"></dynamic-control>
+
+                                    </span>
+                                <span *ngSwitchCase="'VIEW'">
+                                     <dynamic-control-readonly [dynamicControlData]="preference" [(communityStrategies)]="preferenceCommunities" [form]="form"
+                                    [LocationOptimizations]="locationOptimizations" [(SecurityPrefResult)]="SecurityPrefResultWrapper"
+                                    [levelName]="levelName"></dynamic-control-readonly>
+                                    </span>
+                                </span>
+
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="admin-sub-left">
+    <div class="info-box">
+        <p class="title">{{menuName}}</p>
+        <p>{{model.all}}</p>
+    </div>
+    <div class="status">
+        <div class="col-sm-6 divider-line">
+            <p>{{existingLabel}}<br /><strong>{{model.existingOrActive}}</strong></p>
+        </div>
+        <div class="col-sm-6" *ngIf="!isCustodian">
+            <p>{{newLabel}}<br /><strong>{{model.newOrPending}}</strong></p>
+        </div>
+    </div>
+    <ul class="admin-menu">
+        <li><a *ngIf="confirmRedirect === 'PREFREDIRECT'" [routerLink]= [redirectToThisRouterLink] [routerLinkActive]="['active']" title="Preferences">Preferences</a></li>
+        <li><a *ngIf="uiprivilege.hasCustodian" [routerLink]="['/eclipse', 'admin', 'custodian']" [routerLinkActive]="['active']" title="Custodian">Custodian</a></li>
+         <li><a *ngIf="uiprivilege.hasTeam" [routerLink]="['/eclipse', 'admin', 'team']" [routerLinkActive]="['active']" title="Teams">Teams</a></li>
+         <li><a *ngIf="uiprivilege.hasRole" [routerLink]="['/eclipse', 'admin', 'role']" [routerLinkActive]="['active']" title="Roles">Roles</a></li>
+        <li><a *ngIf="uiprivilege.hasUser" [routerLink]="['/eclipse', 'admin', 'user']" [routerLinkActive]="['active']" title="Users">Users</a></li>
+    </ul>
+</div>

@@ -1,0 +1,122 @@
+<eclipse-security-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-security-tabnav>
+<div class="agcontainer grid-height">
+    <div class="row seccontainer">
+
+        <div class="col-sm-4 form-inline  form-group">
+            <p-autoComplete class=" radius-none search-security  autocomplete-block" [(ngModel)]="selectedSecurity" [suggestions]="filteredSecurityResult" placeholder="Search Securities" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedSecurity(selectedSecurity)"
+                (keyup)="handleSelectedSecurity(selectedSecurity)"></p-autoComplete>
+        </div>
+        <div class="col-sm-1">
+            <button type="button" class="btn btn-info btn-raised customBtn" title="Add Security" (click)="addSecurity(selectedSecurity)" [disabled]="btnDisableSecurity">Add</button>
+        </div>
+
+
+    </div>
+    <span class="securityError danger" *ngIf="saveError">{{errorMessage}}</span>
+    <div class="grid-height">
+        <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions" rowSelection="single" [columnDefs]="columnDefs" [rowData]="securityData" [suppressMenuMainPanel]="true" enableFilter [getContextMenuItems]="getContextMenuItems"
+            (rowClicked)="rowSelected($event)">
+        </ag-grid-ng2>
+    </div>
+
+</div>
+
+<p-dialog header="Delete Securities" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="600">
+    <div>
+        <div>Are you sure you want to delete the Securities ?
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button pButton type="button" (click)="displayConfirm=false" label="No" title="No"></button>
+                <button pButton type="button" (click)="deleteSecurity()" label="Yes" title="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<p-dialog header="Delete Securities" [(visible)]="isSecurityDeleteError" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="600">
+    <div class="warning-msg">
+        <p><strong> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Security {{selectedSecurityName}}, can not be deleted as it is associated with a security set.</strong></p>
+    </div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-check" title="Ok" (click)="isSecurityDeleteError = false" label="Ok"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+
+<p-dialog header="Corporate Actions -  update dynamic Models" [(visible)]="showCorporateActions" modal="modal" responsive="true" showEffect="fade" [resizable]=true width="1024">
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label><b>Security Name:</b>  <span>Prime Ki Software Solutions</span></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label><b>Security Price:</b>  <span>$10.09</span></label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><b>Security Symbol:</b>  <span>ALCL</span></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Corporate Action Type:</label>
+                <select class="form-control" [(ngModel)]="corpoaretActionObj.corpActionType" (change)="onActionTypeChange($event.target.value)">  
+                        <option value="0">Select</option>
+                         <option *ngFor="let cp of corpActionTypes" value="{{cp.name}}">{{cp.name}}</option>
+                        </select></div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group is-empty">
+                <label class="col-sm-12">Dyn.Share Allocation </label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" [(ngModel)]="corpoaretActionObj.from" (keyup)="validate()" />
+                </div>
+                <div class="col-sm-1 margin-top-10">
+                    :
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" [(ngModel)]="corpoaretActionObj.to" class="form-control" (keyup)="validate()" />
+                </div>
+
+                <div class="col-sm-4" *ngIf="corpoaretActionObj.corpActionType=='Spin-Off'">
+                    <p-autoComplete class="port-search" [(ngModel)]="selectedTicker" [suggestions]="filteredSecurityResult" placeholder="Search Securities" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1"></p-autoComplete>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2 pull-right">
+            <div class="form-group  margin-top-30 text-right">
+                <button type="button" (click)="addCorporateAction()" class="btn btn-info btn-raised" [disabled]="disableButton">Add</button>
+            </div>
+        </div>
+
+        <div class="">
+            <ag-grid-ng2 style="width:100%; height: 350px;" rowBuffer="100" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="corporateGridOptions" rowSelection="single" enableColResize="true" [columnDefs]="corporateColumnDefs" [rowData]="corporateActions"
+                enableFilter [suppressMenuMainPanel]="true" [context]="gridContext">
+            </ag-grid-ng2>
+        </div>
+    </div>
+
+
+
+
+
+
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" class="btn btn-blueouter" pButton (click)="closeCorporateActions();" label="Close"></button>
+
+        </div>
+    </footer>
+</p-dialog>

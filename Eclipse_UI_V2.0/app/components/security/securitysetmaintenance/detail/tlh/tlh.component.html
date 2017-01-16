@@ -1,0 +1,17 @@
+<div>
+    
+    <span [hidden] = '!isDetailEditMode'>
+    Select Security for TLH : <p-autoComplete class="form-control inputpopup radius-none" class="autocomplete-block" [(ngModel)]="selectedSecurity" [suggestions]="filteredSecurityResult"
+                        placeholder="Search Security" name="tlhSearch" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedSecurity(selectedSecurity)" (keyup)="handleSelectedSecurity(selectedSecurity)"></p-autoComplete>
+   <button type="button" class="btn btn-info addbtnpopup btn-raised" title="Add Security" (click)="addTlh(selectedSecurity)" [disabled]="btnDisableSecurity">Add</button>
+    </span>
+    <br/>
+    <ag-grid-ng2 #agGrid style="width: 100%; height: 200px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+           rowSelection="single" [columnDefs]="tlhColumnDefs" [rowData]="tlhList" 
+          [suppressMenuMainPanel]="true" enableFilter [getContextMenuItems]="getContextMenuItems">
+     </ag-grid-ng2>
+    <div class="button-footer-security">
+        <span [hidden] = '!isDetailEditMode'><input type="submit" name="securitySave" class="btn btn-info  btn-raised " value="Save"  title= "Save TLH" (click) = "save()"/></span>
+        <a class="btn btn-default btn-raised " (click) = "cancel()" title="Cancel"> Cancel</a>
+     </div>
+</div>

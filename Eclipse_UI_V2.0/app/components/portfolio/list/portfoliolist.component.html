@@ -1,0 +1,71 @@
+<eclipse-portfolio-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-portfolio-tabnav>
+<div class="tab-content">
+    <div id="allportfolios" class="tab-pane fade in active grid-height">
+        <div class="tab-header">
+            <div class="form-inline">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <eclipse-savedviews [model]="savedView" (parentColDefCallback)="createColumnDefs()" (parentCallback)="refreshPortfoliosList()" viewTypeId="2"></eclipse-savedviews>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <div class="form-group">
+                            <label class="label-right-space">Filter : </label>
+                            <select id="select111" class="form-control" [(ngModel)]="portfolioFilterId" (change)="onFilterChange($event)">
+                            <option value="0">NONE</option>
+                            <option *ngFor="let s of portfolioFiltersList" value={{s.id}}> {{s.filter}}</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="agcontainer">
+            <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting (rowSelected)="onRowSelected($event)" (rowDoubleClicked)="onRowDoubleClicked($event)" [gridOptions]="portfolioGridOptions" enableColResize="true" rowSelection="multiple"
+                [columnDefs]="portfolioColumnDefs" [rowData]="portfolioList" enableFilter [getContextMenuItems]="getContextMenuItems" (gridReady)="onGridReady($event)" (modelUpdated)="onModelUpdated()" [groupRowAggNodes]="groupAggFunction" [groupColumnDef]="groupColDef"
+                (rowClicked)="onRowClicked($event)" (rowGroupOpened)="rowGroupOpened($event)" rememberGroupStateWhenNewData="true" [getRowStyle]="getRowStyle" [context]="gridContext" [suppressMenuMainPanel]="true">
+            </ag-grid-ng2>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="400">
+    <div>
+        <div>This action will delete the Portfolio permanently. <br /> Do you wish to continue?</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="displayConfirm=false" label="No"></button>
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="deletePortfolio()" label="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteCheck" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="400">
+    <div>
+        <div>You can not delete this Portfolio as there are Account(s) associated with it.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter" pButton (click)="deleteCheck=false" label="Ok"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteMessage" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="400">
+    <div>
+        <div>{{deletedPortfoliosCount}} out of {{selectedPortfoliosCount}} Portfolios have been deleted. <span *ngIf="unDeletedPortfoliosCount > 0"> Cannot delete {{unDeletedPortfoliosCount}}
+            Portfolios due to conflicts. </span>
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter" pButton (click)="deleteMessage=false" label="Ok"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<eclipse-assign-accounts-portfolio (parentCallback)="callbackAssignPopup(); loadPortfolios();" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-accounts-portfolio>
+
+<!--<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="setFilter()">click</button>-->

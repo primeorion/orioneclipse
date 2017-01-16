@@ -1,0 +1,28 @@
+<div class="row row-no-padding holdings-search-head">
+    <div class="col-md-4">
+        <div class="form-group row row-no-padding">
+            <label class="control-label col-md-5">Show Holdings By : </label>
+            <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="selectedHoldingParam" (change)="selectedHoldingParamChange($event.target.value)">
+                    <option value="">Select</option>
+                    <option *ngFor="let h of holdingValues" [ngValue]="h.name">{{h.name}}</option>
+                 </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group row row-no-padding">
+            <label class="control-label col-md-3">Value : </label>
+            <div class="col-md-8">
+                <p-autoComplete [(ngModel)]="selectedHoldingObj" [suggestions]="autoCompleteSuggestions" placeholder="Search" (completeMethod)="loadAutoCompleteSuggestionsBySelectedHolding($event)"
+                    (onSelect)="onSelect($event)" field="name" class="port-search" [minLength]="1"  (keyup)="handleSelectedValue(selectedHoldingObj)">
+                </p-autoComplete>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group row row-no-padding">
+            <button type="submit" class="btn btn-raised btn-info btn-sm" (click)="applySelectedChanges()" [disabled]="disableBtn">Apply</button>
+        </div>
+    </div>
+</div>

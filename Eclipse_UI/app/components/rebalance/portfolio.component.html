@@ -1,0 +1,41 @@
+<div class="dashboard-content">  
+  <div class = "row">
+      <div class="col-sm-3">
+          <div class="form-group is-empty">
+                <label class="primar-label" for="roletype">Select Portfolio</label>
+              <select class="form-control" [(ngModel)]="selectedPortfolioId" (change)="selectPortfolio($event.target.value)">
+                    <option value="0">Select Portfolio</option>
+                  <option *ngFor="let portfolio of portfolioList" value={{portfolio.id}} >
+                      {{portfolio.name}}
+                  </option>
+              </select>
+          </div>
+      </div>  
+  </div>
+  <div class= "row" *ngIf = "selectedPortfolioId != 0">
+            <div class="col-sm-3">
+                <label class="primar-label" > Portfolio Id
+                  <br>{{rebalanceInfo.id}}
+                </label>
+            </div>
+        
+            <div class="col-sm-3"><label class="primar-label" for="modelName">Portfolio Name</label>
+            <br>{{rebalanceInfo.name}}
+            </div>
+            <div class="col-sm-3"><label class="primar-label" for="modelName">Portfolio Market value</label>
+            <br>$ {{rebalanceInfo.portfolioMarketValue}}
+            </div>
+        </div>
+        <div *ngIf = "selectedPortfolioId != 0">
+        <button class= "btn btn-raised btn-primary" (click)="gridOptions.api.expandAll()">Expand All</button>
+        <button class= "btn btn-raised btn-primary" (click)="gridOptions.api.collapseAll()">Collapse All</button>
+        <div class = "agcontainer">
+               <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                                rowSelection="single" [columnDefs]="columnDefs" [rowData]="rebalanceInfo.securityList" 
+                                enableFilter>
+            </ag-grid-ng2>
+              
+            </div>
+            </div>
+</div>
+      

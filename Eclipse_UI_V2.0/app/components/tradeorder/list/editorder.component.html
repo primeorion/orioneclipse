@@ -1,0 +1,98 @@
+<!--<p-dialog header="Set Aside Cash" [(visible)]="displayAsideCash" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+		[resizable]=false width="800">
+<div class="dashboard-content">
+	<div id="" class="tab-pane fade in">
+		<div class="panel panel-default">
+			<div class="clearfix"></div>
+			<div class="col-sm-4">
+				<div class="form-group is-empty">
+					<label class="primar-label">Ticker</label>
+					<input type="text" class="form-control placeholder-input" />
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group is-empty">
+					<label class="primar-label">Order type</label>
+					<select class="form-control"  [(ngModel)]="tradeOrderData.orderType">      
+                         <option></option>  
+						   <option *ngFor="let or of orderTypes"  [ngValue]="or.id" >{{or.name}}</option>
+                         </select>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group is-empty">
+					<label class="primar-label">Action</label>
+					<select class="form-control" [(ngModel)]="tradeOrderData.tradeAction" >      
+                  <option *ngFor="let act of actionTypes" [ngValue]="act.id" >{{act.name}}</option>
+                         </select>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="form-group is-empty">
+					<label class="primar-label">Limit Price</label>
+					<input type="text" class="form-control placeholder-input" [(ngModel)]="tradeOrderData.limitPrice"  />
+			</div>
+
+
+			<div class="col-sm-4">
+				<div class="form-group  is-empty">
+					<label class="primar-label">Quantity</label>
+					<input type="text" class="form-control placeholder-input" [(ngModel)]="tradeOrderData.orderQty"  />
+
+				</div>
+			</div>
+
+
+			<div class="col-sm-4">
+				<div class="form-group  is-empty">
+					<label class="primar-label">Stop Price</label>
+					<input type="text" class="form-control placeholder-input" [(ngModel)]="tradeOrderData.stopPrice"  />
+
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group is-empty">
+					<label class="primar-label">Qualifier</label>
+					<select class="form-control"  [(ngModel)]="tradeOrderData.qualifier" >     
+                            <option *ngFor="let qua of qualifiers" [ngValue]="qua.id" >{{qua.name}}</option>   
+                         </select>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="form-group is-empty">
+					<label class="primar-label">Duration</label>
+					<select class="form-control" [(ngModel)]="tradeOrderData.duration" >     
+                      <option *ngFor="let dur of durations" [ngValue]="dur.id"  >{{dur.name}}</option>                                        
+                 </select>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="form-group  is-empty">
+					<label class="primar-label">Discretionary </label>
+					<input type="Checkbox" [ngModel]="tradeOrderData.isDiscretionary" >
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="form-group  is-empty">
+					<label class="primar-label">Solicited  </label>
+					<input type="Checkbox"  [ngModel]="tradeOrderData.isSolicited">
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+<div class="clearfix"></div>
+
+<div class="button-footer">
+	<input type="submit"  class="btn btn-info btn-raised " (click)='onSubmit(tradeOrderData)' value="Save"/>
+	<input type="submit"  class="btn btn-info btn-raised " (click)='onSend(tradeOrderData)' value="Send"/>
+		<a [routerLink]="['/eclipse', 'tradeorder', 'list']" class="btn btn-raised btn-default">Cancel</a>
+</div>
+<h1>hello</h1>
+</p-dialog>-->

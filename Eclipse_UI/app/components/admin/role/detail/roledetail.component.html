@@ -1,0 +1,129 @@
+<!-- admin left menu -->
+<admin-leftmenu [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+
+    <eclipse-admin-role-tabnav (showDeletePopup)="showDeleteConfirm()" [model]="tabsModel"></eclipse-admin-role-tabnav>
+    <div class="tab-content">
+        <form name="formRoleDetails" (submit)="onSave()">
+            <div class="form-container">
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <div class="form-group is-empty">
+                                    <label class="primar-label" for="roletype">Role Type</label>
+                                    <select class="form-control" [disabled]="disableType" required [(ngModel)]="role.roleTypeId" (change)="onRoleTypeChange($event.target.value)">
+                                        <option value="0">Select Role Type</option>
+                                        <option *ngFor="let rt of roleTypes" [ngValue]="rt.id">{{rt.roleType}}</option>
+                                    </select>
+                                    <div *ngIf="errRoleType" class="error">Please Select Role Type</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group is-empty">
+                                    <label class="primar-label" for="rolename">Role Name</label>
+                                    <input type="text" placeholder="Enter Role Name" id="rolename" [(ngModel)]="role.name" (blur)="roleAlreadyExist()" (keyup)="hideError()"
+                                        class="form-control" />
+                                    <span *ngIf="spaceflag" class="error">Please Enter Role Name</span>
+                                    <span *ngIf="isRoleExists" class="error">Role already exist with same name</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" *ngIf="activeRoute == 'edit'">
+                                <div class="form-group is-empty role-spacer">
+                                    <label class="primar-label" for="roletype">Status</label>
+                                    <p class="label label-success" *ngIf="role.status">Active</p>
+                                    <p class="label label-default" *ngIf="!role.status">In-active</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <div class="form-group is-empty role-spacer">
+                                    <label class="primar-label" for="startDate">Start Date</label>
+                                    <p-calendar [(ngModel)]="startDate" showAnim="slideDown" [showIcon]="true" (onSelect)="startDateSelect() " [monthNavigator]="true "
+                                        placeholder="Select Start Date" [yearNavigator]="true " [readonlyInput]="true"></p-calendar>
+                                    <!--<span *ngIf="errStardate" class="error"> Start Date should be less than the expiry Date </span>-->
+                                    <span *ngIf="shwstrtdatemsg " class="error ">Please select start date</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="form-group is-empty">
+                                    <label class="primar-label" for="endDate">Expiry Date</label>
+                                    <p-calendar [(ngModel)]="expireDate" showAnim="slideDown" [showIcon]="true" [monthNavigator]="true" placeholder="Select Expiry Date"
+                                        [yearNavigator]="true" (onSelect)="expiryDateSelect()" [readonlyInput]="true"></p-calendar>
+                                    <span *ngIf="shwexpdatecomprmsg" class="error">Expiry date should be greater than start date</span>
+                                    <span *ngIf="shwexpdatemsg" class="error">Please select Expiry date</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" *ngIf="activeRoute == 'edit'">
+                            <div class="col-sm-4">
+                                <div class="form-group is-empty">
+                                    <label class="primar-label" for="roletype">Created On</label>
+                                    <div>{{role.createdOn | date: 'MM/dd/yyyy' }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group is-empty">
+                                    <label class="primar-label" for="roletype">Last Edit On</label>
+                                    <div>{{role.editedOn | date: 'MM/dd/yyyy'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <table class="table table-hover premissionTable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="text-center"> <label>
+                        All <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [(ngModel)]="globalAdd" (change)="onWriteChange($event)" /></label>
+                            </th>
+                            <th class="text-center"> <label>
+                        All <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [(ngModel)]="globalRead" (change)="onReadChange($event)" /></label>
+                            </th>
+                            <th class="text-center"> <label>
+                        All <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [(ngModel)]="globalEdit" (change)="onEditChange($event)" /></label>
+                            </th>
+                            <th class="text-center"> <label>
+                        All <input type="checkbox" name="title-checkbox" class="bootstrap-switch-primary" [(ngModel)]="globalDelete" (change)="onDeleteChange($event)" /></label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-lock"></i> Privileges </th>
+                            <th class="text-center">Can Create</th>
+                            <th class="text-center">Can Read</th>
+                            <th class="text-center">Can Edit</th>
+                            <th class="text-center">Can Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template ngFor [ngForOf]="categoryPrivileges" let-cat="$implicit">
+                            <tr class="rowhd">
+                                <td><strong>{{cat.category == 'Modeling' ? 'Model' : cat.category}}</strong></td>
+                                <td class="text-center">&nbsp; </td>
+                                <td class="text-center">&nbsp; </td>
+                                <td class="text-center">&nbsp; </td>
+                                <td class="text-center">&nbsp; </td>
+                            </tr>
+                            <tr *ngFor="let item of cat.privileges">
+                                <th scope="row">{{item.name}}</th>
+                                <td class="text-center"><input *ngIf="item.type == 0" type="checkbox" [(ngModel)]="item.canAdd" (change)="onChkChange($event, item, paramWrite)"></td>
+                                <td class="text-center"><input type="checkbox" [(ngModel)]="item.canRead" (change)="onChkChange($event, item, paramRead)"></td>
+                                <td class="text-center"><input *ngIf="item.type == 0" type="checkbox" [(ngModel)]="item.canUpdate" (change)="onChkChange($event, item, paramEdit)"></td>
+                                <td class="text-center"><input *ngIf="item.type == 0" type="checkbox" [(ngModel)]="item.canDelete" (change)="onChkChange($event, item, paramDelete)"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="button-footer">
+                    <input type="submit" name="roleSave" class="btn btn-info btn-raised" [value]="(activeRoute == 'edit' ? 'Save' : 'Add')" [disabled]="btnSaveDisable"
+                    />
+                    <a [routerLink]="['/eclipse', 'admin', 'role', 'list']" class="btn btn-default btn-raised"> Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

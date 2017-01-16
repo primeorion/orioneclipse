@@ -1,0 +1,13 @@
+ALTER TABLE `dev_orioneclipsefirm_999`.`rolePrivilege` ADD PRIMARY KEY (`roleId`, `privilegeId`); 
+
+
+CREATE TABLE `dev_orioneclipsefirm_999`.`assetWeighting`( `securityId` INT(11) NOT NULL, `relatedType` VARCHAR(25) NOT NULL, `relatedTypeId` INT(11) NOT NULL, `weightingPercentage` DECIMAL(10,0), `isDeleted` TINYINT(1), `createdBy` INT(11), `createdDate` DATETIME, `editedBy` INT(11), `editedDate` DATETIME, PRIMARY KEY (`securityId`, `relatedType`, `relatedTypeId`) ); 
+
+ALTER TABLE `dev_orioneclipsefirm_999`.`assetWeighting` CHANGE `isDeleted` `isDeleted` TINYINT(1) NOT NULL, CHANGE `createdBy` `createdBy` INT(11) NOT NULL, CHANGE `createdDate` `createdDate` DATETIME NOT NULL, CHANGE `editedBy` `editedBy` INT(11) NOT NULL, CHANGE `editedDate` `editedDate` DATETIME NOT NULL; 
+
+
+ALTER TABLE `dev_orionEclipseFirm_999`.`security` CHANGE `status` `status` TINYINT(1) NOT NULL; 
+
+ALTER TABLE `dev_orioneclipsefirm_999`.`securitySetDetail` ADD COLUMN `rank` INT NOT NULL AFTER `securityId`;
+LTER TABLE `dev_orioneclipsefirm_999`.`security` CHANGE `status` `status` TINYINT(1) DEFAULT 2 NULL; 
+UPDATE `security` SET `status` =2

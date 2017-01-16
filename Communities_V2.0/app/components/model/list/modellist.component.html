@@ -1,0 +1,87 @@
+<div class="main">
+    <model-breadcrumb pageName="Model"></model-breadcrumb>
+    <div class="dashboard-content dashboard-content-margin">
+        <community-model-tabnav [model]="tabsModel" (callParentPopup)="showDeletePopUp($event)"></community-model-tabnav>
+        <div class="tab-content">
+            <div id="tab1" class="tab-pane fade in active grid-height">
+                <div class="tab-header">
+                    <div class="">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <button type="button" [routerLink]="['/community', 'model', 'add']" class="btn btn-info btn-raised button-space"> Create new model </button>
+                                <button type="button" (click)="modelImport()" class="btn btn-info btn-raised button-space"> Model import</button>
+                            </div>
+                            <div class="col-sm-7 text-right">
+                                <communities-savedviews [model]="savedView" (parentCallback)="getAllModelsInfo()" viewTypeId="4"></communities-savedviews>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting (rowSelected)="onRowSelected($event)" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="allModelData" enableFilter enableFilter [getContextMenuItems]="getContextMenuItems"
+                    (gridReady)="onGridReady($event)" (modelUpdated)="onModelUpdated()" [context]="gridContext" (rowDoubleClicked)="onRowDoubleClicked($event)" rowSelection="multiple" (rowClicked)="onRowClicked($event)">
+                </ag-grid-ng2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" width="526" [resizable]=false>
+    <div>
+        <div>
+            <p>This action will Permanently  Delete the Model.It will no longer be mapped to any portfolio. </p> 
+            <p>Do You wish to continue?</p>
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayConfirm=false">No</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="deleteModel()">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayImportModel" class="popup-style" modal="modal" responsive="true" header="Model Import" showEffect="fade" width="526" [resizable]=false>
+    <div class="modal-content">
+        <div class="modal-body">
+            <a href="{{modelTemplateUrl}}">
+                <p class="download-format"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Download the Format</p>
+            </a>
+            <div *ngIf="checkUploadFile">
+                <div (dragover)='dragFile($event)' (drop)='dropFile($event)'>
+                    <div class="choose-file-small-box file-upload-input-style">
+                        <span class="btn btn-info btn-file btn-raised"> Choose File
+                       <input type="file" name="model" id ="model-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+       (change)="selectedTemplate($event)">
+                      </span><br> or drag and drop here
+                        <div *ngIf="!disableUploadBtn">
+                            <p *ngIf="checkDragFile">{{dragFileName}}</p>
+                            <p *ngIf="!checkDragFile">{{file.name}}</p>
+                        </div>
+                    </div>
+                </div>
+                <em class="securityError danger" *ngIf="showFiletUploadError">{{fileUploadError}}</em>
+            </div>
+            <div *ngIf="modelErrors && !checkUploadFile">
+                <div class="choose-file-small-box file-upload-input-style import-log">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> There is something wrong please check log.
+                </div>
+
+                <p><strong>Import Log</strong></p>
+                <div class="import-log-box">
+                    <p *ngFor="let error of errorLog">{{error.message}}</p>
+                </div>
+            </div>
+            <div class="choose-file-small-box file-upload-input-style file-successfully-imported" *ngIf="!modelErrors && !checkUploadFile">
+                <i class="fa fa-check-circle" aria-hidden="true"></i> File is successfully imported
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" class="btn btn-blueouter" icon="fa-close" *ngIf="!showCloseBtn" (click)="cancelModel()">CANCEL</button>
+            <button type="button" class="btn btn-blueouter" icon="fa-close" *ngIf="showCloseBtn" (click)="cancelModel()">CLOSE</button>
+            <button type="button" class="btn btn-info btn-raised" icon="fa-check" [disabled]="disableUploadBtn" (click)="postFile()" *ngIf="checkUploadFile">CREATE MODEL</button>
+            <button type="button" class="btn btn-info btn-raised" icon="fa-check" (click)="modelImport()" *ngIf="modelErrors">TRY AGAIN</button>
+        </div>
+    </footer>
+</p-dialog>

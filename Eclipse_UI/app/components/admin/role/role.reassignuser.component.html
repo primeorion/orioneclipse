@@ -1,0 +1,42 @@
+<div class="error" *ngIf="showErrorMessage">
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+        {{errorMessage}}
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="form-group is-empty">
+   <strong>Current Role Assignment </strong><br/>
+    Role id: {{selectedRoleData.id}} <br/>
+    Role Name:  {{selectedRoleData.name}}  <br/>
+    User Level: {{selectedRoleData.roleType}} <br/>
+    CreatedOn: {{selectedRoleData.createdOn | date: 'MM/dd/yyyy'}}<br/>
+    Status:  {{(selectedRoleData.id == null) ? '' : (selectedRoleData.status) ? 'Active' : 'InActive' }} <br/>
+    No Of users: {{usersCount}} <br/>
+</div>
+</div>
+
+<div class="col-sm-6">
+    <div class="form-group is-empty role-spacer">
+    <strong>New Role Assignment </strong><br/>
+    <select class="form-control" (change)="dropDownChange($event.target.value)">
+        <option value="0">Select Role</option>
+        <option *ngFor="let ro of rolesData" value={{ro.id}} >
+            {{ro.name}}
+        </option>
+    </select>
+    
+    <br/>
+    <div *ngIf="selectedRole != null">
+        Role id: {{selectedRole.id}} <br/>
+        Role Name:  {{selectedRole.name}}  <br/>
+        User Level: {{selectedRole.roleType}} <br/>
+        CreatedOn: {{selectedRole.createdOn | date: 'MM/dd/yyyy'}}<br/>
+        No Of users:   {{selectedRole.numberOfUsers}}<br/>
+        Status:  {{(selectedRole.id == null) ? '' : (selectedRole.status) ? 'Active' : 'InActive' }} <br/>
+    </div>
+    
+</div>
+<div *ngIf="errNewRoleAssignment" class="validationerror"> Please select role to reassign </div>
+</div>
+

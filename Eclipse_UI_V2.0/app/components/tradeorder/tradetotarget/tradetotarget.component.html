@@ -1,0 +1,260 @@
+<div class="nav-tabs-container dropdown-style">
+	<ul class="nav nav-tabs pull-left step-process-tab-style">
+		<li id="selectionFilter" [ngClass]="{'active': viewName == 'SelectionTab'}" class="tab-disabled">
+			<a aria-expanded="false" data-toggle="tab" href="#SelectionTab"> <i>1</i> SELECTION AND FILTER </a>
+		</li>
+		<li  id="tradeOptions"  *ngIf="isTickerSwap==true" class="tab-disabled" [ngClass]="{'active': viewName == 'tradeOptionsTab'}">
+			<a aria-expanded="true" data-toggle="tab" href="#tradeOptionsTab"> <i>2</i> TRADE OPTIONS </a>
+		</li>
+
+	</ul>
+</div>
+<div class="tab-content">
+	<div id="SelectionTab" class="tab-pane fade in active" *ngIf="viewName == 'SelectionTab'">
+		<h4 class="text-info">Which method do you want to use for selecting accounts to trade</h4>
+		<!-- 1st tab start -->
+		<div class="selection-content-container">
+			<div class="row">
+				<div class="col-sm-4 ">
+					<div class="content-box-left">
+						<form>
+							<!--<div class="radio " data-rel="portfolioContent" *ngIf="showPortfolio"> <label><input type="radio" name="optradio" [checked]="portfolio == 1" (click)="radioBtnChange(1, 'portfolio')"><span class="circle"></span><span class="check"></span>Portfolio</label></div>-->
+							<div class="radio" data-rel="accountContent"> <label><input type="radio" name="optradio" [checked]="account == 1" (click)="radioBtnChange(1, 'account')"><span class="circle"></span><span class="check"></span>Account</label></div>
+							<div class="radio" data-rel="modelContent"> <label><input type="radio" name="optradio" [checked]="model == 1" (click)="radioBtnChange(1, 'model')"><span class="circle"></span><span class="check"></span>Model</label></div>
+							<div class="radio" data-rel="tradeGroupsPortfolioContent"> <label><input type="radio" name="optradio" [checked]="tradeGroupsForPortfolio == 1" (click)="radioBtnChange(1, 'tradeGroupsForPortfolio')"><span class="circle"></span><span class="check"></span>Trade Groups for Portfolio</label></div>
+							<div class="radio" data-rel="tradeGroupsAccountContent"> <label><input type="radio" name="optradio" [checked]="tradeGroupsForAccount == 1" (click)="radioBtnChange(1, 'tradeGroupsForAccount')"><span class="circle"></span><span class="check"></span>Trade Groups for Accounts</label></div>
+							<div class="radio" data-rel="excelImportContent"> <label><input type="radio" name="optradio" [checked]="excelImport == 1" (click)="radioBtnChange(1, 'excelImport')"><span class="circle"></span><span class="check"></span>Excel Import</label></div>
+						</form>
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="content-container">
+						<div *ngIf="tradeFilterMethod != 'excelImport'" class="">
+							<div class="">
+								<div class="col-sm-10">
+									<div class="form-group is-empty">
+										<div class="icon-addon addon-md">
+											<div *ngIf="tradeFilterMethod == 'account'">
+												<eclipse-account-autocomplete (parentCallback)="getSelectedItem($event)" (tradeFilterCallback)="getTradeFiltersData($event)" (tabSelectionCallback)="setSelectedView($event)" [isSpendCash]="isSpendCash"></eclipse-account-autocomplete>
+											</div>
+											<div *ngIf="tradeFilterMethod == 'model'">
+												<eclipse-model-autocomplete (parentCallback)="getSelectedItem($event)" (tabSelectionCallback)="setSelectedView($event)"></eclipse-model-autocomplete>
+											</div>
+											<div *ngIf="tradeFilterMethod == 'tradeGroupsForPortfolio'">
+												<eclipse-tragegroupsportfolio-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-tragegroupsportfolio-autocomplete>
+											</div>
+											<div *ngIf="tradeFilterMethod == 'tradeGroupsForAccount'">
+												<eclipse-tragegroupsaccount-autocomplete (parentCallback)="getSelectedItem($event)"></eclipse-tragegroupsaccount-autocomplete>
+											</div>
+
+											<label for="email" class="glyphicon glyphicon-search addon-top-space" rel="tooltip"></label>
+										</div>
+										<span class="material-input"></span></div>
+								</div>
+								<div class="col-sm-2"> <button type="button" (click)="addItem()" class="btn btn-raised btn-add btn-info">ADD</button></div>
+							</div>
+
+							<div class="agcontainer">
+								<ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="tradetoTargetGridOptions" enableColResize="true"
+										rowSelection="single" [columnDefs]="tradetoTargetColumnDefs" [suppressContextMenu]="true" [showToolPanel]="false" [rowData]="List"
+										enableFilter [suppressMenuMainPanel]="true">
+								</ag-grid-ng2>
+</div>
+</div>
+
+<div *ngIf="tradeFilterMethod == 'excelImport'" class="" id="excelImportContent">
+	<h4>Which accounts should be included in this trade ?</h4>
+	<div class="row">
+
+		<div *ngIf="checkUploadFile">
+			<div class="col-md-6">
+				<div (dragover)='dragFile($event)' (drop)='dropFile($event)'>
+					<div class="choose-file-small-box file-upload-input-style">
+						<span class="btn btn-info btn-file btn-raised"> Choose File
+                                                    <input type="file" name="model" id ="model-file" 
+                                                    (change)="selectedTemplate($event)">
+                                                </span><br> or drag and drop here
+						<!--*ngIf="!disableUploadBtn"-->
+						<div>
+							<p *ngIf="checkDragFile">{{dragFileName}}</p>
+							<p *ngIf="!checkDragFile">{{file.name}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<em class="securityError danger" *ngIf="showFiletUploadError">{{fileUploadError}}</em>
+				 <span class="securityError danger" *ngIf="isNotValidFile">Please upload valid file</span>
+				<div *ngIf="uploadResults.records.length > 0">
+					<!--  *ngIf="uploadResults.records.length > 0" -->
+					<div class="table-responsive col-md-12">
+						<table class="table table-bordered">
+							<thead>
+								<tr class="table-heading">
+									<th><strong>ID</strong> </th>
+									<th><strong>Name</strong> </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let r of uploadResults.records">
+									<!--*ngFor="let r of uploadResults.records" -->
+									<td class="text-left"> <span><i id={{r.id}} class="fa fa-times red" aria-hidden="true" (click)="deleteRecord(r)"></i></span>
+										<span [ngClass]="{'text-danger' :!r.isValid }">{{r.id}} </span>
+									</td>
+									<td> <span [ngClass]="{'text-danger' :!r.isValid }">{{r.name}}</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="modelErrors && !checkUploadFile">
+			<div class="choose-file-small-box file-upload-input-style import-log">
+				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> There is something wrong please check log.
+			</div>
+
+			<p><strong>Import Log</strong></p>
+			<div class="import-log-box">
+				<p *ngFor="let error of errorLog">{{error.message}}</p>
+			</div>
+		</div>
+		<div class="choose-file-small-box file-upload-input-style file-successfully-imported" *ngIf="!modelErrors && !checkUploadFile">
+			<i class="fa fa-check-circle" aria-hidden="true"></i> File is successfully imported
+		</div>
+	</div>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" class="btn btn-info btn-raised" icon="fa-check" (click)="modelImport()" *ngIf="modelErrors">TRY AGAIN</button>
+		</div>
+	</footer>
+	<p class="text-info"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> A word about file formats...</p>
+	<p>The imported file should include an “Account ID” or an “Account Number” column The file’s extension can be xlsx or csv.
+		Invalid accounts will be highlighted <span class="text-danger">red</span> and discarded duribg the calculation</p>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="row">
+	<div class="col-sm-12 text-right ">
+		<button class="btn btn-info btn-raised pull-right" id="btnNext" [disabled]="disableFilterNextBtn" (click)="getView('tradeOptionsTab')">NEXT</button>
+	</div>
+</div>
+</div>
+<!-- 1st tab End -->
+<!-- 2nd Tab start -->
+<div class="tab-pane fade active in" id="tradeOptionsTab" *ngIf="viewName == 'tradeOptionsTab'">
+	<!--<form>-->
+	<div class="row">
+		<div class="col-sm-5">
+			<h4 class="text-info">Which product do you want to trade ?</h4>
+			<div class="row">
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label">Security</label>
+						<p-autoComplete class="form-control autocomplete-block" (completeMethod)="getSecurities($event)" field="name" [(ngModel)]="selectedSecurityItem"
+							(onSelect)="onTradeSelect($event)" [suggestions]="securitySuggessions" placeholder="Search Security Name" [minLength]="1">
+						</p-autoComplete>
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label">Target Percent</label>
+						<input type="number" class="form-control" min="0" placeholder="Enter TargetPercent" [(ngModel)]="tradeSecurity.targetPercent"
+						/>
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label">Side</label>
+						<select class="form-control" [(ngModel)]="tradeSecurity.side"> 
+									<option *ngFor="let ts of tradeSide" value={{ts.id}}> {{ts.name}}</option>
+											</select>
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label"> <input type="checkbox" name="fullTrade" [(ngModel)]="tradeSecurity.isFullTrade" > Full Trade</label>
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label"> <input type="checkbox" [(ngModel)] = "canhaveModelType"> Model Type</label>
+						<select class="form-control" [disabled]="!canhaveModelType" [(ngModel)]="tradeSecurity.modelTypeId"> 
+									<option *ngFor="let mt of modelType" value={{mt.id}}> {{mt.name}}</option>
+											</select>
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label"> Reason</label>
+						<input type="text" class="form-control" placeholder="reason" [(ngModel)]="tradeSecurity.reason">
+						<span class="material-input"></span></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5 col-sm-offset-2">
+			<h4 class="text-info">Preferences</h4>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label"> <input type="checkbox" [(ngModel)]="canhaveTradePercentage" name="minTrade%" value="trade%"/> Minimum Trade %</label>
+						<input type="number" class="form-control" min="0" [disabled]="!canhaveTradePercentage" placeholder="Enter MinimumTrade %"
+							[(ngModel)]="preferences.minimumTradePercent">
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label"><input type="checkbox" name="minTrade$" [(ngModel)]="canhaveTradeDollar" value="trade$"/> Minimum Trade $</label>
+						<input type="number" class="form-control" min="0" [disabled]="!canhaveTradeDollar" placeholder="Enter MaximumTrade $" [(ngModel)]="preferences.minimumTradeDollar">
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label"><input type="checkbox" name="wash" value="wash" [(ngModel)]="canhaveAllowWash" /> Allow Wash Sales</label>
+						<select class="form-control" [disabled]="!canhaveAllowWash" [(ngModel)]="preferences.allowWashSalesId"> 
+									<!--<option value="0"> Please Select </option>-->
+									<option *ngFor="let ws of washSales" value={{ws.id}}> {{ws.name}} </option>
+											</select>
+						<span class="material-input"></span></div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group is-empty">
+						<label for="email" class="primar-label"><input type="checkbox" name="shortTerm" [(ngModel)]="canhaveShortTerm" value="wash"/> Allow Short Term Gains</label>
+						<select class="form-control" [disabled]="!canhaveShortTerm" [(ngModel)]="preferences.allowShortTermGainsId"> 
+									<!--<option value="0"> Please Select </option>-->
+									<option *ngFor="let sg of shortTermGain" value={{sg.id}}> {{sg.name}}</option>
+											</select>
+						<span class="material-input"></span></div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<!--</form>-->
+	<div class="row">
+		<div class="col-sm-12 text-right ">
+			<button class="btn btn-black " id="btnBack2" (click)="getView('SelectionTab')">BACk</button>
+			<button class="btn btn-info btn-raised " id="btnNext2" [disabled]="!enableCalculateButton()" (click)="generateTradeTraget()">CALCULATE</button>
+		</div>
+	</div>
+</div>
+<!-- 2nd Tab End -->
+
+
+</div>

@@ -1,0 +1,35 @@
+<div class="main">
+    <div class="topbar">
+        <div class="breadcrum">
+            <div class="topbar-left">
+                <ol class="breadcrumb">
+                    <li class="crumb-icon"><a href="javascript:void(0);"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li class="crumb-link"><a href="javascript:void(0);" [routerLink]="['/eclipse', 'dashboard']">Home</a></li>
+                    <li class="crumb-link"><a href="javascript:void(0);" [routerLink]="['/eclipse', 'dashboard']">Dashboard</a></li>
+                    <li class="crumb-trail">Holdings </li>
+                </ol>
+            </div>
+            <div class="topbar-right">
+                <div class="dashboard-widget-tray">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Action</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0);">Action</a></li>
+                            <li><a href="javascript:void(0);">Another action</a></li>
+                            <li><a href="javascript:void(0);">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:void(0);">Separated link</a></li>
+                        </ul>
+                    </div>
+                    <!--<a href="javascript:void(0);" title="" style="height:20px; width:20px; background:red;" class="pull-right"><i class="fa fa-angle-right"></i></a>
+-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-content dashboard-content-margin">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="topbar">
+    <div class="breadcrum">
+        <div class="topbar-left">
+            <ol class="breadcrumb">
+                <li class="crumb-icon"><a [routerLink]="['/eclipse', 'dashboard']"><span class="glyphicon glyphicon-home"></span></a></li>
+                <li class="crumb-link"><a [routerLink]="['/eclipse', 'dashboard']">Home</a></li>
+                <li class="crumb-link" *ngIf="!isDashboard"><a [routerLink]="['/eclipse', 'dashboard']">Dashboard</a></li>
+                <ng-content *ngIf="!isDashboard"></ng-content>
+                <li class="crumb-trail">{{pageName}}</li>
+            </ol>
+            <ul class="firm-menu pull-right">
+                <li>{{firmId}}</li>
+                <li>{{firmName}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

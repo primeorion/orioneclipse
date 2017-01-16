@@ -1,0 +1,78 @@
+<community-user-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></community-user-tabnav>
+<div class="tab-content">
+    <div id="tab2" class="tab-pane fade in active grid-height">
+        <div class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+
+            <form #userDetailForm="ngForm" (ngSubmit)="saveUserDetail(userDetailForm)" class="securityForm" novalidate>
+                <div class="col-sm-12 row ">
+                    <div class="form-group col-sm-6 is-empty" [hidden]="tabsModel.action != 'A'">
+                        <p-autoComplete class="radius-none search-security sdinput autocomplete-block" name="user" [(ngModel)]="autoCompleteSelectedUser" [suggestions]="filteredUserResult" placeholder="Search User" (completeMethod)="autoUserSearch($event)" field="name" [minLength]="1"
+                            (onSelect)="handleSelectedUser(autoCompleteSelectedUser)"></p-autoComplete>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group  is-empty">
+                            <label for="email" class="primar-label">User Name</label>
+                            <p>{{user.name}} </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="min-height:90px;">
+                        <div class="form-group is-empty" [hidden]="user.id == undefined">
+                            <label for="email" class="primar-label ">User ID  </label>
+                            <p>{{user.id}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group is-empty">
+                            <label for="email" class="primar-label">Role </label>
+                            <select class="form-control" [(ngModel)]="user.roleId" (change)="onRoleChange($event.target.value)" [disabled]="tabsModel.action == 'V'" name="role" #role="ngModel" required>
+                        <option value="undefined" *ngIf="!user.roleId">Choose Role</option>
+                        <option *ngFor="let role of userRoles" value={{role.roleId}} >
+                            {{role.roleType}}
+                        </option>
+                    </select>
+                            <em class="securityError danger" *ngIf="!role.valid && (!role.pristine || submitUserDetail)">Required</em>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+
+                        <div *ngIf="!IsSuperAdminSelected" class="form-group is-empty">
+                            <label for="email" class="primar-label">Strategist</label>
+                            <p-autoComplete [disabled]="tabsModel.action == 'V'" class="radius-none search-security sdinput autocomplete-block" name="strategist" [(ngModel)]="autoCompleteSelectedStrategist" [suggestions]="filteredStrategistResult" placeholder="Choose Strategist"
+                                (completeMethod)="autoStrategistSearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedStrategist(autoCompleteSelectedStrategist)" (keyup)="handleSelectedStrategist(autoCompleteSelectedStrategist)"></p-autoComplete>
+                            <br/>
+                            <em class="securityError danger" *ngIf="!isValidStrategistId">Enter valid strategist</em>
+                        </div>
+                        <div *ngIf="IsSuperAdminSelected" class="form-group is-empty">
+                            <label for="dbId" class="primar-label">Eclipse Database ID</label>
+                            <select class="form-control" [(ngModel)]="user.eclipseDatabaseId" [disabled]="tabsModel.action == 'V'" name="dbId" #eclipseDbName="ngModel" required>
+                        <option value="undefined">Choose Eclipse Database ID</option>
+                        <option *ngFor="let db of firms" value={{db.id}} >
+                            {{db.database}}
+                        </option>
+                    </select>
+                            <em class="securityError danger" *ngIf="!eclipseDbName.valid && (!eclipseDbName.pristine || submitUserDetail)">Required</em>
+                            <br/>
+                            <!--<em class="securityError danger" *ngIf="!isValidEclipseDbId">Please Choose Eclipse Database ID</em>-->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="divider pull-left">
+                    <em class="securityError danger" *ngIf="showUserSaveError">{{userSaveError}}</em>
+                </div>
+                <div class="row text-right">
+                    <div class="col-sm-12" [hidden]="tabsModel.action == 'V'">
+                        <button class="btn model-btn-primary" type="submit" [disabled]="tabsModel.action == 'A' && user.userId == undefined">Save</button>
+                        <button [routerLink]="['/community', 'administrator', 'user','list']" type="button" class="btn model-btn-default">Cancel</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

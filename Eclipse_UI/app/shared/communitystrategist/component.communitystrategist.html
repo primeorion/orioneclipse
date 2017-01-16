@@ -1,0 +1,75 @@
+<div [ngSwitch]="displaypermission">
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label col-sm-6">Community Strategist Enabled List
+                <a class="text-info btn-help" data-toggle="tooltip" href="javascript:void();" title="Community Strategist Enabled List"><i class="material-icons">help</i></a>
+            </label>
+            <div class="col-md-1"></div>
+            <div class="col-sm-5">
+                <div *ngSwitchCase="true" class="elm-index">
+                    <p-multiSelect [options]="modelStrategistItems" [(ngModel)]="selectedStrategistItems" defaultLabel="Select Strategist" (onChange)="onStrategistChange(selectedStrategistItems)">
+                    </p-multiSelect>
+                </div>
+
+                <div *ngSwitchCase="false">
+                    <ul>
+                        <li *ngFor="let item of selectedStrategitNames">
+                            <i>
+                                 <label> {{item}}</label>
+                             </i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="selectedStrategistItems != null">
+            <div class="form-group">
+                <label class="control-label col-sm-6">Model Access level
+                <a class="text-info btn-help" data-toggle="tooltip" href="javascript:void();" title="Model Access level "><i class="material-icons">help</i></a>
+            </label>
+                <div class="col-md-1"></div>
+                <div class="col-sm-5">
+                    <span *ngSwitchCase="true">
+                    <select class="form-control" [(ngModel)]="modelAccessLevel" (change)="onModelAccessLevelChange($event.target.value)">
+                    <option value=1>All</option>
+                    <option value=2>Selected Model</option>
+                </select>
+                     </span>
+
+                    <span *ngSwitchCase="false">
+                        <label>{{selecetdModel}}</label>
+                      </span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="modelAccessLevel == 2">
+            <div class="form-group" *ngIf="communities.length > 0">
+                <label class="control-label col-sm-6">Available Community
+                <a class="text-info btn-help" data-toggle="tooltip" href="javascript:void();" title="Available Community"><i class="material-icons">help</i></a>
+            </label>
+                <div class="col-md-1"></div>
+                <div class="col-sm-5">
+                    <span *ngSwitchCase="true">
+                    <div class="checkbox-ali" *ngFor="let c of communities">
+                        <label><input type="checkbox" value={{c.communityId}} [ngModel]="c.isSelected" (change)="onCommunityChkChange($event)"/> {{c.community}} </label>
+                    </div>
+                      </span>
+                    <span *ngSwitchCase="false">
+                         <ul>
+                        <li *ngFor="let item of selectedCommunityNames">
+                            <i>
+                                 <label> {{item}}</label>
+                             </i>
+                        </li>
+                    </ul>
+          </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Users" [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+
+    <eclipse-admin-user-tabnav [model]="tabsModel"></eclipse-admin-user-tabnav>
+    <div class="tab-content">
+        <div style="padding: 15px;">
+            <div class="form-inline orian-user-bg" *ngIf="userId == undefined">
+                <p-autoComplete class="autocomplete-block customsearch" placeholder="Search User" field="entityName" [minLength]="1" [(ngModel)]="orionUser"
+                    [suggestions]="userSuggestions" (completeMethod)="loadUserSuggestions($event)" (onSelect)="onUserSelect($event)"></p-autoComplete>
+                <div class="button-spacer">
+                    <button type="button" class="btn btn-info btn-raised" [disabled]="showOrionUserBtn">Add Orion User</button>
+                </div>
+            </div>
+            <div class="row" *ngIf="userId > 0">
+                <div class="col-sm-12">
+                    <div class="col-sm-2 row form-inline orian-user-bg">
+                        <label class="" for="username">User Name</label>
+                    </div>
+                    <div class="col-sm-4 row" style="padding-left:20px;"><span>{{editUser.name}}</span> </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group is-empty">
+                        <label class="primar-label" for="role">Role</label>
+                        <select class="form-control" [(ngModel)]="editUser.roleId" (change)="roleChange($event.target.value)">
+                            <option value="0">Select Role</option>
+                            <option *ngFor="let ro of rolesData" [ngValue]="ro.id">{{ro.name}}</option>
+                        </select>
+                        <span *ngIf="errorMsgRole" class="error">Please select an item in the list</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group is-empty">
+                        <label class="primar-label" for="teamname">Team</label>
+                        <p-multiSelect class="autocomplete-block" [options]="teams" [(ngModel)]="editTeamIds" defaultLabel="Choose Team" (onChange)="teamsChange()">
+                        </p-multiSelect>
+                        <span *ngIf="errorMsgTeam" class="error">Please select atleast one team</span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4" [hidden]="userId == undefined">
+                    <div class="form-group is-empty role-spacer">
+                        <label class="primar-label" for="status">Status</label>
+                        <p class="label label-success" *ngIf="editUser.status">Active</p>
+                        <p class="label label-default" *ngIf="!editUser.status">In-active</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group is-empty role-spacer">
+                        <label class="primar-label" for="startDate">Start Date</label>
+                        <p-calendar [(ngModel)]="startDate" showAnim="slideDown" [showIcon]="true" placeholder="Start Date" (onSelect)="startDateSelect(startDate)"
+                            [monthNavigator]="true" [yearNavigator]="true" [readonlyInput]="true"></p-calendar>
+                        <span *ngIf="errorMsgStartDate " class="error">Please select start date</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group is-empty">
+                        <label class="primar-label" for="endDate">Expiry Date</label>
+                        <p-calendar [(ngModel)]="expireDate" showAnim="slideDown" [showIcon]="true" placeholder="Expiry Date" [monthNavigator]="true"
+                            [yearNavigator]="true" (onSelect)="expiryDateSelect(expireDate)" [readonlyInput]="true"></p-calendar>
+                        <span *ngIf="errorCompareExpireDate" class="error">Expiry date should be greater then start date</span>
+                        <!--<span *ngIf="errorExpireDate" class="error">Please select Expiry date</span>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-footer">
+                <!--<a class="btn btn-info btn-raised " href="javascript:void(0) "><i aria-hidden="true " class="fa fa-check-circle-o "></i> Save</a>-->
+                <input type="button" name="roleSave" (click)="onSave()" class="btn btn-info btn-raised" value="Save" [disabled]="disableSaveBtn"
+                />
+                <a class="btn btn-default btn-raised" [routerLink]="['/eclipse', 'admin', 'user', 'list']">Cancel</a>
+            </div>
+        </div>
+
+    </div>
+</div>

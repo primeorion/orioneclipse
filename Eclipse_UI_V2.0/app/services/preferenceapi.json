@@ -1,0 +1,387 @@
+{
+    "data": [
+        {
+            "level": 1,
+            "id": 999,
+            "communityStrategist": [
+                {
+                    "preferenceId": 99,
+                    "stategistId": 3,
+                    "ModelAccessId": 1,
+                    "ModeCommunityId": [3,5]
+                }
+            ],
+            "preferences": [
+               
+                {
+                    "id": null,
+                    "preferenceId": 2,
+                    "categoryType": "DailySync",
+                    "name": "Auto Import Daily Sync",
+                    "displayName": "Auto Import Daily Sync",
+                    "required": null,
+                    "displayOrder": 1,
+                    "valueType": "string",
+                    "value": null,
+                    "isInherited": "null",
+                    "inheritedValue": "2",
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": [
+                        {
+                            "id": "1",
+                            "name": "100"
+                        },
+                        {
+                            "id": "2",
+                            "name": "200"
+                        },
+                        {
+                            "id": "3",
+                            "name": "300"
+                        },
+                        {
+                            "id": "4",
+                            "name": "600"
+                        },
+                        {
+                            "id": "5",
+                            "name": "900"
+                        }
+                    ],
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": ["3"],
+                    "componentType": "default",
+                    "componentName": "radio",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": "Once data is uploaded from Orion, do we automatically move it from staging to live tables"
+                },
+                {
+                    "id": 11,
+                    "preferenceId": 1,
+                    "categoryType": "Dashboard",
+                    "name": "NewAccountDays",
+                    "displayName": "New Account Days",
+                    "required": null,
+                    "displayOrder": 2,
+                    "valueType": "string",
+                    "value": null,
+                    "isInherited": true,
+                    "inheritedValue": "Orion",
+                    "inheritedFrom": "Firm",
+                    "inheritedFromName": "Firm",
+                    "inheritedFromId": 1,
+                    "options": [],
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": [],
+                    "componentType": "default",
+                    "componentName": "textbox",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": "Enter Accuount days",
+                    "symbol": "$",
+                    "helpText": "Dashboard to determine what accounts are considered new"
+                },
+                {
+                    "id": 68,
+                    "preferenceId": 5,
+                    "categoryType": "Other",
+                    "name": "Transaction cost included or added to trade file",
+                    "displayName": "Transaction cost included or added to trade file",
+                    "required": null,
+                    "displayOrder": 3,
+                    "valueType": "Boolean",
+                    "value": "True",
+                    "isInherited": null,
+                    "inheritedValue": "3",
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": [
+                        {
+                            "id": "1",
+                            "name": "Pro-Rata"
+                        },
+                        {
+                            "id": "2",
+                            "name": "Sell Rebalance"
+                        },
+                        {
+                            "id": "3",
+                            "name": "Sell Rebalance Oversell"
+                        },
+                        {
+                            "id": "4",
+                            "name": "Sell Rebalance with Emphasis"
+                        },
+                        {
+                            "id": "5",
+                            "name": "Sell with full rebalance"
+                        }
+                    ],
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": ["5"],
+                    "componentType": "default",
+                    "componentName": "radio",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": null
+                },
+                {
+                    "id": null,
+                    "preferenceId": 6,
+                    "categoryType": "Other",
+                    "name": "Master account numbers/avg price account",
+                    "displayName": "Master account numbers/avg price account",
+                    "required": null,
+                    "displayOrder": 4,
+                    "valueType": "String",
+                    "value": null,
+                    "isInherited": null,
+                    "inheritedValue": null,
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": [],
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": [],
+                    "componentType": "default",
+                    "componentName": "textbox",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": null
+                },
+                {
+                    "id": 65,
+                    "preferenceId": 3,
+                    "categoryType": "Dashboard",
+                    "name": "Sync Portfolios",
+                    "displayName": "Sync Portfolios",
+                    "required": null,
+                    "displayOrder": 5,
+                    "valueType": "OptionList",
+                    "value": null,
+                    "isInherited": null,
+                    "inheritedValue": "2",
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": [
+                        {
+                            "id": 1,
+                            "name": "Port-1"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Port-2"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Port-3"
+                        }
+                    ],
+                    "selectedOptions": [
+                        {
+                            "optionId": 2,
+                            "order": 0
+                        }
+                    ],
+                    "componentType": "default",
+                    "componentName": "dropdown",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": null
+                },
+                {
+                    "id": 55,
+                    "preferenceId": 10,
+                    "categoryType": "Rebalance",
+                    "name": "TradeTax",
+                    "displayName": "Trade Tax",
+                    "required": null,
+                    "displayOrder": 6,
+                    "valueType": "string",
+                    "value": null,
+                    "isInherited": null,                  
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": [
+                        {
+                            "id": "1",
+                            "name": "100"
+                        },
+                        {
+                            "id": "2",
+                            "name": "200"
+                        },
+                         {
+                            "id": "3",
+                            "name": "100"
+                        },
+                        {
+                            "id": "4",
+                            "name": "200"
+                        }
+                    ],
+                    "inheritedValue":  [],
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": ["1","3"],
+                    "componentType": "default",
+                    "componentName": "checkbox",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": "Once data is uploaded from Orion, do we automatically move it from staging to live tables"
+                },
+                {
+                    "id": 70,
+                    "preferenceId": 11,
+                    "categoryType": "Dashboard",
+                    "name": "TaxLotDepletionMethod",
+                    "displayName": "Tax Lot Depletion Method",
+                    "required": null,
+                    "displayOrder": 3,
+                    "valueType": "string",
+                    "value": null,
+                    "isInherited": null,
+                    "inheritedValue": null,
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": [
+                        {
+                            "id": "1",
+                            "name": "6 Short Term Losses",
+                            "displayOrder": 6
+                        },
+                        {
+                            "id": "2",
+                            "name": "4 Long Term Losses",
+                            "displayOrder": 4
+                        },
+                        {
+                            "id": "3",
+                            "name": "5 Short Term No Gain",
+                            "displayOrder": 5
+                        },
+                        {
+                            "id": "4",
+                            "name": "3 Long Term No Gain",
+                            "displayOrder": 3
+                        },
+                        {
+                            "id": "5",
+                            "name": "1 Long Term Gain",
+                            "displayOrder": 1
+                        },
+                        {
+                            "id": "6",
+                            "name": "2 Short Term Gain",
+                            "displayOrder": 2
+                        }
+                    ],
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": [],
+                    "componentType": "custom",
+                    "componentName": "dragdrop",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": "Drag - Drop terms"
+                },
+                 {
+                    "id": 70,
+                    "preferenceId": 11,
+                    "categoryType": "Dashboard",
+                    "name": "TaxLotDepletionMethod",
+                    "displayName": "Tax Lot Depletion Method",
+                    "required": null,
+                    "displayOrder": 4,
+                    "valueType": "string",
+                    "value": null,
+                    "isInherited": null,
+                    "inheritedValue": null,
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": null,
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": [],
+                    "componentType": "custom",
+                    "componentName": "LocationOptimization",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": "Location-Optimization "
+                },
+                 {
+                    "id": 72,
+                    "preferenceId": 99,
+                    "categoryType": "Dashboard",
+                    "name": "CommunityModel",
+                    "displayName": "Community Model",
+                    "required": null,
+                    "displayOrder": 6,
+                    "valueType": "list",
+                    "value": null,
+                    "isInherited": null,
+                    "inheritedValue": null,
+                    "inheritedFrom": null,
+                    "inheritedFromName": null,
+                    "inheritedFromId": null,
+                    "options": [],
+                    "selectedOptions": [],
+                    "inheritedSelectedOptions": [],
+                    "componentType": "custom",
+                    "componentName": "CommunityStrategist",
+                    "minlength": null,
+                    "maxlength": null,
+                    "minValue": null,
+                    "maxValue": null,
+                    "pattern": null,
+                    "watermarkText": null,
+                    "symbol": null,
+                    "helpText": "Community Strategist"
+                }
+            ]
+        }
+    ]
+}

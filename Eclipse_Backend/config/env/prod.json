@@ -1,0 +1,39 @@
+{
+	"orion": {
+		"db": {
+			"connectionLimit": 10,
+			"host": "aurorapocinstance2-cluster.cluster-cwz3dqtcj9ax.us-east-1.rds.amazonaws.com",
+			"user": "auroraadmin",
+			"password": "YXVyb3JhIWRtaW4=",
+			"database": "orionEclipseCommon",
+			"port" : 3306
+		},
+		"redis": {
+			"host": "localhost",
+			"port": 6379
+		},
+		"import": {
+			"host": "52.205.148.166",
+			"username": "root",
+			"privateKey": "/config/env/importServerKey/dev-openssh-key",
+			"envConfig":"/home/etl_config/prod "			,
+			"etl_config":"/home/orion_config_prod"
+		},
+		"allowed-origins": true,
+		"req-logger": "combined"
+	},
+	"port": 3000,
+	"sessionsecret": "orioneclipse",
+	"log-level": "debug",
+	"logging-path": "/var/log/orioneclipse",
+	"uploaded-temp-path" : "/tmp/orionEclipse",
+	"rebalanceUrl": "http://52.1.71.38:8080/rebalancer/",
+	"generateTradeInstanceId": "/v1/tradetool/tradeInstance/action/generateinstance",
+	"community":{
+		"protocol": "http://",
+		"host": "54.173.63.220",
+		"port": 4000,
+		"getCommunityToken" : "/v1/admin/token",
+		"communityModelImport" : "/v1/community/strategists/models/"
+	}
+}

@@ -1,0 +1,19 @@
+<!--right side main area start-->
+<div class="main">
+    <breadcrumb pageName="Maintenance">
+        <li class="crumb-link"><a [routerLink]="['/eclipse', 'security', 'dashboard']">Securities</a></li>
+    </breadcrumb>
+    <div class="dashboard-content">
+     
+        
+        <eclipse-security-leftnav [menuName]="menuName"></eclipse-security-leftnav>
+        
+        <div class="grid-container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+
+
+<!--right side main area end -->

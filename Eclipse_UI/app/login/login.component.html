@@ -1,0 +1,25 @@
+<div class="loginbg">
+<div class="loginmodal-container">
+    <div class="orion-logo"><a class="orine-logo-login">Orion</a></div>
+    <div class="loginwindow">
+        <h1>Login to Your Account</h1><br>
+        <div class="error-login" *ngIf="showErrorMessage">
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                {{errorMessage != '' ? errorMessage : 'Invalid Username or Password.'}}
+            </div>
+        </div>
+        <form name="formLogin" method="post" (submit)="onLogin()">
+            <div class="form-group">
+                <input type="text" name="username" [(ngModel)]="username" class="form-control" placeholder="Username" autocomplete="off" required />
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password" required />
+            </div>
+            <input type="submit" name="login" class="login loginmodal-submit" value="Login" />
+        </form>
+        <div class="login-help">
+            <a href="#">Forgot Password</a>
+        </div>
+    </div>
+</div></div>

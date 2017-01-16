@@ -1,0 +1,86 @@
+<form class="form-inline col-md-7" role="form">
+    <div class="form-group margin-top-minus-1x">
+        <label for="email">Select Custom View : </label>
+        <select name="" id="" class="form-control" [(ngModel)]="model.id" (change)="onCustomViewChange($event)">
+            <option value="0" hidden>NONE</option>
+            <option *ngFor="let sv of savedViews" value="{{sv.id}}" > {{sv.name}}</option>
+        </select>
+        <span *ngIf="view.isPublic">*</span>
+    </div>
+    <div class="dropdown pull-right">
+        <button type="submit" class="btn btn-raised dropdown-toggle btn-info" data-toggle="dropdown">  
+        <i class="fa fa fa-pencil-square-o"></i> <span class="caret"> </span></button>
+        <ul class="dropdown-menu">
+            <li><a href="javascript:void(0)" (click)="onSaveViewAsClick()">SAVE VIEW AS</a></li>
+            <li [hidden]="model.id == undefined || model.id < 1 || (!model.parentGridOptions.context.isGridModified) " ><a href="javascript:void(0)" (click)="onUpdateViewClick()">UPDATE VIEW</a></li>
+            <li [hidden]="model.id == undefined || model.id < 1" ><a href="javascript:void(0)" (click)="onCopyViewClick()">COPY VIEW AS</a></li>
+            <li [hidden]="model.id == undefined || model.id < 1" ><a href="javascript:void(0)" (click)="displayDeleteConfirmDialog=true">DELETE VIEW</a></li>
+            <li [hidden]="model.id == undefined || model.id < 1" ><a href="javascript:void(0)" (click)="onSetAsDefaultClick(model.id)">SET AS DEFAULT VIEW</a></li>
+        </ul>
+    </div>
+    <!--<button type="submit" (click)="displaySavedViewDialog=true" class="btn btn-raised <btn-inf></btn-inf>o">Save view as</button>-->
+</form>
+<p-dialog header={{popupText}} [(visible)]="displaySaveViewAsDialog" modal="modal" responsive="true" showEffect="fade" [resizable]=false
+    width="600">
+    <form [ngFormModel]="saveViewAsControlGroup" (ngSubmit)="saveViewAs(saveViewAsControlGroup)">
+        <div class="form-group">
+            <label class="col-md-4 control-label">{{popupText}}</label>
+            <div class="col-md-6">
+                <input type="text" ngControl="name" #name="ngForm" [(ngModel)]="view.name" placeholder="Enter View Name" value="" class="form-control"
+                />
+                <em class="securityError danger" *ngIf="!name.valid && isNameRequired">Name required</em>
+            </div>
+        </div>
+        <div class=" row form-group">
+            <div class="col-md-12">
+                <div class="col-md-6 control-label">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="default" value="Set as default" [(ngModel)]="view.isDefault"
+                    /> Set as default</div>
+                <div class="col-md-6">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="default" value="Public" [(ngModel)]="view.isPublic" /> Public</div>
+            </div>
+        </div>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix ">
+            <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="closeSaveViewDialog()">CANCEL</button>
+            <button type="submit" class="btn btn-blueouter" icon="fa-check">SAVE</button>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog [(visible)]="model.exitWarning.show" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+    width="400">
+    <div>
+        <div>You seem to have made some change(s) in the view. Do you want to save the new view ?.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="confirmClick(true)" label="No">No</button>
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="confirmClick(false)" label="Yes">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayUpdateConfirmDialog" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+    width="400">
+    <div>
+        <div>You seem to have made some change(s) in the view. Do you want to update the view ?.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="confirmClick(true)" label="No">No</button>
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="saveViewAs()" label="Yes">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog header="Delete view" [(visible)]="displayDeleteConfirmDialog" modal="modal" responsive="true" showEffect="fade"
+    [draggable]=false [resizable]=false width="400">
+    <div>
+        <div>This action will permanently delete the selected view. Do you wish to continue?.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="displayDeleteConfirmDialog=false"
+                    label="No">No</button>
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="deleteView(model.id)" label="Yes">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

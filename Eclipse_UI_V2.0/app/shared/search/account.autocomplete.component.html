@@ -1,0 +1,11 @@
+<p-autoComplete [(ngModel)]="selectedItem" [suggestions]="suggestions" placeholder="Account ID / Account Number / Account Name / Tags or Portfolio name"
+    (completeMethod)="loadSuggestions($event)" (onSelect)="onAccountSelect($event)" field="name" class="form-control trade-order-search" [minLength]="1">
+    <template let-selectedItem>
+        <ul class="ui-helper-clearfix show-hollding-dropdown">
+            <li>
+                <i class="fa fa-suitcase text-warning"></i>
+                <span>{{selectedItem.id + " : " +selectedItem.name +" - " +" $ " + selectedItem.value}}</span>
+            </li>
+        </ul>
+    </template>
+</p-autoComplete>

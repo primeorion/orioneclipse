@@ -1,0 +1,118 @@
+<form name="formTeamDetails" (submit)="onSave()">
+    <div class="form-container">
+
+        <div class="row">
+            <div class="col-sm-6" id="team" [hidden]="!shwsearchTeams">
+                <div class="row">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="primar-label" for="team" class="col-sm-4">Search Team </label>
+                        <div class="col-sm-6 col-md-pull-1">
+                            <p-autoComplete [(ngModel)]="teamnametxt" [suggestions]="autocompleteResults" placeholder="Search By Team Name" (completeMethod)="autoTeamSearch($event)"
+                                (onSelect)="selectedTeamSearch($event)" class="autocomplete-block" field="name" [minLength]="1"></p-autoComplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--visibility: hidden;-->
+        <div [ngStyle]="{'visibility': [(showPanel)]}">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="primar-label">Team Name</label>
+                    <div class="form-inline tabs-data">
+                        <div>
+                            <input type="text" placeholder="Enter Team Name" id="teamName" class="form-control" [(ngModel)]="team.name" (blur)="teamAlreadyExist()"
+                                [disabled]="isView">
+                        </div>
+                    </div>
+                    <div>
+                        <span *ngIf="nameValidation" class="validationerror">Please enter team name</span>
+                    </div>
+
+                    <div>
+                        <span *ngIf="matchingTeamsExists" class="validationerror">Team already exist with same name</span>
+                    </div>
+                </div>
+                <div class="col-sm-6" *ngIf="selectedTeamId!=undefined">
+                    <label class="primar-label"> Team Id</label>
+                    <div class="form-inline tabs-data form-group">
+                        <div>
+                            <span>{{team.id}}</span>
+                            <!--<input type="text" placeholder="Enter Team Id" id="teamId" class="form-control" [(ngModel)]="team.teamId">-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label class="primar-label">Portfoilo Permission</label>
+                    <div class="form-inline tabs-data form-group">
+                        <div class="radio">
+                            <label for="1">
+                  <input id="1" type="radio" name="portfolioAccess" [ngModel]="{checked: team.portfolioAccess == '0'}" value="0"  (click)="toggleTabs('tabPortfolio','show-tab'); PortfoiloPermissionRadioBtnChange(0)"/><span class="circle"></span><span class="check"></span>
+                  Permission
+                </label>
+                        </div>
+                        <div class="radio">
+                            <label for="2">
+                  <input id="2" type="radio" name="portfolioAccess" [ngModel]="{checked: team.portfolioAccess == '1'}" value="1"  (click)="toggleTabs('tabPortfolio','hide-tab') ;  PortfoiloPermissionRadioBtnChange(1)"/><span class="circle"></span><span class="check"></span>
+                 All
+                </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label class="primar-label"> Model Permission</label>
+                    <div class="form-inline tabs-data form-group">
+                        <div class="radio">
+                            <label for="3">
+                  <input id="3" type="radio" name="modelAccess" [ngModel]="{checked: team.modelAccess == '0'}" value="0" checked  (click)="toggleTabs('tabModel','show-tab'); ModelPermissionRadioBtnChange(0)"/><span class="circle"></span><span class="check"></span>
+                  Permission
+                </label>
+                        </div>
+                        <div class="radio">
+                            <label for="4">
+                  <input type="radio" name="modelAccess" [ngModel]="{checked: team.modelAccess == '1'}" value="1" id="4"  (click)="toggleTabs('tabModel','hide-tab'); ModelPermissionRadioBtnChange(1)"/><span class="circle"></span><span class="check"></span>
+                 All
+                </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label class="primar-label" for="roletype">Status</label>
+                    <select class="form-control ng-pristine ng-valid ng-touched" style="width: 30%;" [disabled]="isTypeDisabled" [(ngModel)]="teamStatus">
+                        <option *ngFor="let status of statusType" value={{status.typeId}} >
+                            {{status.typeName}}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="tab-content">
+                <tab-set>
+                    <tab tabTitle="Users" tabName='tabUsers'>
+                        <eclipse-admin-teamusers></eclipse-admin-teamusers>
+                    </tab>
+                    <tab tabTitle="Portfolio" tabName='tabPortfolio'>
+                        <eclipse-admin-teamportfolio></eclipse-admin-teamportfolio>
+                    </tab>
+
+                    <tab tabTitle="Advisor" tabName='tabAdvisor'>
+                        <eclipse-admin-teamadvisor></eclipse-admin-teamadvisor>
+                    </tab>
+
+                    <tab tabTitle="Model" tabName='tabModel'>
+                        <eclipse-admin-teammodel></eclipse-admin-teammodel>
+                    </tab>
+                </tab-set>
+            </div>
+            <div class="button-footer">
+            <input type="submit" name="roleSave" class="btn btn-info btn-raised" value="{{btnValue}}" *ngIf="showSaveBtn" [disabled]="matchingTeamsExists"/>
+                <a class="btn btn-default btn-raised " href="javascript:void(0)" (click)='onCancel()'> Cancel</a>
+            </div>
+        </div>
+    </div>
+</form>

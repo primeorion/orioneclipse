@@ -1,0 +1,373 @@
+<div class="main">
+    <breadcrumb isDashboard="false"></breadcrumb>
+    <div class="dashboard-content">
+        <div class="nav-tabs-container">
+            <div class="heading-text"> Query Builder </div>
+            <div class="actionBtn btn-group pull-right">
+                <a href="" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="material-icons">more_vert</i>
+                    <div class="ripple-container"></div>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void(0)">Action</a></li>
+                    <li><a href="javascript:void(0)">Another action</a></li>
+                    <li><a href="javascript:void(0)">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0)">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="querybuilder" class="tab-pane active fade in">
+                <div class="col-sm-3 querybuilder border-left">
+                    <div class="searchquery">
+                        <input class="pull-left full-width " placeholder="Search Query" type="text">
+                    </div>
+                    <ul class="data-Query-list">
+                        <li> <a href="#"> Data Query Name  1   <i class="fa fa-times pull-right" aria-hidden="true"></i>  <i class="fa fa-star-o pull-right" aria-hidden="true"></i>   </a>                            </li>
+                        <li> <a href="#"> Data Query Name  2   <i class="fa fa-times pull-right" aria-hidden="true"> </i>  <i class="fa fa-star-o pull-right" aria-hidden="true"></i> </a>                            </li>
+                        <li> <a href="#"> Data Query Name  3   <i class="fa fa-times pull-right" aria-hidden="true"> </i>   </a>                            </li>
+                        <li> <a href="#"> Data Query Name  4   <i class="fa fa-times pull-right" aria-hidden="true"> </i>   </a>                            </li>
+                        <li> <a href="#" class="active"> Data Query Name  5   <i class="fa fa-times pull-right" aria-hidden="true"> </i>  </a>                            </li>
+                        <li> <a href="#"> Data Query Name  6   <i class="fa fa-times pull-right" aria-hidden="true"> </i>  </a>                            </li>
+                        <li> <a href="#"> Data Query Name  7   <i class="fa fa-times pull-right" aria-hidden="true"> </i>  </a>                            </li>
+                    </ul>
+                </div>
+                <div class="col-sm-9 querybuilder border-right">
+                    <div class="row">
+                        <div class="form-group col-sm-5"><input class="form-control radius-none" placeholder="Data Query Name  2" type="text"></div>
+                    </div>
+                    <div class="runquery">
+                        <div class="row">
+                            <div class="col-sm-5 ">
+                                <h4>Available Column</h4>
+                                <div class="available-column">
+                                    <div class="form-group top-group-space is-empty">
+                                        <div class="icon-addon addon-lg">
+                                            <input placeholder="Search " class="form-control custom-search-bar" type="text">
+                                            <label for="email" class="glyphicon glyphicon-search custom-icon-addon" title="search"></label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <ul>
+                                            <li> Portfolio ID</li>
+                                            <li>Portfolio Name </li>
+                                            <li>Account Name</li>
+                                            <li>Account Balance</li>
+                                            <li>Portfolio OutofBalance</li>
+                                            <li>Cash</li>
+                                        </ul>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 arrow-box text-center">
+                                <button class="btn btn-info model-btn-primary"> &gt;&gt;</button><br>
+                                <button class="btn btn-info model-btn-primary"> &lt;&lt; </button></div>
+                            <div class="col-sm-5 ">
+                                <h4>Selected Column</h4>
+                                <div class="selected-column">
+                                    <ul>
+                                        <li> Portfolio ID</li>
+                                        <li>Portfolio Name </li>
+                                        <li>Account Name </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 arrow-updown text-left">
+                                <button class="btn btn-info model-btn-primary"> <i class="fa fa-long-arrow-up" aria-hidden="true"></i></button><br>
+                                <button class="btn btn-info model-btn-primary"> <i class="fa fa-long-arrow-down" aria-hidden="true"></i> </button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <a href="#" class="btn model-btn-default">Cancel</a>
+                                <a href="#" class="btn  model-btn-primary">Save Changes</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="runquery">
+                        <h4 class="pull-left queryhd"> Query Output</h4>
+                        <div class="">
+                            <textarea class="">(Acc ID=25  AND Name=Model 502  OR  Price &lt; $50000)</textarea>
+                        </div>
+                    </div>
+                    <div class="querytab">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#standard">Standard</a></li>
+                            <li><a data-toggle="tab" href="#advance">Advance</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="standard" class="tab-pane fade in active">
+                                <div class="conditions  row">
+                                    <div class="col-sm-2"> <label class="top-space"> Condition:</label> </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <select class="form-control">
+                                                <option>AND </option>
+                                                <option>OR </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2"> <a class="btn btn-blueouter btn-raised" href="" title="Add Condition"><i class="fa fa-plus-circle"></i> Add Rule</a>                                        </div>
+                                </div>
+                                <div class=" drag-area">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Portfolio.Created</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Enter value </option>
+                                                    <option>Equal </option>
+                                                    <option>Not Equal</option>
+                                                    <option>Greater Than</option>
+                                                    <option>Greater Than or Equal</option>
+                                                    <option>Less Than</option>
+                                                    <option>Less Than or Equal </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option> Select Date </option>
+                                                    <option>Today </option>
+                                                    <option>Start of last quarter</option>
+                                                    <option>End of last quarter</option>
+                                                    <option>Start of current quarter</option>
+                                                    <option>End of current quarter</option>
+                                                    <option>Start of current year</option>
+                                                    <option>End of current year</option>
+                                                    <option>Start of last year</option>
+                                                    <option>End of last year</option>
+                                                    <option>Start of last month</option>
+                                                    <option>End of last month</option>
+                                                    <option>Start of current month</option>
+                                                    <option>End of current month</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1"> <i class="fa fa-calendar fa-calculator-style" aria-hidden="true"></i></div>
+                                        <div class="col-sm-2"> <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Portfolio.Created</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Enter value </option>
+                                                    <option>Equal </option>
+                                                    <option>Not Equal</option>
+                                                    <option>Greater Than</option>
+                                                    <option>Greater Than or Equal</option>
+                                                    <option>Less Than</option>
+                                                    <option>Less Than or Equal </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option> Select Date </option>
+                                                    <option>Today </option>
+                                                    <option>Start of last quarter</option>
+                                                    <option>End of last quarter</option>
+                                                    <option>Start of current quarter</option>
+                                                    <option>End of current quarter</option>
+                                                    <option>Start of current year</option>
+                                                    <option>End of current year</option>
+                                                    <option>Start of last year</option>
+                                                    <option>End of last year</option>
+                                                    <option>Start of last month</option>
+                                                    <option>End of last month</option>
+                                                    <option>Start of current month</option>
+                                                    <option>End of current month</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1"> <i class="fa fa-calendar fa-calculator-style" aria-hidden="true"></i></div>
+                                        <div class="col-sm-2"> <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Portfolio.Created</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Enter value </option>
+                                                    <option>Equal </option>
+                                                    <option>Not Equal</option>
+                                                    <option>Greater Than</option>
+                                                    <option>Greater Than or Equal</option>
+                                                    <option>Less Than</option>
+                                                    <option>Less Than or Equal </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option> Select Date </option>
+                                                    <option>Today </option>
+                                                    <option>Start of last quarter</option>
+                                                    <option>End of last quarter</option>
+                                                    <option>Start of current quarter</option>
+                                                    <option>End of current quarter</option>
+                                                    <option>Start of current year</option>
+                                                    <option>End of current year</option>
+                                                    <option>Start of last year</option>
+                                                    <option>End of last year</option>
+                                                    <option>Start of last month</option>
+                                                    <option>End of last month</option>
+                                                    <option>Start of current month</option>
+                                                    <option>End of current month</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1"> <i class="fa fa-calendar fa-calculator-style" aria-hidden="true"></i></div>
+                                        <div class="col-sm-2"> <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Portfolio.Created</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option selected="">Enter value </option>
+                                                    <option>Equal </option>
+                                                    <option>Not Equal</option>
+                                                    <option>Greater Than</option>
+                                                    <option>Greater Than or Equal</option>
+                                                    <option>Less Than</option>
+                                                    <option>Less Than or Equal </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <select class="form-control">
+                                                    <option> Select Date </option>
+                                                    <option>Today </option>
+                                                    <option>Start of last quarter</option>
+                                                    <option>End of last quarter</option>
+                                                    <option>Start of current quarter</option>
+                                                    <option>End of current quarter</option>
+                                                    <option>Start of current year</option>
+                                                    <option>End of current year</option>
+                                                    <option>Start of last year</option>
+                                                    <option>End of last year</option>
+                                                    <option>Start of last month</option>
+                                                    <option>End of last month</option>
+                                                    <option>Start of current month</option>
+                                                    <option>End of current month</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1"> <i class="fa fa-calendar fa-calculator-style" aria-hidden="true"></i></div>
+                                        <div class="col-sm-2"> <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="advance" class="tab-pane fade">
+                                <div class="tree ">
+                                    <ul>
+                                        <li>
+                                            Condition: <select class="bg-black">
+                                                    <option>And</option>
+                                                    <option>Or</option>
+                                                    </select>
+                                            <span class="btn-remove-group  pull-right"> <i class="fa fa-minus-circle" aria-hidden="true"></i>REMOVE GROUP</span>
+                                            <span class="btn-add-group  pull-right"> <i class="fa fa-plus-circle" aria-hidden="true"></i>ADD GROUP</span>
+                                            <span class="btn-add-role pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i>ADD RULE </span>
+                                            <ul class="add-Data-Query">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <select class="form-control">
+                                                                    <option selected="">Portfolio.Created</option>
+                                                                </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <select class="form-control">
+                                                                    <option selected="">Enter value </option>
+                                                                    <option>Equal </option>
+                                                                    <option>Not Equal</option>
+                                                                    <option>Greater Than</option>
+                                                                    <option>Greater Than or Equal</option>
+                                                                    <option>Less Than</option>
+                                                                    <option>Less Than or Equal </option>
+                                                                </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <select class="form-control">
+                                                                <option> Select Date </option>
+                                                                <option>Today </option>
+                                                                <option>Start of last quarter</option>
+                                                                <option>End of last quarter</option>
+                                                                <option>Start of current quarter</option>
+                                                                <option>End of current quarter</option>
+                                                                <option>Start of current year</option>
+                                                                <option>End of current year</option>
+                                                                <option>Start of last year</option>
+                                                                <option>End of last year</option>
+                                                                <option>Start of last month</option>
+                                                                <option>End of last month</option>
+                                                                <option>Start of current month</option>
+                                                                <option>End of current month</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-1"> <i class="fa fa-calendar fa-calculator-style" aria-hidden="true"></i>                                                        </div>
+                                                    <div class="col-sm-2"> <button type="submit" class="btn btn-redouter btn-raised"><i class="fa fa-minus-circle"></i></button>                                                        </div>
+                                                </div>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="divider" style="margin-top:10px;"></div>
+
+<div class="form-group is-empty text-right">
+
+    <button class="btn model-btn-default">Cancel</button>
+    <button class="btn model-btn-primary">Save</button>
+</div>
+</div>
+</div>
+<!--tab-pane-->
+</div>
+<!--tab-content-->
+</div>
+<!--dashboard-content-->
+</div>
+<!--main-->

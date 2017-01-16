@@ -1,0 +1,50 @@
+<!--right side main area start-->
+<div class="main">
+    <breadcrumb pageName="Maintenance">
+        <li class="crumb-link"><a [routerLink]="['/eclipse', 'security', 'dashboard']">Securities</a></li>
+    </breadcrumb>
+    <div class="dashboard-content">
+     
+        
+        <eclipse-security-leftnav menuName="Securities Maintenance"></eclipse-security-leftnav>
+        
+        <div class="grid-container">
+            <div class="nav-tabs-container tactical-trade-menu-container">
+                <ul class="nav nav-tabs pull-left">
+                    <li><a title="All Securities" (click) = 'isSecurityView = true' [class.active] = "isSecurityView">All Securities</a></li>
+                    <li><a title="Securities Detail" (click) = 'navigateToSecurityDetail()' [class.active] = "!isSecurityView">Securities Detail</a></li>
+                </ul>
+                <div class="actionBtn btn-group pull-right tactical-trade-menu-icon">
+                    <a data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                        <i class="material-icons">more_vert</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                    <ul class="dropdown-menu submenu-list" [ngClass]="{hidden:selectedSecurityId == undefined}">
+                            <div [hidden]="!isEditSecurity && !isSecurityView">
+                                <li><a href="javascript:void(0)" (click)="performViewEditActionOnSecurity(false)">View Details</a></li>
+                            </div>
+                            <div [hidden]="isEditSecurity && !isSecurityView">
+                                <li><a href="javascript:void(0)" (click)="performViewEditActionOnSecurity(true)">Edit</a></li>
+                            </div>
+                            <div [hidden]="!isSecurityView">
+                                <li><a href="javascript:void(0)" (click)="deleteSecurity()">Delete</a></li>
+                            </div>
+                     </ul>
+                </div>
+            </div>
+            <div *ngIf = 'isSecurityView'>
+                <eclipse-security-view (viewSecurityDetail) = "viewSecurityDetail($event)" (setSelectedSecurity) = "setSelectedSecurity($event)"></eclipse-security-view>
+            </div>
+            <div *ngIf = '!isSecurityView'>
+                <eclipse-security-detail [securityId] = "selectedSecurityId" [isEditSecurity] = "isEditSecurity" (displaySecurityList) = "displaySecurityList($event)" (setSelectedSecurity) = "setSelectedSecurity($event)"></eclipse-security-detail>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+
+
+<!--right side main area end -->

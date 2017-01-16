@@ -1,0 +1,180 @@
+<eclipse-holding-filterby></eclipse-holding-filterby>
+
+<div *ngIf="tabsModel.type != undefined">
+    <eclipse-holding-tabnav [model]="tabsModel"></eclipse-holding-tabnav>
+
+    <div class="tab-content">
+        <div id="dashboard" class="tab-pane fade in active">
+            <div class="row">
+                <div class="product-tabpane-searchArea holdings-search-head-dispaly">
+                    <div class="">
+                        <b><span class="text-info"><i class="fa fa-suitcase"></i> {{selectedHoldingObj}}</span> <span class="marging-left-2x">{{selectedHoldingValue  | currency:'USD':true}}</span></b>
+                    </div>
+                </div>
+                <div class="marging-top-2x">
+                    <p class="dataAvailable">Based on data available on: {{(holdingsSummary.dateTime | date: 'MM/dd/yyyy')}}</p>
+                </div>
+            </div>
+            <div class="">
+                <div class="row row-col-padding-5">
+                    <div class="col-md-6">
+                        <div class="row row-no-padding portfolio-tiles">
+                            <div class="col-lg-7">
+                                <div class="panel">
+                                    <div class="panel-body dash-bg-color-9">
+                                        <p class="lead">Value</p>
+                                        <div class="panel-actions-fly">
+                                            <span class="textcaret">
+                                                <span *ngIf="holdingsSummary ? (holdingsSummary.value.status == 'high') : null "><i class="fa fa-caret-up text-success"></i></span>
+                                            <span *ngIf="holdingsSummary ? (holdingsSummary.value.status == 'low'):null "><i class="fa fa-arrow-down text-danger"></i></span>                                            {{holdingsSummary ? holdingsSummary.value.changeValuePercent : null}}%
+                                            </span>
+                                        </div>
+                                        <p class="text-50"><strong>{{holdingsSummary ? (holdingsSummary.value.total  | currency:'USD':true) : null}}</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="panel">
+                                    <div class="panel-body dash-bg-color-10">
+                                        <div class="dif-controls">
+                                            <div class="count-box count-box-col-12 text-center">
+                                                <span class="text-center">{{holdingsSummary ?  (holdingsSummary.value.changeValueAmount  | currency:'USD':true):null}}</span>                                                Change in Value
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-no-padding portfolio-tiles">
+                            <div class="col-lg-7">
+                                <div class="panel">
+                                    <div class="panel-body dash-bg-color-7">
+                                        <p class="lead">Holdings</p>
+                                        <p class="text-50"><strong>{{holdingsSummary ? (holdingsSummary.holdings.total):null}}</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="panel">
+                                    <div class="panel-body dash-bg-color-8">
+                                        <div class="dif-controls">
+                                            <div class="count-box count-box-col-6 count-box-right-brd"><span>{{holdingsSummary ? (holdingsSummary.holdings.existing ):null}}</span>                                                Existing</div>
+                                            <div class="count-box count-box-col-6"><span>{{holdingsSummary ?  (holdingsSummary.holdings.new):null}}</span> New</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="panel">
+                            <div class="panel-body row-no-padding portfolio-issues-tile">
+                                <div class="col-lg-6">
+                                    <p class="lead">Issues</p>
+                                    <p class="text-62"><strong>{{(holdingsSummary.issues.total)}} </strong><span>Total</span></p>
+                                </div>
+                                <div class="col-lg-6 error-count-disp">
+                                    <div class="issues-controls">
+                                        <div class="count-box count-box-right-brd error-color count-box-col-6"> <a class="error-color" href="javascript:void(0);"><span>{{(holdingsSummary.issues.errors)}} </span></a> Errors</div>
+                                        <div class="count-box warning-color count-box-col-6"><a class="warning-color" href="javascript:void(0);"><span>{{(holdingsSummary.issues.warnings)}}</span></a> Warnings</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-content gray95">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="portfolio-report-component">
+                            <h4 class="title">Excluded from Trading </h4>
+                            <div class="bs-component">
+                                <span class="count">{{(holdingsSummary.bars.exclude)}}</span>
+                                 <a [routerLink]="['/eclipse', 'holding', 'list', selectedHoldingParam,selectedTypeId,excludedId]">
+                                <div class="progress">
+                                    <div class="progress-bar tolerance" [style.width]="excludedPerc + '%'"></div>
+                                </div>
+                                </a>
+                                <span class="total-count">{{(holdingsSummary.bars.all)}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="portfolio-report-component">
+                            <h4 class="title">Not in Model </h4>
+                            <div class="bs-component">
+                                <span class="count">{{(holdingsSummary.bars.notInModel)}}</span>
+                                   <a [routerLink]="['/eclipse', 'holding', 'list',selectedHoldingParam,selectedTypeId,notInModelId]">
+                                <div class="progress">
+                                    <div class="progress-bar model" [style.width]="notInModelPerc + '%'"></div>
+                                </div>
+                                </a>
+                                <span class="total-count">{{(holdingsSummary.bars.all)}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-no-padding account-realized-gain-box">
+                <div class="col-lg-3 ">
+                    <div class="gray95 ">
+                        <img src="app/assets/img/accounts-pie-chat.jpg " class="img-responsive " alt=" " title=" ">
+                    </div>
+                </div>
+                <div class="col-lg-9 gray95 ">
+                    <div class="row ">
+                        <div class="col-lg-3 ">
+                            <h4 class="marging-top-2x "><b>Top 10 Holdings</b></h4>
+                        </div>
+                        <div class="col-lg-6 pull-right ">
+                            <div class="portfolio-aum-title-clount ">
+                                <h2><strong>{{(holdingsSummary.top10holdings.totalHoldingValue  | currency:'USD':true)}}</strong>
+                                    <i class="fa fa-arrow-up "></i>
+                                    <span class="textcaret"> 
+                                        <span *ngIf="(holdingsSummary.top10holdings.totalHoldingValueStatus == 'High') "><i class="fa fa-caret-up text-success"></i></span>
+                                    <span *ngIf="(holdingsSummary.top10holdings.totalHoldingValueStatus == 'low') "><i class="fa fa-arrow-down text-danger"></i></span>
+                                    </span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="marging-top-1x ">
+                        <div class="table-responsive ">
+                            <table class="table account-portfolioAUM-table ">
+                                <thead>
+                                    <tr>
+                                        <th>Holdings </th>
+                                        <th class="text-right ">Market Value</th>
+                                        <th class="text-right ">Unit</th>
+                                        <th class="text-right ">Price</th>
+                                        <th class="text-right ">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="holdingsSummary!=undefined">
+                                    <tr *ngFor="let holding of  holdingsSummary.top10holdings.holdings">
+                                        <td class=" "><span [ngStyle]="{'background': [holding.color]}"></span> {{holding.holdingName}}</td>
+                                        <td class="text-right "> {{holding.marketValue | currency:'USD':true}} </td>
+                                        <td class="text-right ">{{holding.unit}} </td>
+                                        <td class="text-right ">{{holding.price | currency:'USD':true}} </td>
+                                        <td class="text-right ">{{holding.percentage}}%</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Total </th>
+                                        <th class="text-right ">{{(holdingsSummary.top10holdings.totalHoldingValue | currency:'USD':true)}}</th>
+                                        <th class="text-right "></th>
+                                        <th class="text-right "></th>
+                                        <th class="text-right ">{{totalPercentage}}%</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end dashboard-->
+    </div>
+</div>

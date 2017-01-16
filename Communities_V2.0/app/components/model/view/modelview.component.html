@@ -1,0 +1,117 @@
+<div class="main">
+	<model-breadcrumb pageName="Model Maintenance">
+		<li class="crumb-link"><a [routerLink]="['/community', 'model', 'list']">Model</a></li>
+	</model-breadcrumb>
+	<div class="dashboard-content dashboard-content-margin">
+		<community-model-tabnav [model]="tabsModel"></community-model-tabnav>
+		<div class="tab-content">
+			<div class="tab-pane fade active in">
+				<div class="row">
+					<div class="col-sm-12" *ngIf='modelId==""'>
+						<div class="form-inline space-top-10">
+							<div class="form-group is-empty">
+								<!--<input type="text" class="form-control radius-none input-style" id="exampleInputName4" placeholder="Search model">-->
+								<p-autoComplete placeholder="Search model" (onSelect)="onModelSelect($event)" [(ngModel)]="searchModelString" field="name"
+									[minLength]="1" [suggestions]="modelSuggestions" (completeMethod)="autoModelSearch($event)">
+								</p-autoComplete>
+								<span class="material-input"></span></div>
+							<button type="button" class="btn btn-info btn-raised" (click)="searchModel()"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+						</div>
+					</div>
+					<div *ngIf="checkModelId">
+						<div class="col-xs-12">
+							<div class="model-heading"> Model Information</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Model ID</label>
+								<p>{{modelViewData.id}}</p>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group is-empty">
+								<label for="email" class="primar-label required">Model Name </label>
+								<label class="form-control" placeholder="Enter Model Name">{{modelViewData.name}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group is-empty">
+								<label for="email" class="primar-label">Style </label>
+								<label class="form-control" placeholder="Growth">{{modelViewData.style}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group is-empty">
+								<label for="email" class="primar-label">Target Risk Upper (%)</label>
+								<label class="form-control">{{modelViewData.targetRiskUpper}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Current Risk (%)</label>
+								<label class="form-control">{{modelViewData.currentRisk}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Target Risk Lower (%)</label>
+								<label class="form-control">{{modelViewData.targetRiskLower}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Minimum Amount</label>
+								<label class="form-control">{{modelViewData.minimumAmount}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Advisor Fee (bps)</label>
+								<label class="form-control">{{modelViewData.advisorFee}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Weighted Avg. Net Expense</label>
+								<label class="form-control">{{modelViewData.weightedAvgNetExpense}}</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Status</label>
+								<select class="form-control" [(ngModel)]="modelViewData.status" name="status" disabled>
+                        <option value="undefined">Select Status</option>
+                        <option *ngFor="let status of modelStatus" value={{status.id}} >
+                            {{status.name}}
+                        </option>
+                  </select>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Dynamic</label>
+								<input type="checkbox" [(ngModel)]="modelViewData.isDynamic" name="isDynamic" disabled>
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<div class="model-heading"> Allocation</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="checkModelId">
+					<ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+						suppressRowClickSelection="true" suppressContextMenu="true" rowSelection="multiple" enableColResize="true" [columnDefs]="securityColumnDefs" [rowData]="modelViewData.securities"
+						enableFilter>
+					</ag-grid-ng2>
+				</div>
+
+				<div class="divider"></div>
+				<div class="row text-right">
+					<div class="col-sm-12">
+						<button [routerLink]="['/community', 'model', 'list']" class="btn model-btn-default">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

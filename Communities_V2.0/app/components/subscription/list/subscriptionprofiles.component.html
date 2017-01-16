@@ -1,0 +1,101 @@
+<div class="main">
+	<subscriptionbreadcrumb-breadcrumb pageName="Subscription"></subscriptionbreadcrumb-breadcrumb>
+	<!--right side main area start-->
+	<div class="dashboard-content">
+
+		<div class="dark-bg-container">
+			<div>
+
+				<div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let profile of strategistProfiles">
+					<div class="content-box">
+						<div class="row">
+							<div class="col-lg-5 col-md-5  col-sm-4">
+								<div class="logo-larg-box" *ngIf="!profile.url">
+									<img src="app/assets/img/logo-img.png" alt="#" class="img-responsive">
+								</div>
+								<div class="logo-larg-box" *ngIf="profile.url">
+									<img src="{{profile.url}}" alt="#" class="img-responsive">
+								</div>
+							</div>
+							<div class="col-lg-7 col-md-7  col-sm-8">
+								<div class="heading">{{profile.name}}</div>
+								<p class="details" [innerHtml]="profile.commentary"></p>
+							</div>
+						</div>
+						<div class="divider"></div>
+						<div class="height-12x col-md-12">
+							<div class="row">
+								<div class="col-xs-6"><strong>Sales</strong>
+									<p>{{profile.salesContact}}</p>
+								</div>
+								<div class="col-xs-6"><strong>Support</strong>
+									<p>{{profile.supportContact}}</p>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-xs-6"><strong><i class="fa fa-mobile" aria-hidden="true"></i> {{profile.salesPhone}}</strong>
+									<a class="email-style" target="_blank">{{profile.salesEmail}} </a></div>
+								<div class="col-xs-6"><strong><i class="fa fa-mobile" aria-hidden="true"></i> {{profile.supportPhone}}</strong>
+									<a class="email-style" target="_blank">{{profile.supportEmail}} </a></div>
+							</div>
+
+							<div class="row">
+								<div class="col-xs-12"><a class=" text-info btn-more-details" [routerLink]="['/community', 'subscription', 'view',profile.id]"><strong>More Details...</strong></a>									</div>
+							</div>
+							<div class="row text-right">
+								<div class="col-xs-12">
+									<button class="btn  btn-bg-blue" [disabled]="profile.isSubscribed == 1" data-toggle="modal" (click)="subscribe(profile.id)">SUBSCRIBE</button>
+									<button class="btn  btn-bg-blue" [disabled]="profile.isSubscribed != 1" (click)="unSubscribe(profile.id)">UNSUBSCRIBE</button>									</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<p-dialog [(visible)]="aggrementConfirm" modal="modal" responsive="true" showEffect="fade" width="900" header="Legal Agreement"
+	[resizable]=false>
+	<p [innerHtml]="this.legalAgreement"></p>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<div class="row">
+				<div class="col-xs-8 text-left">
+					<div>
+						<label><input type="checkbox" [(ngModel)] = "isCheck"> I’ve read legal agreement carefuly.</label>
+					</div>
+				</div>
+				<div class="col-xs-4 text-right"> <button class="btn btn-bg-blue" [disabled]="!isCheck" (click)="acceptAgreement()">accept</button>
+					<button class="btn btn-bg-red" (click)="aggrementConfirm=false">decline</button></div>
+			</div>
+		</div>
+	</footer>
+
+</p-dialog>
+
+<p-dialog [(visible)]="unSubscribeConfirm" modal="modal" responsive="true" showEffect="fade" width="526" [resizable]=false>
+	<div *ngIf="unSubscribeMsg == undefined">
+		<div>This will unsubscribe you from all the models offered by the Strategist.<br> Do you want to continue?
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-blueouter" icon="fa-check" (click)="confirmUnSubscribe(strategistId)">Yes</button>
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="unSubscribeConfirm=false">No</button>
+			</div>
+		</footer>
+	</div>
+	<div *ngIf="unSubscribeMsg">
+		<div class="choose-file-small-box file-upload-input-style file-successfully-imported">
+			<i class="fa fa-check-circle" aria-hidden="true"></i> {{unSubscribeMsg}}
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="close()">Close</button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>

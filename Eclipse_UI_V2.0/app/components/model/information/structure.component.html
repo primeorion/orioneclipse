@@ -1,0 +1,147 @@
+<eclipse-modelInformation-tabnav></eclipse-modelInformation-tabnav>
+<div class="dashboard-content">
+    <div id="modelDetail" class="tab-pane fade in">
+        <div class="panel panel-default">
+            <div class="left-chart-box text-center">
+                <div class="row tree-grid-box">
+                    <div class="col-xs-6">
+                        <label><input id="rdb1" type="radio" checked="checked" name="toggler" value="1" /> Tree View </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label><input id="rdb2" type="radio" name="toggler" value="2" />Grid View</label>
+                    </div>
+                </div>
+                <div id="blk-1" class="toHide" style="display:block">
+                    <!--<div class="tree-container"> <img src="app/assets/img/tree.png" alt="#"> </div>-->
+                    <div class="tree-container">
+                        <eclipse-model-tree></eclipse-model-tree>
+                    </div>
+                </div>
+                <div id="blk-2" class="toHide" style="display:none">
+                    <div class="tree-container"> <img src="app/assets/img/grid-view-updated.jpg" st alt="#"> </div>
+                </div>
+                <div class="portfolio-aum-container">
+                    <button class="show-hide-btn btn "><i class="fa fa-minus " aria-hidden="true"></i> </button>
+                    <div class="portfolio-aum">
+                        <div class="col-sm-6 heading text-left">Portfolio - Model Allocation </div>
+                        <div class="col-sm-6 heading text-right">
+                            <strong> <span class="text-aum">AUM</span>
+                           $13,595,708.48</strong>
+                        </div>
+                        <div class="responsive-table">
+                            <table class="table table-hover text-right">
+                                <thead>
+                                    <tr class="table-heading">
+                                        <th></th>
+                                        <th><strong>Target</strong> </th>
+                                        <th><strong>Current</strong> </th>
+                                        <th class="text-center"><strong>Target</strong></th>
+                                        <th class="text-center"><strong>Current</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left"> Tickerset</td>
+                                        <td>$3,141,774.24</td>
+                                        <td>$3,100,000.00</td>
+                                        <td class="text-center">20 %</td>
+                                        <td class="text-center">15 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left"> Class 1 </td>
+                                        <td>$3,086,463.08</td>
+                                        <td> $165,671.66</td>
+                                        <td class="text-center">30 %</td>
+                                        <td class="text-center">30 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left"> Cash or Equivalent</td>
+                                        <td>$2,985,156.20</td>
+                                        <td>$3,000,000.00</td>
+                                        <td class="text-center">20 %</td>
+                                        <td class="text-center">10 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left"> Money Market Tax Free 2A</td>
+                                        <td>$2,322,714.96</td>
+                                        <td>$47,664.99</td>
+                                        <td class="text-center">20 %</td>
+                                        <td class="text-center">15 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left"> Money Market Tax Free 2A</td>
+                                        <td>$2,059,600.00</td>
+                                        <td>$2,000,000.00</td>
+                                        <td class="text-center">10 %</td>
+                                        <td class="text-center">30 %</td>
+                                    </tr>
+                                    <tr class="table-total">
+                                        <td class="text-left"><strong>Total</strong></td>
+                                        <td><strong>$13,595,708.48</strong></td>
+                                        <td><strong>$8313336.65</strong></td>
+                                        <td class="text-center"><strong>100%</strong></td>
+                                        <td class="text-center"><strong>100%</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-tab-box">
+                <div class="menu-li hide-show-right ">
+                    <a href="javascript:void(0);" class="right-close"> <i class="glyphicon glyphicon-menu-left" aria-hidden="true"></i> </a>
+                </div>
+                <div class="nav-tabs-container">
+                    <ul class="nav nav-tabs pull-left">
+                        <li class="active equalspace"><a data-toggle="tab" href="#portfolioAssigned">Portfolio Assigned </a> </li>
+                        <li class="equalspace"><a data-toggle="tab" href="#TeamsAccess">Teams Access </a> </li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div id="portfolioAssigned" class="tab-pane fade in active">
+                        <div class="form-group">
+                            <div class="icon-addon addon-lg ">
+                                <input type="text" placeholder="Search and Add" class="form-control custom-search-bar search-add-input" id="email">
+                                <label for="email" class="glyphicon glyphicon-search custom-icon-addon" title="search"></label>
+                                <button class="btn add-portfolio-btn"> <i class="fa fa-plus  " aria-hidden="true"></i> </button>
+                            </div>
+                        </div>
+                        <div class="nav-tabs-container custom-tab-container ">
+                            <div class="tab-content">
+                                <div class="tab-pane fade in fullList-container portfolio-style  active">
+                                    <ul class="portfolio">
+                                        <li> <a href="#" class="active">Portfolio 1 </a> <i class="glyphicon glyphicon-remove "></i></li>
+                                        <li> <a href="#">Portfolio 2 </a> <i class="glyphicon glyphicon-remove "></i></li>
+                                        <li> <a href="#">Portfolio 3 </a> <i class="glyphicon glyphicon-remove "></i></li>
+                                        <li> <a href="#">Portfolio 4 </a> <i class="glyphicon glyphicon-remove "></i></li>
+                                        <li> <a href="#">Portfolio 5 </a> <i class="glyphicon glyphicon-remove "></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="TeamsAccess" class="tab-pane fade in ">
+                        <div class="nav-tabs-container custom-tab-container custom-height-style  space-top-10 ">
+                            <div class="tab-content">
+                                <div class="tab-pane fade in fullList-container  active">
+                                    <ul class="team-access-list">
+                                        <li> <a href="#" class="active">Team 1 </a> </li>
+                                        <li> <a href="#">Team 2 </a> </li>
+                                        <li> <a href="#">Team 3 </a> </li>
+                                        <li> <a href="#">Team 4 </a> </li>
+                                        <li> <a href="#">Team 5 </a> </li>
+                                        <li> <a href="#">Team 6 </a> </li>
+                                        <li> <a href="#">Team 7 </a> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

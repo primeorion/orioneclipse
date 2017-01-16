@@ -1,0 +1,140 @@
+<form #rebalanceForm="ngForm" (ngSubmit)="rebalance()" class="rebalanceForm" novalidate>
+    <label class="green" *ngIf="isAssignedModel">Model assigned successfully to portfolio</label>
+    <label *ngIf="showAccountError" class="rebalancerError danger">Please select account</label>
+
+    <div class="row" style="margin-bottom:8px;">
+        <div class="col-sm-7" style="border: solid white 1px;margin-top: 7px;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group is-empty">
+                        <label class="primar-label" for="roletype">Select Model</label>
+                        <select class="form-control" [(ngModel)]="selectedModel.id" name="modelId" #modelId="ngModel" (change)="disableRebalanceAndLog()" required>
+                            <option value="null" *ngIf="!selectedModel.id">Select Model</option>
+                            <option *ngFor="let model of modelList" value={{model.id}} >
+                                {{model.name}}
+                            </option>
+                        </select>
+                        <em class="rebalancerError danger" *ngIf="!modelId.valid && rebalanceModel">Required</em>
+                    </div>
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group is-empty">
+                        <label class="primar-label" for="roletype">Select Portfolio</label>
+                        <select class="form-control" [(ngModel)]="selectedPortfolio.id" name="portfolioId" #portfolioId="ngModel" (change)="disableRebalanceAndLog()" required>
+                            <option value="null" *ngIf="!selectedPortfolio.id">Select Portfolio</option>
+                            <option *ngFor="let portfolio of portfolioList" value={{portfolio.id}} >
+                                {{portfolio.name}}
+                            </option>
+                        </select>
+                        <em class="rebalancerError danger" *ngIf="!portfolioId.valid && rebalanceModel">Required</em>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="bs-component pull-right" style="margin-top:60px;">
+                        <a href="javascript:void(0)" class="btn btn-raised btn-info" (click)="assignModel(rebalanceForm)">Assign Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group is-empty">
+
+                        <select class="form-control" [(ngModel)]="selectedRebalanceType.id" name="rebalanceTypeId" (change)="changeRebalanceType($event)">
+                                    <option *ngFor="let rebalanceType of rebalanceTypeList" value={{rebalanceType.id}} >
+                                        {{rebalanceType.name}}
+                                    </option>
+                                </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group is-empty" *ngIf="isEnableAmount">
+
+                        <select class="form-control" [(ngModel)]="selectedAccount.id" name="accountId">
+                                    <option value="null" *ngIf="!selectedAccount.id">Select Account</option>
+                                    <option *ngFor="let account of accounts" value={{account.id}} >
+                                        {{account.name}}
+                                    </option>
+                                </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group is-empty">
+                        <input type="text" *ngIf="isEnableAmount" name="amount" placeholder="Enter amount" [(ngModel)]="amount" value="" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="bs-component pull-left">
+                        <span class="rebalance_lambda_access">Execute On Lambda
+                        <input style = "margin-top: -2px;" type="checkbox" [(ngModel)]="isAccessLambda" name="isAccessLambda" class="btn btn-info btn-raised " value="isAccessLambda" title="Execute On Lambda" [disabled]="!canRebalnce" />
+                        </span>
+                        <!--  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "rebalance()">Rebalance</a> -->
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="bs-component pull-right">
+                        <a name="rebalance" class="btn btn-info btn-raised " value="Download" title="Show Logs" (click)="downloadLogs()" [class.disabled]="tradeCode == null">Show Logs</a>
+                        <!--  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "rebalance()">Rebalance</a> -->
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="bs-component pull-right">
+                        <input type="submit" name="rebalance" class="btn btn-info btn-raised " value="Rebalance" title="Rebalance" [disabled]="!canRebalnce" />
+                        <!--  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "rebalance()">Rebalance</a> -->
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-sm-6">
+                            <div class="form-group is-empty" >
+                              
+                                <select class="form-control" [(ngModel)]="selectedRebalanceType.id" name = "rebalanceTypeId"
+                                (change) = "changeRebalanceType($event)">
+                                    <option *ngFor="let rebalanceType of rebalanceTypeList" value={{rebalanceType.id}} >
+                                        {{rebalanceType.name}}
+                                    </option>
+                                </select>
+                            </div>
+                         </div>-->
+            <!--<div class="col-sm-6" style="margin-top:10px;">
+                            <div class="bs-component pull-right"> 
+                                    <input type="submit" name="rebalance" class="btn btn-info btn-raised " 
+                                    value="Rebalance" title="Rebalance" [disabled] = "!canRebalnce"/>
+                                <!--  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "rebalance()">Rebalance</a> -->
+            <!--</div>
+                        </div>-->
+            <!--<div class= "col-sm-4" >
+                             <input type="text" *ngIf = "isEnableAmount" name="amount" placeholder="Enter amount" [(ngModel)] = "amount" value="" class="form-control" />
+                      </div>-->
+            <!--<div class="col-sm-6">
+                            <div class="form-group is-empty" *ngIf = "isEnableAmount">
+                                
+                                <select class="form-control" [(ngModel)]="selectedAccount.accountId" name = "accountId">
+                                    <option value="null" *ngIf="!selectedAccount.id">Select Account</option>
+                                    <option *ngFor="let account of accounts" value={{account.accountId}} >
+                                        {{account.accountName}}
+                                    </option>
+                                </select>
+                            </div>
+                         </div>-->
+            <!--<div class="col-sm-5">  
+                            <div class="bs-component pull-right"> 
+                                    <a name="rebalance" class="btn btn-info btn-raised " value="Download" title="Show Logs" 
+                                    (click) = "downloadLogs()" [class.disabled]="tradeCode == null">Show Logs</a>
+                                <!--  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "rebalance()">Rebalance</a> -->
+            <!--</div>
+                        </div>-->
+        </div>
+
+    </div>
+</form>
+<div class="agcontainer">
+    <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions" rowSelection="single" [columnDefs]="columnDefs" [rowData]="tradeList" enableFilter>
+    </ag-grid-ng2>
+</div>
+
+<div [innerHTML]="rebalancerLogs">
+</div>

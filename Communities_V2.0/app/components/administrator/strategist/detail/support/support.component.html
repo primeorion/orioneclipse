@@ -1,0 +1,40 @@
+<div id="subtab4" class="tab-pane fade in active ">
+<form #supportDetailForm="ngForm" (ngSubmit)="saveSupportDetail(supportDetailForm)" class="securityForm" novalidate>
+    <div class="col-sm-5">
+        <div class="form-group is-empty">
+            <label for="email" class="primar-label">Contact Address   </label>
+            <textarea placeholder="Enter your address" class="form-control textarea-style" [disabled] = 'isViewMode'
+            [(ngModel)]="supportDetail.supportContact" name="supportContact" #supportContact="ngModel"></textarea>
+        </div>
+    </div>
+
+
+    <div class="col-sm-5">
+        <div class="form-group is-empty">
+            <label for="email" class="primar-label">Phone </label>
+            <input type="text" class="form-control" placeholder="Enter your phone number"
+            [(ngModel)]="supportDetail.supportPhone" name="supportPhone" #supportPhone="ngModel" [disabled] = 'isViewMode'
+            onkeypress='if((event.charCode>=48 && event.charCode<=57) ||event.charCode ==0) return true; else return false'>
+        </div>
+    </div>
+
+    <div class="col-sm-5">
+        <div class="form-group is-empty">
+            <label for="email" class="primar-label">Email </label>
+            <input type="text" class="form-control" placeholder="Enter your valid email address"
+            [(ngModel)]="supportDetail.supportEmail" name="supportEmail" #supportEmail="ngModel"
+            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [disabled] = 'isViewMode'>
+        </div>
+    </div>
+    <div class="divider pull-left" [hidden] = 'isViewMode'></div>
+    <div class="row text-right" [hidden] = 'isViewMode'>
+        <div class="col-sm-12">
+
+            <button class="btn model-btn-primary">Save</button>
+
+            <!--<button class="btn model-btn-default" (click) = "cancel(supportDetailForm)">Cancel</button>-->
+            <button [routerLink]="['/community', 'administrator','strategist', 'list']" class="btn model-btn-default">Cancel</button>
+        </div>
+    </div>
+</form>
+</div>

@@ -1,0 +1,748 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="level-preference-value">
+            <div class="col-lg-5 left-offset-col-2">
+                <div class="col-lg-6">
+                    <h3 class="main-title">{{portfolioData.portfolioInfo.portfolioName}}
+                        <small>Portfolio </small>
+                    </h3>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="main-title">{{portfolioData.portfolioInfo.AUM | currency:'USD':true:'1.2-2'}}
+                        <small>AUM</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-lg-5 pull-right">
+                <div class="col-lg-6">
+                    <h3 class="text-success sub-main-title">
+                        <small>NetCash</small> {{portfolioData.portfolioInfo.netCash | currency:'USD':true:'1.2-2'}}
+                    </h3>
+                </div>
+                <div class="col-lg-3">
+                    <h3 class="text-warning-light main-title">
+                        {{portfolioData.portfolioInfo.currentAmount | currency:'USD':true:'1.2-2'}}
+                        <small>Target <span class="text-warning-light">{{portfolioData.portfolioInfo.targetAmount | currency:'USD':true:'1.2-2'}}</span></small>
+                    </h3>
+                </div>
+                <div class="col-lg-3 pull-right right-offset-col-4">
+                    <h3 class="text-info main-title">
+                        {{portfolioData.portfolioInfo.currentPer}}%
+                        <small>Target <span class="text-info">{{portfolioData.portfolioInfo.targetPer}}%</span></small>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="background-color:#000;">
+<div class="col-sm-12">
+    <div class="pull-left col-sm-2"><a href="#" class="view-model-btn" alt=""> Model Name</a></div>
+    <div class="pull-left min-div-width">Account : <span class="text-info">John Smith</span></div>
+    <div class="pull-left min-div-width">Custodian :<span class="text-info">TD Ameritrade</span></div>
+    <div class="pull-left min-div-width">Type : <span class="text-info">Individual</span></div>
+    <div class="pull-left min-div-width">Info : <span class="text-info">SMA</span></div>
+</div>
+</div>
+
+<div class="nav-tabs-container">
+    <div class="select-form-group">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="">Group By :</label>
+                <select [(ngModel)]="level">
+                    <option value="0">Select level</option>
+                    <option *ngFor="let item of [1,2,3,4]" value="{{item}}">Level {{item}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0)" class="btn btn-primary action-drop" data-toggle="modal" data-target="#addSecurtyPopup"><i class="material-icons">filter_list</i></a>
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu custom-drop-down" role="menu" aria-labelledby="dropdownMenu">
+            <li><a href="javascript:void(0)"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-share-square-o" aria-hidden="true"></i> Send Now</a></li>
+            <li><a href="javascript:void(0)" (click)="addSecurtyPopup = true"><i class="fa fa-clock-o" aria-hidden="true"></i> Start Over</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Add Security to Portfolio</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-refresh" aria-hidden="true"></i> Refresh Grid</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-check" aria-hidden="true"></i> Use Pending Values</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-usd" aria-hidden="true"></i> Trade in Dollars</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-money" aria-hidden="true"></i> Trade in Shares</a></li>
+            <li class="dropdown-submenu"><a href="javascript:void(0)"><i class="fa fa-sliders" aria-hidden="true"></i> Trade Tool</a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void(0)">Rebalance</a></li>
+                    <li><a href="javascript:void(0)">Regular Level Rebalance</a></li>
+                    <li><a href="javascript:void(0)">Tax Loss Harvest</a></li>
+                    <li><a href="javascript:void(0)">Cash Need</a></li>
+                </ul>
+            </li>
+            <li class="dropdown-submenu">
+                <a href="javascript:void(0)"><input type="checkbox" class="checkbox-left-space"> Set Approval Status</a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void(0)">Approved</a></li>
+                    <li><a href="javascript:void(0)">Not Approved</a></li>
+                    <li><a href="javascript:void(0)">Pending Approval</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="product-ticker-maintenance-tab" class="tab-pane product-ticker-maintenance-tab fade in active">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+            <tr>
+                <td>
+                    <template ngFor [ngForOf]="portfolioData.model" let-model="$implicit" let-mi="index">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table tactical-custom-table table-step-1">
+                            <tbody>
+                                <tr *ngIf="model.isSleeve && model.generalInfo != undefined" class="bg-black">
+                                    <td colspan="5">
+                                        <div class="pull-left text-color-sleeve">SLEEVE 1</div>
+                                        <div class="pull-left"> <a class="btn-view-model">Model Model</a></div>
+                                        <div class="pull-left">
+                                            <ul class="sleeve-list">
+                                                <li>[Sleeve AUM] - {{model.generalInfo.sleeveInfo.sleeveAUM | currency:'USD':true:'1.2-2'}}</li>
+                                                <li>Net Cash - {{model.generalInfo.sleeveInfo.netCash | currency:'USD':true:'1.2-2'}}</li>
+                                                <li>Cash Target - {{model.generalInfo.sleeveInfo.cashTarget | currency:'USD':true:'1.2-2'}}</li>
+                                                <li>Cash Target - {{model.generalInfo.sleeveInfo.cashTargetPer}}%</li>
+                                                <li>Cash Current- {{model.generalInfo.sleeveInfo.cashCurrent |
+                                                    currency:'USD':true:'1.2-2'}}</li>
+                                                <li>Cash Current- {{model.generalInfo.sleeveInfo.cashCurrentPer}}%</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="inboxactive">
+                                    <td class="icon-setting">
+                                        <a href="javascript:void(0);" class="btn btn-default add-plus-btn" data-toggle="collapse" data-target="#Sublvl1">
+                                            <i class="fa fa-plus-circle"></i>
+                                            <!-- <i [ngClass]="{ 'fa': true, 'fa-plus-circle': (level == 0), 'fa-minus-circle': (level >= 1) }"></i> -->
+                                        </a>
+                                    </td>
+                                    <td class="levelWidth target1 ">Category A</td>
+                                    <td class="current text-right"><span>Target</span><span class="text-warning-light">$2000.00</span> <span class=" text-info">15.5%</span>
+                                        <span> Current </span> <span class="text-warning-light">$5000.00	</span> <span class=" text-info">20.5%</span></td>
+                                    <td>&nbsp;</td>
+                                    <td class="text-right">
+                                        <action-menu></action-menu>
+                                    </td>
+                                </tr>
+                                <tr id="Sublvl1" class="inbox collapse">
+                                    <!-- [ngClass]="{ 'inbox collapse': true, 'in': (level >= 1) }"> -->
+                                    <td colspan="6" class="table-row-bg-2">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tactical-custom-table table-step-2">
+                                            <tbody>
+                                                <tr class="inboxactive">
+                                                    <td class="icon-setting">
+                                                        <a href="javascript:void(0);" class="btn btn-default add-plus-btn" data-toggle="collapse" data-target="#Sublvl2"><i class="fa fa-plus-circle"></i></a>
+                                                    </td>
+                                                    <td class="levelWidth target2">Level 2</td>
+                                                    <td class="current text-right">
+                                                        <span>Target</span><span class="text-warning-light">$2000.00</span>
+                                                        <span class=" text-info">15.5%</span>
+                                                        <span> Current </span> <span class="text-warning-light">$5000.00</span>
+                                                        <span class=" text-info">20.5%</span>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td class="text-right">
+                                                        <action-menu></action-menu>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody>
+                                                <tr id="Sublvl2" class="inbox collapse">
+                                                    <td colspan="6" class="table-row-bg-3">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tactical-custom-table table-step-3">
+                                                            <tbody>
+                                                                <tr class="table-row-bg-3 inboxactive">
+                                                                    <td class="icon-setting">
+                                                                        <a href="javascript:void(0);" class="btn btn-default add-plus-btn" data-toggle="collapse" data-target="#Sublvl3"><i class="fa fa-plus-circle"></i></a>
+                                                                    </td>
+                                                                    <td class="levelWidth target3">Level 3</td>
+                                                                    <td class="current text-right"><span>Target</span><span class="text-warning-light">$2000.00</span>                                                                        <span class=" text-info">15.5%</span>
+                                                                        <span> Current </span> <span class="text-warning-light">$5000.00	</span>                                                                        <span class=" text-info">20.5%</span></td>
+                                                                    <td>&nbsp;</td>
+                                                                    <td class="text-right">
+                                                                        <action-menu></action-menu>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr id="Sublvl3" class="inbox collapse">
+                                                                    <td colspan="6" class="table-row-bg-4">
+                                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tactical-custom-table table-step-4">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="icon-setting">
+                                                                                        <a href="javascript:void(0);" class="btn btn-default add-plus-btn" data-toggle="collapse" data-target="#Sublvl4"><i class="fa fa-plus-circle"></i></a>
+                                                                                    </td>
+                                                                                    <td class="levelWidth target4">Level 4</td>
+                                                                                    <td class="current text-right">
+                                                                                        <span>Target</span><span class="text-warning-light">$2000.00</span>
+                                                                                        <span class=" text-info">15.5%</span>
+                                                                                        <span> Current </span> <span class="text-warning-light">$5000.00</span>
+                                                                                        <span class=" text-info">20.5%</span>
+                                                                                    </td>
+                                                                                    <td>&nbsp;</td>
+                                                                                    <td class="text-right">
+                                                                                        <action-menu></action-menu>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr id="Sublvl4" class="collapse inbox">
+                                                                                    <td colspan="6" class="table-row-bg-5">
+                                                                                        <!-- Accounts Table -->
+                                                                                        <eclipse-tactical-accounts></eclipse-tactical-accounts>
+                                                                                        <!-- Securities Table -->
+                                                                                        <eclipse-tactical-securities [(model)]="portfolioSecurities"></eclipse-tactical-securities>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </template>
+                </td>
+            </tr>
+            <tr>
+                <td class="top-space-15">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table tactical-custom-table table-step-1">
+                        <tbody>
+                            <tr class="un-Assigned inboxactive">
+                                <td class="icon-setting">
+                                    <a href="javascript:void(0);" class="btn btn-default add-plus-btn" data-toggle="collapse" data-target="#Sub2vl1"><i class="fa fa-plus-circle"></i></a>
+                                </td>
+                                <td class="levelWidth target5">Un-Assigned</td>
+                                <td class="current text-right"><span>&nbsp;</span> <span> &nbsp;</span> <span> Current </span> <span class="text-warning-light">$5000.00 </span>
+                                    <span class=" text-info">20.5%</span>
+                                </td>
+                                <td class="text-right">
+                                    <action-menu></action-menu>
+                                </td>
+                            </tr>
+                            <tr id="Sub2vl1" class="inbox collapse">
+                                <td colspan="5" class="table-row-bg-5">
+                                    <!-- Single Account Table -->
+                                    <table class="table tactical-custom-table table-step-2">
+                                        <thead>
+                                            <tr class="table-row-bg-5">
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th colspan="2" class="text-center table-td-border-left">Current</th>
+                                                <th colspan="1" class="text-center table-td-border-left">Trade Order</th>
+                                                <th colspan="6" class="text-center table-td-border-left">Gain Loss</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="table-row-bg-6">
+                                                <th></th>
+                                                <th>Account</th>
+                                                <th>Custodian</th>
+                                                <th>Type</th>
+                                                <th>Info</th>
+                                                <th class="table-td-border-left text-right ">Shares</th>
+                                                <th class=" table-td-border-left text-right">Amount</th>
+                                                <th class=" text-right table-td-border-left">Amount</th>
+                                                <th class="text-right table-td-border-left">G/L ST</th>
+                                                <th class="text-right table-td-border-left">G/L LT</th>
+                                                <th class="text-right table-td-border-left">Total G/L $</th>
+                                                <th class="text-right table-td-border-left">Total G/L %</th>
+                                                <th class="text-right table-td-border-left">Alternative </th>
+                                            </tr>
+                                            <tr class="table-row-bg-7">
+                                                <td class="icon-setting"></td>
+                                                <td>John Smith</td>
+                                                <td>TD Ameritrade</td>
+                                                <td>Individual</td>
+                                                <td>SMA</td>
+                                                <td class="text-right table-td-border-left">20</td>
+                                                <td class="text-right "> $ 1,50.00 </td>
+                                                <td class="text-right table-td-border-left"> $ 1,50.00</td>
+                                                <td class="text-right table-td-border-left"> $ 1,50.00</td>
+                                                <td class="text-right">$0</td>
+                                                <td class="text-right">-$1,300.00</td>
+                                                <td class="text-right">-650.00%</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr class="inbox-2 collapse" id="Sub2vl6">
+                                                <td colspan="23"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- Securities Table -->
+                                    <table class="table tactical-custom-table table-step-5">
+                                        <tbody>
+                                            <tr class="table-row-bg-1">
+                                                <th></th>
+                                                <th></th>
+                                                <th colspan="7" class="text-center table-td-border-left"><strong>Trade Order</strong></th>
+                                                <th colspan="3" class="text-center table-td-border-left"><strong>Post Trade</strong></th>
+                                                <th colspan="3" class="text-center table-td-border-left"><strong>Model Target</strong></th>
+                                                <th colspan="3" class="text-center table-td-border-left"><strong>Current</strong></th>
+                                                <th colspan="4" class="text-center table-td-border-left"><strong>Gain Loss</strong></th>
+                                                <th colspan="2" class="text-center table-td-border-left"></th>
+                                            </tr>
+                                            <tr class="table-td-border-bottom table-row-bg-2">
+                                                <th></th>
+                                                <th>Securities</th>
+                                                <th class="table-td-border-left">Action</th>
+                                                <th class="text-right">Shares</th>
+                                                <th class="text-right">Amount</th>
+                                                <th class="text-right">Price</th>
+                                                <th>Redemption Fee</th>
+                                                <th class="text-right">Trade Cost</th>
+                                                <th class="text-right">Hold Until</th>
+                                                <th class="table-td-border-left text-right">Shares</th>
+                                                <th class="text-right">Amount</th>
+                                                <th class="text-right">%</th>
+                                                <th class="table-td-border-left text-right">Shares</th>
+                                                <th class="text-right">Amount</th>
+                                                <th class="text-right">%</th>
+                                                <th class="table-td-border-left text-right">Shares</th>
+                                                <th class="text-right">Amount</th>
+                                                <th class="text-right">%</th>
+                                                <th class="table-td-border-left text-right">G/L ST</th>
+                                                <th class="text-right">G/L LT</th>
+                                                <th class="text-right">Total G/L $</th>
+                                                <th class="text-right">Total G/L %</th>
+                                                <th class="table-td-border-left">Trade Reason</th>
+                                                <th>Message</th>
+                                            </tr>
+                                            <template ngFor [ngForOf]="unassignedSecurities" let-security="$implicit" let-i="index">
+                                                <tr class="{{i % 2 == 0 ? 'table-row-bg-4' : 'text-warning-light table-row-bg-3'}}">
+                                                    <td class="icon-setting">
+                                                        <a href="javascript:void(0)" class="btn btn-default add-plus-btn" data-toggle="collapse" data-target="#Sub2vl5{{i}}"><i class="fa fa-plus-circle"></i></a>
+                                                    </td>
+                                                    <td>{{security.securityName}}</td>
+                                                    <td class="table-td-border-left">
+                                                        <div class="form-group">
+                                                            <select class="form-control radius-none">
+                                                                <option>SELL</option>
+                                                                <option>BUY</option>
+                                                            </select>
+                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right ">
+                                                        <div class="form-group is-empty">
+                                                            <input [(ngModel)]="security.tradeOrderShares" class="form-control radius-none text-right" placeholder="80" type="text" />
+                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                            <span class="material-input"></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <div class="form-group is-empty">
+                                                            <input [(ngModel)]="security.tradeOrderAmount" class="form-control radius-none text-right" placeholder="15,00.00" type="text"
+                                                            />
+                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                            <span class="material-input"></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="td-relative text-right"><span>{{security.tradeOrderPrice | currency:'USD':true:'1.2-2'}}</span></td>
+                                                    <td class="td-relative text-right"><span>{{security.tradeOrderRedemptionFee | currency:'USD':true:'1.2-2'}}</span></td>
+                                                    <td class="td-relative text-right"><span>{{security.tradeCost | currency:'USD':true:'1.2-2'}}</span></td>
+                                                    <td class="text-right ">
+                                                        <div class="form-group is-empty">
+                                                            <input [(ngModel)]="security.tradeOrderHoldUntil" class="form-control radius-none text-right" size="16" value="12-02-2016"
+                                                                type="text" />
+                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right table-td-border-left">{{security.postTradeShares}}</td>
+                                                    <td class="text-right">{{security.postTradeAmount | currency:'USD':true:'1.2-2'}}</td>
+                                                    <td class="text-right">{{security.postTradePer}}%</td>
+                                                    <td class="text-right table-td-border-left">{{security.modelTargetShares}}</td>
+                                                    <td class="text-right">{{security.modelTargetAmount | currency:'USD':true:'1.2-2'}}</td>
+                                                    <td class="text-right">{{security.modelTargetPer}}%</td>
+                                                    <td class="text-right table-td-border-left">{{security.currentShares}}</td>
+                                                    <td class="text-right">{{security.currentAmount | currency:'USD':true:'1.2-2'}}</td>
+                                                    <td class="text-right">{{security.currentPer}}%</td>
+                                                    <td class="text-right table-td-border-left">{{security.gainLossCostShortTerm | currency:'USD':true:'1.2-2'}}</td>
+                                                    <td class="text-right">{{security.gainLossCostLongTerm | currency:'USD':true:'1.2-2'}}</td>
+                                                    <td class="text-right">{{security.gainAmount | currency:'USD':true:'1.2-2'}}</td>
+                                                    <td class="text-right">{{security.gainPer}}%</td>
+                                                    <td class="table-td-border-left">
+                                                        <div class="form-group is-empty">
+                                                            <input [(ngModel)]="security.commentsTradeReason" type="text" class="form-control" placeholder="Rebalance" />
+                                                            <span class="material-input"></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-danger">{{security.commentsMessage}}</td>
+                                                </tr>
+                                                <!-- <tr class="table-row-bg-4">
+                                                <td class="icon-setting"><a href="javascript:void(0);" class="btn btn-default add-plus-btn"><i class="fa fa-plus-circle"></i></a></td>
+                                                <td>GOOG</td>
+                                                <td class="table-td-border-left"></td>
+                                                <td class="text-right"> </td>
+                                                <td></td>
+                                                <td class="td-relative text-right"> $ 1500 </td>
+                                                <td class="text-right"> $ 150.00</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-right table-td-border-left">51</td>
+                                                <td class="text-right td-relative"><span class="ellipsis-value" data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="$ 1,50000.00"> 1,50000.00 </span></td>
+                                                <td class="text-right">20%</td>
+                                                <td class="text-right table-td-border-left">10</td>
+                                                <td class="text-right">$500</td>
+                                                <td class="text-right">5%</td>
+                                                <td class="text-right table-td-border-left">51</td>
+                                                <td class="text-right td-relative"><span class="ellipsis-value" data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="$ 1,50000.00"> 1,50000.00 </span></td>
+                                                <td class="text-right">20%</td>
+                                                <td class="text-right table-td-border-left">$1,800.00</td>
+                                                <td class="text-right">$120</td>
+                                                <td class="text-right">-$800.00</td>
+                                                <td class="text-right">-80.00%</td>
+                                                <td class="table-td-border-left">
+                                                    <div class="form-group is-empty"><input type="text" class="form-control" placeholder="Rebalance">
+                                                        <span
+                                                            class="material-input"></span>
+                                                    </div>
+                                                </td>
+                                                <td>Message text</td>
+                                            </tr>
+                                            <tr class="table-row-bg-3">
+                                                <td class="icon-setting"><a href="javascript:void(0);" class="btn btn-default add-plus-btn"><i class="fa fa-plus-circle"></i></a></td>
+                                                <td>IBM</td>
+                                                <td class="table-td-border-left"></td>
+                                                <td class="td-relative text-right"><span> </span></td>
+                                                <td></td>
+                                                <td class="td-relative text-right"> $ 1000 </td>
+                                                <td class="td-relative text-right"><span> $ 50 </span></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-right table-td-border-left">51</td>
+                                                <td class="text-right td-relative"><span class="ellipsis-value" data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="$ 1,50000.00"> 1,50000.00 </span></td>
+                                                <td class="text-right">20%</td>
+                                                <td class="text-right table-td-border-left">10</td>
+                                                <td class="text-right">$500</td>
+                                                <td class="text-right">5%</td>
+                                                <td class="text-right table-td-border-left">51</td>
+                                                <td class="text-right td-relative"><span class="ellipsis-value" data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="$ 1,50000.00"> 1,50000.00 </span></td>
+                                                <td class="text-right">20%</td>
+                                                <td class="text-right table-td-border-left">$1,800.00</td>
+                                                <td class="text-right">$120</td>
+                                                <td class="text-right">-$800.00</td>
+                                                <td class="text-right">-80.00%</td>
+
+                                                <td class="table-td-border-left">
+                                                    <div class="form-group is-empty"><input type="text" class="form-control" placeholder="Rebalance">
+                                                        <span
+                                                            class="material-input"></span>
+                                                    </div>
+                                                </td>
+                                                <td>Message text</td>
+                                            </tr>
+                                            <tr class="table-row-bg-4 inboxactive">
+                                                <td class="icon-setting">
+                                                    <a href="javascript:void(0);" class="btn btn-default add-plus-btn" data-toggle="collapse"
+                                                        data-target="#Sub2vl5"><i class="fa fa-plus-circle fa-minus-circle"></i></a>
+                                                        </td>
+                                                <td>MSFT</td>
+                                                <td class="table-td-border-left"></td>
+                                                <td class="text-right"></td>
+                                                <td></td>
+                                                <td class="td-relative text-right"> $ 1000 </td>
+                                                <td class="td-relative text-right"><span>$ 50 </span></td>
+                                                <td></td>
+                                                <td></td>
+
+                                                <td class="text-right table-td-border-left">51</td>
+                                                <td class="text-right td-relative"><span class="ellipsis-value" data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="$ 1,50000.00"> 1,50000.00 </span></td>
+                                                <td class="text-right">20%</td>
+                                                <td class="text-right table-td-border-left">10</td>
+                                                <td class="text-right">$500</td>
+                                                <td class="text-right">5%</td>
+                                                <td class="text-right table-td-border-left">51</td>
+                                                <td class="text-right td-relative"><span class="ellipsis-value" data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="$ 1,50000.00"> 1,50000.00 </span></td>
+                                                <td class="text-right">20%</td>
+                                                <td class="text-right table-td-border-left">$1,800.00</td>
+                                                <td class="text-right">$120</td>
+                                                <td class="text-right">-$800.00</td>
+                                                <td class="text-right">-80.00%</td>
+
+                                                <td class="table-td-border-left">
+                                                    <div class="form-group is-empty"><input type="text" class="form-control" placeholder="Rebalance">
+                                                        <span
+                                                            class="material-input"></span>
+                                                    </div>
+                                                </td>
+                                                <td>Message text</td>
+                                            </tr> -->
+                                                <tr class="inbox collapse" id="Sub2vl5{{i}}">
+                                                    <td colspan="25">
+                                                        <!-- Taxlots Table -->
+                                                        <table class="table tactical-custom-table">
+                                                            <thead>
+                                                                <tr class="table-row-bg-9">
+                                                                    <th colspan="4" class="text-center">Tax Lots</th>
+                                                                    <th colspan="5" class="text-center table-td-border-left">Gain Loss</th>
+                                                                    <th colspan="1"></th>
+                                                                    <th class=" table-td-border-left">Trade Order</th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="table-row-bg-10">
+                                                                <tr>
+                                                                    <th class="text-right custom-td-width">Rank</th>
+                                                                    <th class="text-center">Acquired Date</th>
+                                                                    <th class="text-right">Shares</th>
+                                                                    <th class="text-right">Value</th>
+                                                                    <th class="text-right table-td-border-left">G/L ST</th>
+                                                                    <th class="text-right">G/L LT</th>
+                                                                    <th class="text-right">Redemption Fee </th>
+                                                                    <th class="text-right">Trade Cost </th>
+                                                                    <th class="text-right">Total G/L $</th>
+                                                                    <th class="text-right">Total G/L %</th>
+                                                                    <th class="text-right table-td-border-left">Shares</th>
+                                                                    <th class="text-right">Amount</th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <div class="form-group">
+                                                                            <input class="form-control radius-none text-right" placeholder="0" maxlength="3" type="text" />
+                                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-center">3/16/2012</td>
+                                                                    <td class="text-right">15</td>
+                                                                    <td class="text-right">$1,000.00</td>
+                                                                    <td class="text-right table-td-border-left">$120</td>
+                                                                    <td class="text-right">$1,200.00</td>
+                                                                    <td class="text-right">Yes</td>
+                                                                    <td class="text-right">$ 110</td>
+                                                                    <td class="text-right">-$200.00</td>
+                                                                    <td class="text-right">-16.67%</td>
+                                                                    <td class="text-right table-td-border-left">
+                                                                        <div class="form-group is-empty">
+                                                                            <input type="text" class="form-control radius-none" id="" />
+                                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-right">
+                                                                        <div class="form-group is-empty">
+                                                                            <input type="text" class="form-control radius-none" id="" />
+                                                                            <span class="material-input"></span><span class="material-input"></span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <!-- <tr>
+                                                                <td class="text-center">
+                                                                    <div class="form-group">
+                                                                        <input class="form-control radius-none text-right" placeholder="0" maxlength="3" type="text">
+                                                                        <span class="material-input"></span><span class="material-input"></span>
+                                                                        <span
+                                                                            class="material-input"></span><span class="material-input"></span></div>
+                                                                </td>
+                                                                <td class="text-center">3/16/2012</td>
+                                                                <td class="text-right">15</td>
+                                                                <td class="text-right">$1,000.00 </td>
+                                                                <td class="text-right table-td-border-left"></td>
+                                                                <td class="text-right"></td>
+                                                                <td class="text-right">No </td>
+                                                                <td class="text-right">$ 110 </td>
+                                                                <td class="text-right"></td>
+
+                                                                <td class="text-right"></td>
+                                                                <td class="text-right table-td-border-left">
+                                                                    <div class="form-group is-empty">
+                                                                        <input type="text" class="form-control radius-none" id=" ">
+                                                                        <span class="material-input"></span><span class="material-input"></span></div>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <div class="form-group is-empty">
+                                                                        <input type="text" class="form-control radius-none" id=" ">
+                                                                        <span class="material-input"></span><span class="material-input"></span></div>
+                                                                </td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr> -->
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- Taxlots Table -->
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div class="portfolio-details-toggle">
+    <div class="panel panel-info">
+        <div class="panel-heading fixed-height">
+            <h3 class="panel-title">Cash / Portfolio Detail
+                <a href="javascript:void(0)" class="btn btn-default toggle-up-btn pull-right text-white" data-toggle="collapse" data-target="#portfolio"><b><i class="fa fa-angle-up"></i></b></a>
+            </h3>
+        </div>
+        <div id="portfolio" class="panel-collapse collapse">
+            <div class="panel-body panel-body-style" id="portfolio">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="table-responsive">
+                            <div class="col-md-12">
+                                <h3 class="pull-left">Cash</h3>
+                                <h3 class="pull-right">
+                                    <!--<span class="curent-valu-text">Current:</span> <span class="text-success curent-valu"><b class="ellipsis-value" data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="$ 1,50000.00"> {{currentCash | currency:'USD':true:'1.2-2'}} </b></span>-->
+
+                                    <span class="curent-valu-text">Current:</span>
+                                    <span class="text-success curent-valu" data-toggle="tooltip" data-placement="top" title="" data-original-title="$ 1,50000.00"> <b>{{currentCash | currency:'USD':true:'1.2-2'}}</b></span>
+
+                                </h3>
+                            </div>
+                            <table class="table tactical-custom-table">
+                                <thead class="table-row-bg-11">
+                                    <tr>
+                                        <th>Accounts</th>
+                                        <th class="text-right">Current</th>
+                                        <th class="text-right">Reserve</th>
+                                        <th class="text-right">Total</th>
+                                        <th class="text-right">Target</th>
+                                        <th class="text-right">Post Trade</th>
+                                        <th class="text-right">Needs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let acc of cashSummary.accountCashSummary; let i = index" class="{{acc.accountName == 'Total' ? 'text-info' : (i % 2 == 0 ? 'table-row-bg-4' : 'text-warning-light table-row-bg-3')}}">
+                                        <td>{{acc.accountName}}</td>
+                                        <td class="text-right">{{acc.currentValue | currency:'USD':true:'1.2-2'}}</td>
+                                        <td class="text-right">{{acc.reserveValue | currency:'USD':true:'1.2-2'}}</td>
+                                        <td class="text-right">{{acc.totalValue | currency:'USD':true:'1.2-2'}}</td>
+                                        <td class="text-right">{{acc.targetValue | currency:'USD':true:'1.2-2'}}</td>
+                                        <td class="text-right">{{acc.postTradeValue | currency:'USD':true:'1.2-2'}}</td>
+                                        <td class="text-right">{{acc.needsValue | currency:'USD':true:'1.2-2'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="portfolio-detail">
+                            <h3>Portfolio Detail</h3>
+                            <div class="portfolio-detail-heading">
+                                <div class="row">
+                                    <div class="col-md-6 text-left">Portfolio Name : </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.portfolioName}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 text-left">Model Name : </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.modelName}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 text-left">Total Trade Cost : </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.totalTradeCost | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7 text-left">Total Redemption Fee: </div>
+                                    <div class="col-md-5 text-right">{{cashSummary.portfolioCashSummary.totalRedemptionFee | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                            </div>
+                            <div class="portfolio-detail-body">
+                                <h5> <b>Portfolio Cash</b></h5>
+                                <div class="row">
+                                    <div class="col-lg-6">Total </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.totalValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">Current </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.currentValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">Reserve </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.reserveValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">Excluded </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.excludedValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">Set Aside </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.setAsideValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">Target </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.targetValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">Post Trade </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.postTradeValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">Needs </div>
+                                    <div class="col-md-6 text-right">{{cashSummary.portfolioCashSummary.needsValue | currency:'USD':true:'1.2-2'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--For Tactical Tool-->
+<!-- Modal -->
+<p-dialog header="Tactical Trades" [(visible)]="addSecurtyPopup" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+    [resizable]=false width="700">
+    <eclipse-taticltrades-popup (callContinueMethod)="onContinueClick()" (callParentMethod)="closePopup()"></eclipse-taticltrades-popup>
+</p-dialog>

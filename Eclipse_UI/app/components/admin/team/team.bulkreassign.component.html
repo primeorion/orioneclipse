@@ -1,0 +1,45 @@
+<div class="error" *ngIf="showErrorMessage">
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+        {{errorMessage}}
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="form-group is-empty" >
+   <strong>Current Team Assignment </strong><br/>
+    Team id: {{selectedTeamData.id}} <br/>
+    Team Name:  {{selectedTeamData.name}}  <br/>
+    Advisor: {{selectedTeamData.advisorName}} <br/>
+    CreatedOn: {{selectedTeamData.createdOn | date: 'MM/dd/yyyy'}}<br/>
+    No Of Users: {{selectedTeamData.numberOfUsers}} <br/>
+    Status: {{(selectedTeamData.id == null) ? '' :  (selectedTeamData.status) ? 'Active' : 'InActive' }} <br/>
+</div>
+</div>
+
+<div class="col-sm-6">
+    <div class="form-group is-empty role-spacer">
+    <strong>New Team Assignment </strong><br/>
+    <select (change)="dropDownChange($event.target.value)" class="form-control">
+        <option value="0">Select Team to Reassign</option>
+        <option *ngFor="let team of teamData" value={{team.id}} >
+            {{team.name}}
+        </option>
+    </select>
+    <br/>
+    <div>
+    Team id: {{selectedTeam ? selectedTeam.id : null}} <br/>
+    Team Name:  {{selectedTeam ?selectedTeam.name:null}}  <br/>
+    Advisor: {{selectedTeam ?selectedTeam.advisorName:null}} <br/>
+    CreatedOn: {{selectedTeam==null ? null:selectedTeam.createdOn | date: 'MM/dd/yyyy' }}<br/>
+    No Of Users: {{selectedTeam ?selectedTeam.numberOfUsers:null}} <br/>
+    <!--Status: {{(selectedTeam == null) ? '' : (selectedTeam.status) ? 'Active' : 'InActive' }} <br/>-->
+      Status: {{(selectedTeam == null) ? '' : (selectedTeam.id == undefined) ? '' : (selectedTeam.status) ? 'Active' : 'InActive' }} <br/>
+
+    </div>
+</div>
+
+  
+<div>
+ <div>
+    <span *ngIf="teamValidation" class="validationerror">Please select team to reassign</span>
+  </div>

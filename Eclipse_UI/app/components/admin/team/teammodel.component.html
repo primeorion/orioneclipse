@@ -1,0 +1,32 @@
+<div class="form-inline">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-3 form-inline tabs-data form-group" *ngIf="!isViewModel">
+                <p-autoComplete class="autocomplete-block" [(ngModel)]="selectedmodel" [suggestions]="FilteredModelresults" placeholder="Search Model"
+                    (completeMethod)="autoModelSearch($event)" field="name" [minLength]="1" (onSelect)="handleselectedModel(selectedmodel)" (keyup)="handleselectedModel(selectedmodel)"></p-autoComplete>
+            </div>
+            <div class="col-sm-1" *ngIf="!isViewModel">
+                <button type="button" class="btn btn-info btn-raised" (click)="addModel(selectedmodel)" [disabled]="btnDisableModel">Add</button>
+            </div>          
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="showModelGrid">
+    <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" suppressContextMenu="true" [showToolPanel]="false" enableSorting [gridOptions]="gridModelOptions"
+        enableColResize="true" [columnDefs]="columnModelDefs" [rowData]="teamModel" enableFilter [getContextMenuItems]="getContextMenuItems">
+    </ag-grid-ng2>
+</div>
+<p-dialog header="" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+    [resizable]=false width="420">
+    <div>
+        <div>This action will Delete the Model Record. To avoid that please select No. <br /><br /> To Continue with Model
+            deletion, please press Yes.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayConfirm=false" >No</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="deleterModel()">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

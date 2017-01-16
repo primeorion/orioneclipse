@@ -1,0 +1,61 @@
+{
+	"orion": {
+		"db": {
+			"connectionLimit": 10,
+			"host": "orionqaandalpha-cluster.cluster-cwz3dqtcj9ax.us-east-1.rds.amazonaws.com",
+			"user": "oEAQA",
+			"password": "b2VhcWFAYXVyb3JhIWRtaW4jIyMjIw==",
+			"database": "qa3_orionEclipseCommon",
+			"port" : 3306,
+			"community" : {
+				"connectionLimit": 10,
+				"host": "orionqaandalpha-cluster.cluster-cwz3dqtcj9ax.us-east-1.rds.amazonaws.com",
+				"user": "oEAQA",
+				"password": "b2VhcWFAYXVyb3JhIWRtaW4jIyMjIw==",
+				"database": "qa3_orionEclipseCommunity",
+				"restoreNodeTimeout": 10,
+				"port" : 3306
+			}
+		},
+		"redis" : {
+			"host" :"54.167.240.71",
+			"port" : 6379
+		},
+		"aws" : {
+			"accessKeyId" : "AKIAJGVS4663WQJQURLQ",
+			"secretAccessKey" : "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"
+		},
+		"s3" : {
+			"accessKeyId": "AKIAJYQJPK7K377QTDXA",
+    		"secretAccessKey": "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",
+			"bucket" : "paxorions3",
+			"host" : "s3.amazonaws.com/",
+			"root" : "qa/",
+			"region" : "us-east-1"
+		},
+		"eclipse" : {
+			"host" : "54.167.240.71",
+			"port" : 3000
+		},
+		"import": {
+			"host": "52.205.148.166",
+			"username": "root",
+			"privateKey": "/config/env/importServerKey/dev-openssh-key"
+		},
+		"modelUpdate":{
+			"host": "52.205.148.166",
+			"username": "root",
+			"privateKey": "/config/env/importServerKey/dev-openssh-key"
+		},
+		"rebalance":{
+			"url": "54.167.240.71",
+			"port": 3000
+		},
+		"allowed-origins": true,
+		"req-logger": "combined"
+	},
+	"port": 4000,
+	"sessionsecret": "orioneclipse",
+	"log-level": "debug",
+	"logging-path": "/var/log/orioncommunity"
+}

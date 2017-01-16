@@ -1,0 +1,299 @@
+<trade-leftmenu></trade-leftmenu>
+<div class="grid-container">
+    <eclipse-trade-tabnav (callParentPopup)="DoAction($event)" [model]="tabsModel"></eclipse-trade-tabnav>
+    <div class="tab-content">
+        <div id="allaccounts" class="tab-pane fade in active grid-height">
+
+            <!--Right Slide Pannel-->
+            <div class="tom-right-hbox-container ease" id="tomRightPanel" [style.right.px]="isExpanded ? 0 : -600">
+                <a (click)="onRightPanelExpand()" data-target="tomRightPanel" href="javascript:void(0);" class="right-hbox right-hbox-btn">
+                    <i class="glyphicon-menu-right glyphicon" aria-hidden="true"></i> </a>
+                <div class="tom-right-tab-box ">
+                    <div class="nav-tabs-container">
+                        <ul class="nav nav-tabs pull-left">
+                            <li class="active"><a (click)="onRightPanelTabChange('QT')" data-toggle="tab" href="#QuickTrade" title="Quick Trade"
+                                    aria-expanded="true"><i class="fa fa-bolt"></i></a></li>
+                            <li class=""><a (click)="onRightPanelTabChange('MT')" data-toggle="tab" href="#ModelTolerance" title="Model Tolerance"
+                                    aria-expanded="true"><i class="fa fa-crosshairs"></i> </a></li>
+                            <li class=""><a (click)="onRightPanelTabChange('MA')" data-toggle="tab" href="#ModelAnalysis" title="Model Analysis"
+                                    aria-expanded="true"><i class="fa fa-cubes"></i> </a></li>
+                            <li><a (click)="onRightPanelTabChange('EI')" data-toggle="tab" href="#ExcelImport" title="Excel Import"
+                                    aria-expanded="true"><i class="fa fa-download"></i> </a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div id="QuickTrade" class="tab-pane fade active in">
+                            <tradeorder-quicktrade></tradeorder-quicktrade>
+                        </div>
+                        <div id="ModelTolerance" class="tab-pane fade">
+                            <tradeorder-modeltolerance></tradeorder-modeltolerance>
+                        </div>
+                        <div id="ModelAnalysis" class="tab-pane fade">
+                            <tradeorder-modelanalysis></tradeorder-modelanalysis>
+                        </div>
+                        <div id="ExcelImport" class="tab-pane fade">
+
+                            <div class="excel-import-body" [hidden]="!showFileUpload">
+                                <div class="choose-file-small-box file-upload-input-style" (dragover)='dragFile($event)' (drop)='dropFile($event)'>
+                                    <span class="btn btn-info btn-file btn-raised"> Select File to Import
+                                        <input type="file" name="model" id ="model-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+       (change)="selectedTemplate($event)" [(ngModel)]="file">
+                                    </span><br /> or drag and drop here
+                                    <!--<p>{{fileName}}</p>-->
+                                     <div *ngIf="!disableUploadBtn">
+                                        <p *ngIf="checkDragFile">{{dragFileName}}</p>
+                                        <p *ngIf="!checkDragFile">{{file.name}}</p>
+                                    </div>
+                                    <br />
+                                    <em class="securityError danger" *ngIf="showFiletUploadError"><b>{{fileUploadError}}</b></em>
+                                </div>
+                            </div>
+                            <div [hidden]="showFileUpload">
+                                <div class="table-responsive">
+                                    <table class="table torder-excellist-table">
+                                        <thead>
+                                            <tr>
+                                                <th>AccId</th>
+                                                <th>Number</th>
+                                                <th>Action</th>
+                                                <th>Security</th>
+                                                <th>Dollars</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let order of tradeOrders">
+                                                <td *ngIf="order.isValid == true">{{order.accId}}</td>
+                                                <td *ngIf="order.isValid == false" class="danger" [title]="order.error">{{order.accId}}</td>
+
+                                                <td *ngIf="order.isValid == true">{{order.accountId}}</td>
+                                                <td *ngIf="order.isValid == false" class="danger" [title]="order.error">{{order.accountId}}</td>
+
+                                                <td *ngIf="order.isValid == true">{{order.action}}</td>
+                                                <td *ngIf="order.isValid == false" class="danger" [title]="order.error">{{order.action}}</td>
+
+                                                <td *ngIf="order.isValid == true">{{order.security}}</td>
+                                                <td *ngIf="order.isValid == false" class="danger" [title]="order.error">{{order.security}}</td>
+
+                                                <td *ngIf="order.isValid == true">{{order.dollars}}</td>
+                                                <td *ngIf="order.isValid == false" class="danger" [title]="order.error">{{order.dollars}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6"><button type="button" (click)="saveValidTradeOrders()" class="btn btn-success btn-block btn-raised btn-sm" [disabled]="disableTrade"> <i class="fa fa-bolt" ></i> Trade</button></div>
+                                    <div class="col-sm-6"><button type="button" (click)="onRightPanelTabChange('EI')" class="btn btn-default btn-block btn-raised btn-sm"> <i class="fa fa-trash-o"></i> Reset</button></div>
+                                </div>
+                            </div>
+                            <div class="nav-tabs-container custom-tab-container margin-top-10">
+                                <div class="tab-content">
+                                    <h5 class="margin-top-minus5"> <i class="fa fa-lightbulb-o "></i> <b> A Word about file formats</b></h5>
+                                    <p>The imported file should include as "Account ID" or an "Account Number" column, in addition
+                                        to columns for "Action", "Ticker", and either "Dollars" or "Shares".</p>
+                                    <p></p>
+                                    <p>The file’s extension can be xlsx or csv.</p>
+                                    <p>Invalid trades will be highlighted <span class="text-danger">red</span> and discarded
+                                        during the import</p>
+                                </div>
+                            </div>
+                            <div class="text-right margin-top-15">
+                                <div class="form-group">
+                                    <div class="custom-form-group">
+                                        <div class="">
+                                            <label class="radio-inline"><input type="radio" name="optRadioPending" (click)="radioChange('Current')" checked="checked"/>Current</label>
+                                            <label class="radio-inline"><input type="radio" name="optRadioPending" (click)="radioChange('Pending')" />Pending</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Right Slide Pannel-->
+
+            <div class="tab-header">
+                <div class="form-inline">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <eclipse-savedviews [model]="savedView" (parentColDefCallback)="createColumnDefs()" (parentCallback)="getTrades()" viewTypeId="7"></eclipse-savedviews>
+                        </div>
+                        <div class="col-sm-4 text-right">
+                            <div class="form-group">
+                                <label class="label-right-space">Filter : </label>
+                                <select id="accFilter" class="form-control" [(ngModel)]="fileterTypeId" style="width:auto" (change)="onFilterChange($event)">
+									<option value="0">Select Filter</option>
+									<option *ngFor="let afl of accountFilterList" value={{afl.id}}> {{afl.name}}</option>
+                           		</select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="agcontainer">
+                <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting (rowSelected)="onRowSelected($event)"
+                    [gridOptions]="tradeOrderGridOptions" enableColResize="true" rowSelection="multiple" [columnDefs]="columnDefs" 
+                    [rowData]="tradeOrderData" (cellValueChanged)="updateChangedVal($event)" enableFilter [getContextMenuItems]="getContextMenuItems" (rowClicked)="onRowClicked($event)"
+                    (modelUpdated)="onModelUpdated()" [context]="gridContext" (gridReady)="onGridReady($event)" [suppressMenuMainPanel]="true">
+                </ag-grid-ng2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+    width="400">
+    <div>
+        <div>This will effect all applicable orders regardless of the current view or enabled filters. <br /> Are you sure you
+            want to proceed?</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="displayConfirm=false" label="No"></button>
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="displayConfirm=false;DoAction()" label="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayDeletedInfo" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+    width="400">
+    <div>
+        <div>{{deletedOrders}} of the {{selectedOrders}} selected row(s) did not meet the criteria for this action. <br /> They
+            remain highlighted in the grid.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="refreshgrid();displayDeletedInfo=false"
+                    label="OK"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog header= {{editOrderTitle}} [(visible)]="displayEditOrder" modal="modal" responsive="true" showEffect="fade" [draggable]=true
+    [resizable]=false width="700">
+    <div class="">
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label">Ticker</label>
+                <input type="text" disabled=true class="form-control placeholder-input" [(ngModel)]="editOrder.security.symbol" />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label">Order type</label>
+                <select class="form-control" (change)=onOrderTypeChange($event.target.value) [(ngModel)]="editOrder.orderType.id">    
+                    <option *ngFor="let item of orderTypes" value={{item.id}}>{{item.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label">Action</label>
+                <select class="form-control" [(ngModel)]="editOrder.action.id">      
+                    <option *ngFor="let item of actionTypes" value={{item.id}}>{{item.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label">Limit Price</label>
+                <input [disabled]="!isLimitPrice" type="number" min="0" class="form-control placeholder-input" [(ngModel)]="editOrder.limitPrice"
+                />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group  is-empty">
+                <label class="primar-label">Quantity</label>
+                <input type="number" min="0" (keyup)="onQuantityKeyUp($event.target.value)" (change)="onQuantityKeyUp($event.target.value)"   class="form-control placeholder-input" [(ngModel)]="editOrder.orderQty" />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group  is-empty">
+                <label class="primar-label">Value</label>
+                <input type="number" min="0" (keyup) ="onValueKeyUp($event.target.value)"  (change) ="onValueKeyUp($event.target.value)" class="form-control placeholder-input" [(ngModel)]="editOrder.estimateAmount" />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group  is-empty">
+                <label class="primar-label">Stop Price</label>
+                <input [disabled]="!isStopPrice" type="number" min="0" class="form-control placeholder-input" [(ngModel)]="editOrder.stopPrice"
+                />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label">Qualifier</label>
+                <select class="form-control" [(ngModel)]="editOrder.qualifier.id">     
+                    <option *ngFor="let item of qualifiers" value={{item.id}} >{{item.name}}</option>   
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label">Duration</label>
+                <select class="form-control" [(ngModel)]="editOrder.duration.id">     
+                    <option *ngFor="let item of durations" value={{item.id}} >{{item.name}}</option>                                        
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group  is-empty">
+                <label class="primar-label">Discretionary </label>
+                <input type="Checkbox" [(ngModel)]="editOrder.isDiscretionary" />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group  is-empty">
+                <label class="primar-label">Solicited  </label>
+                <input type="Checkbox" [(ngModel)]="editOrder.isSolicited" />
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <div class="col-sm-6">
+                <div class="form-inline">
+                    <button type="submit" class="btn btn-success btn-raised pull-left" (click)="onSend(editOrder)">Send</button>
+                    <div class="form-group">
+                        <label> <input type="Checkbox" [(ngModel)]="editOrder.isAutoAllocate" value="Auto Allocate"/>Auto Allocate</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 text-right">
+                <button type="submit" class="btn btn-info btn-raised" (click)="onSubmit(editOrder)">Save </button>
+                <button class="btn btn-raised btn-default" (click)="gotoOrderList()">Cancel</button>
+            </div>
+        </div>
+    </footer>
+</p-dialog>
+<!--For Tactical Tool-->
+<!-- Modal -->
+<p-dialog header="Tactical Trades" [(visible)]="addSecurtyPopup" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+    [resizable]=false width="700">
+    <eclipse-taticltrades-popup (callContinueMethod)="onContinueClick()" (callParentMethod)="closePopup()"></eclipse-taticltrades-popup>
+</p-dialog>
+
+<p-dialog header="Order Message" [(visible)]="messageDailog" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+    [resizable]=false width="700">
+ <div class="table-responsive">
+ <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th class="text-center">Message </th>
+        <th>Severity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tradeOrderMessages">
+        <td>{{item.shortCode}}</td>
+        <td class="text-center">{{item.message}}</td>
+        <td>{{item.severity}}</td>
+      </tr>
+      
+    </tbody>
+  </table>
+ </div>
+               
+</p-dialog>

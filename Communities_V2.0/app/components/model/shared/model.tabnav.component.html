@@ -1,0 +1,33 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left">
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/community', 'model', 'list']">All Models</a> </li>
+        <li [routerLinkActive]="['active']"><a *ngIf="(model.action == 'L' || model.action == 'V')" [routerLink]="['/community', 'model', 'view',  '']">Model Details</a></li>
+        <li [routerLinkActive]="['active']"><a *ngIf="model.action == 'A'" [routerLink]="['/community', 'model', 'add']">Model Details</a></li>
+        <li [routerLinkActive]="['active']"><a *ngIf="model.action == 'E'" [routerLink]="['/community', 'model', 'edit', model.id]">Model Details</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/community', 'model', 'marketing', 'commentary']">Marketing Editor</a></li>
+    </ul>
+    <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu submenu-list">
+            <div [hidden]="(model.action != 'L' ||  model.id == undefined || model.ids.length > 1)">
+                <li><a [routerLink]="['/community', 'model', 'view', model.id]">View Model </a></li>
+            </div>
+            <div [hidden]="(model.action != 'L' ||  model.id == undefined || model.ids.length > 1)">
+                <li><a [routerLink]="['/community', 'model', 'edit', model.id]">Edit Model</a></li>
+            </div>
+            <div [hidden]="(model.action != 'L' ||  model.id == undefined || model.ids.length > 1)">
+                <li *ngIf = "!isStrategistUser"><a [routerLink]="['/community', 'model', 'marketing','commentary',model.id]">Manage Marketing</a></li>
+                <li *ngIf = "isStrategistUser"><a [routerLink]="['/community', 'model', 'marketing','performance',model.id]">Manage Marketing</a></li>
+            </div>
+            <div [hidden]="(model.action != 'L'||  model.id == undefined)">
+                <li><a href="javascript:void(0)" (click)="onMenuClick('Delete')">Delete Model</a></li>
+            </div>
+            <div [hidden]="(model.action != 'L' ||  model.id == undefined)">
+                <li><a [routerLink]="['/community', 'model', 'modeldetail']">Rebalance</a></li>
+            </div>
+        </ul>
+    </div>
+</div>

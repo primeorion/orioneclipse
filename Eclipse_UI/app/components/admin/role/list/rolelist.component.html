@@ -1,0 +1,79 @@
+<!-- admin left menu -->
+<admin-leftmenu [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+
+    <eclipse-admin-role-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-admin-role-tabnav>
+    <div class="tab-content">
+        <div class="col-sm-12 button-container">
+            <div class="col-sm-6">
+                <div class="form-inline tabs-data form-group">
+                    <label><b>Show</b></label>
+                    <div class="radio rcRadio">
+                        <label for="1">
+                    <input id="1" type="radio" checked name="op1"  value="option1" (click)="filterRolesGrid(0)" [ngModel]="{checked: selectedRadioVal == '0'}"><span class="circle"></span><span class="check"></span>
+                    Active
+                </label>
+                    </div>
+                    <div class="radio rcRadio">
+                        <label for="2">
+                    <input type="radio" value="option1" name="op1" id="2" (click)="filterRolesGrid(1)" [ngModel]="{checked: selectedRadioVal == '1'}"><span class="circle"></span><span class="check"></span>
+                    All
+                </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="pull-right">
+                    <button [routerLink]="['/eclipse', 'admin', 'role', 'add']" class="btn btn-blueouter btn-raised pull-left"><i class="fa fa-plus-circle blue"></i> Add New Role</button>
+                    <button [routerLink]="['/eclipse', 'admin', 'role', 'copy/' + selectedRoleId]" class="m-l-15 btn btn-blueouter btn-raised pull-left"
+                        [ngClass]="{disabled:selectedRoleId == undefined}" [disabled]="selectedRoleId==undefined"><i class="fa fa-copy blue"></i> Copy and Save As</button>
+                </div>
+            </div>
+        </div>
+        <div class="agcontainer">
+            <!-- Because we are using the Angular ID (ie #ag-grid marker), we have to have all the items that use
+                            that marker inside the same ng-if as the grid -->
+            <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                [columnDefs]="columnDefs" [rowData]="roles" enableFilter [getContextMenuItems]="getContextMenuItems" (rowClicked)="onRowClicked($event)"
+                rowSelection="single" (modelUpdated)="onModelUpdated()" (rowDoubleClicked)="onRowDoubleClicked($event)" enableColResize="true">
+            </ag-grid-ng2>
+        </div>
+
+    </div>
+</div>
+
+<p-dialog header="Reassign Users" [(visible)]="displayReassign" modal="modal" responsive="true" showEffect="fade" width="720"
+    height="360">
+    <div *ngIf="selectedRoleId != undefined">
+        <eclipse-admin-reassignuser (reassigned)="reassignRoleToUser(true)"></eclipse-admin-reassignuser>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="displayReassign=false" class="btn btn-blueouter">Cancel</button>
+                <button type="button" pButton icon="fa-check" (click)="reassignRoleToUser()" class="btn btn-blueouter btn-raised">Submit</button>
+            </div>
+        </footer>
+    </div>
+    <div *ngIf="selectedRoleId == undefined">
+        <div>Please select a role from roles list</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" icon="fa-close" (click)="displayReassign=false" class="btn btn-blueouter btn-raised">OK</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<p-dialog header="" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" width="720">
+    <div *ngIf="confirmType === 'DELETE'">
+        <div>This action will Delete the Role as well as associated Users with it. If User is not assigned to any Role, he/she
+            will not be able to login to the application unless he/she is re-assigned to a Role. <br /><br /> To avoid that
+            please select NO and re-assign users to another Role using BULK Re-Assign option. <br /><br /> To Continue with
+            Role deletion, please press YES.</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" icon="fa-close" (click)="displayConfirm=false" class="btn btn-info btn-raised">No</button>
+                <button type="button" icon="fa-check" (click)="deleterRole()" class="btn btn-blueouter">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<!--right side main area end -->

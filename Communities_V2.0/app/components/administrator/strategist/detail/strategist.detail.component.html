@@ -1,0 +1,56 @@
+<community-stratgeist-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></community-stratgeist-tabnav>
+
+<div class="col-sm-12" *ngIf="tabsModel.action == 'V'">
+    <div class="form-inline space-top-10">
+        <div class="form-group is-empty">
+            <p-autoComplete class="radius-none search-security sdinput autocomplete-block" name="strategist" [(ngModel)]="autoSearchStrategist"
+                [suggestions]="filteredStrategistResult" placeholder="Search Strategist" (completeMethod)="autoStrategistSearch($event)"
+                field="name" [minLength]="1" (onSelect)="handleSelectedStrategist(autoSearchStrategist)"></p-autoComplete>
+            <span class="material-input"></span></div>
+        <button type="button" class="btn btn-info btn-raised" [disabled]="btnDisableSearch" (click)="searchStrategist(autoSearchStrategist)"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+    </div>
+</div>
+<div class="tab-content" [hidden]="showDetails=='0'">
+    <div id="tab2" class="fade in">
+        <ul class="nav nav-tabs pull-left strategists-details">
+            <li [class.active]="viewName == 'generalInfo'" (click)="navigateToOtherView('generalInfo')"><a>General Information</a> </li>
+            <li [class.active]="viewName == 'commentary'" (click)="navigateToOtherView('commentary')"><a>Commentary </a></li>
+            <li [class.active]="viewName == 'sales'" (click)="navigateToOtherView('sales')"><a>Sales </a></li>
+            <li [class.active]="viewName == 'support'" (click)="navigateToOtherView('support')"><a>Support</a></li>
+            <li [class.active]="viewName == 'legalAgreement'" (click)="navigateToOtherView('legalAgreement')"><a>Legal Agreement  </a></li>
+            <li [class.active]="viewName == 'advertisement'" (click)="navigateToOtherView('advertisement')"><a>Advertisement Message  </a></li>
+            <li [class.active]="viewName == 'downloads'" (click)="navigateToOtherView('downloads')"><a> Download </a></li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        
+        <div *ngIf="viewName == 'generalInfo'">
+            <community-strategist-general-info [strategistId]='strategistId' [isViewMode]='isViewMode' (navigateToOtherView)='navigateToOtherView($event)'
+                (setStrategistId)='setStrategistId($event)'></community-strategist-general-info>
+        </div>
+        <div *ngIf="viewName == 'commentary'">
+            <community-strategist-commentary [strategistId]='strategistId' [isViewMode]='isViewMode' (navigateToOtherView)='navigateToOtherView($event)'>
+            </community-strategist-commentary>
+        </div>
+        <div *ngIf="viewName == 'sales'">
+            <community-strategist-sales [strategistId]='strategistId' [isViewMode]='isViewMode' (navigateToOtherView)='navigateToOtherView($event)'>
+            </community-strategist-sales>
+        </div>
+        <div *ngIf="viewName == 'support'">
+            <community-strategist-support [strategistId]='strategistId' [isViewMode]='isViewMode' (navigateToOtherView)='navigateToOtherView($event)'>
+            </community-strategist-support>
+        </div>
+        <div *ngIf="viewName == 'legalAgreement'">
+            <community-strategist-agreement [strategistId]='strategistId' [isViewMode]='isViewMode' (navigateToOtherView)='navigateToOtherView($event)'>
+            </community-strategist-agreement>
+        </div>
+        <div *ngIf="viewName == 'advertisement'">
+            <community-strategist-advertisement [strategistId]='strategistId' [isViewMode]='isViewMode' (navigateToOtherView)='navigateToOtherView($event)'>
+            </community-strategist-advertisement>
+        </div>
+        <div *ngIf="viewName == 'downloads'">
+            <community-strategist-downloads [strategistId]='strategistId' [isViewMode]='isViewMode'>
+            </community-strategist-downloads>
+        </div>
+    </div>
+</div>

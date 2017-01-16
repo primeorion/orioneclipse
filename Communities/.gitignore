@@ -1,0 +1,12 @@
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+# Ignore Angular2 folders
+node_modules/
+typings/
+
+# Ignore Angular2 auto generated files
+app/**/*.js
+app/**/*.map
+!app/assets/**/*.js

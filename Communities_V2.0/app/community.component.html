@@ -1,0 +1,106 @@
+<header class="navbar navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="logo">
+            <a [routerLink]="homeLinkRoute"><img [src]="logoPath" width="99" height="25" alt="Logo" /></a>
+        </div>
+        <div class="navbar-search">
+            <input type="text" placeholder="looking for something?" />
+            <a href="javascript:void(0);"><span class="dropdown-search"></span></a> </div>
+        <div class="navbar-right">
+            <div class="navbar-menus">
+                <ul>
+                    <!--<li> <a href="javascript:void(0);"><span class="glyphicon glyphicon-bell"></span> Notifications </a> </li>-->
+                    <!--<li class="dropdown">-->
+
+                    <!--<a class="navbar-menus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> {{displayName}} <span class="caret"></span> </a>
+            <ul class="dropdown-menu">
+              <li><a href="#" class="navbar-menus">Another action</a></li>
+              <li><a href="#" class="navbar-menus">Something else here</a></li>
+              <li><a href="#" class="navbar-menus">Separated link</a></li>
+              <li><a [routerLink]="['/logout']" class="navbar-menus">Logout <span class="fa fa-power-off" style="padding:10px;"></span></a></li>
+            </ul>-->
+                    <li class="dropdown navbar-user-dropdown">
+                        <a href="javascript:void(0);" class="user-info" id="navbar-user-dropdown" role="button" data-toggle="dropdown" data-target="#">
+                            <img src="{{profileImagePath}}" class="user-avatar">{{displayName}} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu navbar-user-dropdown-menu" role="menu" aria-labelledby="navbar-user-dropdown">
+                            <li *ngIf="isEclipseUser==false"><a href="javascript:void(0);" (click)="showProfile()"><i class="glyphicon glyphicon-user"></i>  User Profile</a></li>
+                            <li><a [routerLink]="['/logout']"><i class="fa fa-power-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="container-fluid-row">
+        <!--sidebar started-->
+        <dashboard-leftnav> </dashboard-leftnav>
+        <!--sidebar end-->
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:690px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Quick Column Selector</h4>
+            </div>
+            <div class="modal-body"> <img src="../app/assets/img/select-table.png" width="659" height="310" /> </div>
+            <div class="modal-footer"> <a href="javascript:void(0);" class="btn btn-blue">Save Changes</a> <a href="javascript:void(0);" class="btn btn-default" data-dismiss="modal">Cancel</a> </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".left-close").click(function() {
+        $("body").toggleClass("hide-show");
+        $('.fa-chevron-left').toggleClass(' fa-chevron-right');
+    });
+</script>
+
+<!-- Modal UserProfile-->
+<p-dialog [(visible)]="displayUserProfile" modal="modal" class="popup-style" responsive="true" showEffect="fade" width="400" header="UserProfile" [resizable]=false>
+    <!--<div id="UserProfile" class="modal fade popup-style" role="dialog">-->
+
+
+    <div class="col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group custom-form-group">
+                <label class="control-label col-sm-4" for="email">Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="profileName" placeholder="">
+                </div>
+            </div>
+
+            <div class="form-group custom-form-group text-right">
+                <label class="control-label col-sm-4 marging-bottom-1x"> Logo:</label>
+            </div>
+        </div>
+
+        <div (dragover)='dragFile($event)' (drop)='dropFile($event)'>
+            <div class="col-sm-12 choose-file-small-box file-upload-input-style">
+                <span class="btn btn-info btn-file btn-raised"> Choose File
+                      <input type="file" id="file-input" accept="image/*" data-type='image' 
+               (change)="selectProfileLogo($event)" >               
+                      </span><br> or drag and drop here
+                <p *ngIf="isCheckLogo">{{logoName}}</p>
+            </div>
+        </div>
+    </div>
+    <em class="securityError danger" *ngIf="showProfileError">{{profileError}}</em>
+    <!--<div class="modal-footer">
+				<button type="button" class="btn btn-info btn-raised btn" (click)="saveProfile()">Save</button>
+				<button type="button" class="btn model-btn-default" (click)="close()">Cancel</button>
+			</div>-->
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" class="btn btn-blueouter" icon="fa-close" (click)="close()">CANCEL</button>
+            <button type="button" class="btn btn-info btn-raised" icon="fa-check" (click)="saveProfile()">Save</button>
+        </div>
+    </footer>
+    <!--</div>-->
+</p-dialog>

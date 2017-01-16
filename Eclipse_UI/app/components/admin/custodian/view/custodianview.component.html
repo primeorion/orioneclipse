@@ -1,0 +1,109 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Custodian" existingLabel="Active" newLabel="Pending" isCustodian=true [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-custodian-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-admin-custodian-tabnav>
+    <div class="tab-content">
+        <form name="formCustodianDetails">
+            <div class="">
+                <div class="row">
+                    <div class="col-sm-6" *ngIf="custodianId == undefined">
+                        <div class="row">
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label class="primar-label" for="custodian" class="col-sm-4">Search Custodian</label>
+                                <div class="col-sm-8">
+                                    <p-autoComplete [suggestions]="custodianSuggestions" placeholder="Search By Name" (completeMethod)="loadCustodianSuggestions($event)"
+                                        field="name" (onSelect)="onCustodianSelect($event)" class="autocomplete-block" [minLength]="1">
+                                    </p-autoComplete>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" [hidden]="custodianId == undefined">
+                    <div class="col-sm-3" *ngIf="custodianId > 0">
+                        <div class="form-group">
+                            <label class="primar-label">Custodian ID</label>
+                            <span>{{custodian.id}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group is-empty role-spacer">
+                            <label class="primar-label">Custodian Name</label>
+                            <span>{{custodian.name}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group is-empty">
+                            <label class="primar-label">Custodian Code</label>
+                            <span>{{custodian.code}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group is-empty">
+                            <label class="primar-label">Master Account</label>
+                            <span>{{custodian.accountNumber}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group1 is-empty">
+                            <div class="col-sm-12 row">
+                                <div class="col-sm-4 row"><label class="primar-label">Trade Execution Type</label></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="radio-inline">
+                                            <span [ngClass]="{'priv-check': sameForAllSelected, 'priv-uncheck': !sameForAllSelected}">&nbsp;</span>
+                                            <label for="1">Same For All </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group is-empty">
+                                        <span>{{custodian.tradeExecutionTypeName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="is-empty col-sm-8">
+                                    <div class="radio-inline">
+                                        <span [ngClass]="{'priv-check': !sameForAllSelected, 'priv-uncheck': sameForAllSelected}">&nbsp;</span>
+                                        <label for="1">Based Upon Security Type (Except Cash)</label><br/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">&nbsp;</div>
+                                <div class="col-sm-12">
+                                    <div *ngIf="!sameForAllSelected">
+                                        <div>
+                                            <ag-grid-ng2 #agGrid suppressContextMenu="true" [showToolPanel]="fasle" style="width: 100%; height: 350px;" class="ag-material ag-dark"
+                                                [gridOptions]="gridOptions" [columnDefs]="columnDefs" enableFilter enableSorting
+                                                [rowData]="custodian.tradeExecutions">
+                                            </ag-grid-ng2>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-footer">
+                <a [routerLink]="['/eclipse', 'admin', 'custodian', 'list']" class="btn btn-default btn-raised">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<p-dialog header="Delete Custodian Security" [(visible)]="deleteConfirm" modal="modal" responsive="true" showEffect="fade"
+    [draggable]="false" [resizable]="false" width="355">
+    <div>
+        <div>This action will Delete the Security and Trade. <br /> Do you wish to continue?</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="deleteConfirm=false" label="No"></button>
+                <button type="button" pButton icon="fa-check" (click)="deleteTradeExecution()" label="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

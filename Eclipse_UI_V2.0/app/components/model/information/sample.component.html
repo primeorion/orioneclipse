@@ -1,0 +1,132 @@
+<div class="dashboard-content">
+	<div class="row">
+		<div class="col-lg-12 tree_content">
+			<div class="tabs">
+				<ul class="tab-links">
+					<li class="drag_list" draggable="true"><a>Category</a></li>
+					<li class="drag_list select_dragClass" draggable="true"><a>Class</a></li>
+					<li class="drag_list" draggable="true"><a>Sub Class</a></li>
+					<li class="drag_list" draggable="true"><a>Ticker Set</a></li>
+					<li class="drag_list" draggable="true"><a>Multiple Category</a></li>
+				</ul>
+			</div>
+			<div class="update_tree">
+				<label class="label_id">Enter Id:</label><input type="text" id="gettingId" placeholder="Enter Id">
+				<label class="label_name">Enter Name:</label><input type="text" id="gettingName" placeholder="Enter Name">
+				<input class="update_btn" type="button" id="update" value="Update">
+			</div>
+			<div class="node_tree"></div>
+		</div>
+	</div>
+	<p-dialog header="{{droppedElement.name}}" [(visible)]="displayReassign" modal="modal" responsive="true" showEffect="fade"
+		width="850">
+		<div class="dialog-body">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="text-left">Select Tolerance</th>
+							<th class="text-center">
+
+								<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+                        Range
+                    </label>
+
+							</th>
+							<th class="text-center">
+
+								<label><input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        Fix Band %
+                    </label>
+
+							</th>
+
+							<th style="width:10%">
+								<div class="input-group">
+									<input type="text" class="form-control placeholder-input" value="10"> <span class="input-group-addon">%</span>
+								</div>
+							</th>
+
+							<th></th>
+						</tr>
+						<tr>
+							<th></th>
+							<th class="text-center">Target %</th>
+							<th class="text-center">Upper Tol</th>
+							<th class="text-center">Lower Tol</th>
+							<th class="text-center">Rank</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="text-left"><i class="fa fa-fw fa-close"></i> Cash or Equivalent</td>
+							<td class="text-center">
+								60
+							</td>
+							<td class="text-center">
+								1.5
+							</td>
+							<td class="text-center">
+								1.5
+							</td>
+							<td class="text-center">
+								5
+							</td>
+						</tr>
+						<tr>
+							<td class="text-left"><i class="fa fa-fw fa-close"></i> Money Market Tax...</td>
+							<td class="text-center">
+								30
+							</td>
+							<td class="text-center">
+								1.5
+							</td>
+							<td class="text-center">
+								1.5
+							</td>
+							<td class="text-center">
+								3
+							</td>
+						</tr>
+
+						<tr>
+							<td class="text-left"><i class="fa fa-fw fa-close"></i> Money Market Tax...</td>
+							<td class="text-center">
+								10
+							</td>
+							<td class="text-center">
+								1.5
+							</td>
+							<td class="text-center">
+								1.5
+							</td>
+							<td class="text-center">
+								1
+							</td>
+						</tr>
+
+						<tr>
+							<td class="text-left">Total</td>
+							<td class="text-center">100</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+
+					</tbody>
+
+
+
+				</table>
+			</div>
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" pButton icon="fa-check" class="btn btn-info btn-raised" (click)="updateNodes()" label="SAVE"></button>
+				<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CANCEL" (click)="closePopUp()"></button>
+
+			</div>
+		</footer>
+	</p-dialog>
+</div>

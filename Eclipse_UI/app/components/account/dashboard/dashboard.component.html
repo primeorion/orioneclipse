@@ -1,0 +1,215 @@
+<eclipse-account-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-account-tabnav>
+<div class="tab-content">
+    <div id="dashboard" class="tab-pane fade in active" *ngIf="accountSummary != undefined">
+        <p class="dataAvailable"><strong>Based on data available on:</strong> {{accountSummary.dateTime }}</p>
+        <div class="row row-col-padding-5">
+            <div class="col-md-6">
+                <div class="row row-no-padding portfolio-tiles">
+                    <div class="col-lg-7">
+                        <div class="panel">
+                            <div class="panel-body dash-bg-color-9">
+                                <p class="lead">Value</p>
+                                <div class="panel-actions-fly">
+                                    <span class="textcaret"> 
+                           <span *ngIf="accountSummary.value.status == 'high'"><i class="fa fa-caret-up text-success"></i></span>
+                                    <span *ngIf="accountSummary.value.status == 'low'"><i class="fa fa-arrow-down text-danger"></i></span>{{accountSummary.value.changeValuePercent}}%
+                                    </span>
+                                </div>
+                                <p class="text-50"><strong>{{accountSummary.value.total | currency:'USD':true}}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="panel">
+                            <div class="panel-body dash-bg-color-10">
+                                <div class="dif-controls">
+                                    <div class="count-box count-box-col-12 text-center">
+                                        <span class="text-center">{{accountSummary.value.changeValueAmount | currency:'USD':true}}</span>Change
+                                        in AUM
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-no-padding portfolio-tiles">
+                    <div class="col-lg-7">
+                        <div class="panel">
+                            <div class="panel-body dash-bg-color-7">
+                                <p class="lead">Accounts</p>
+                                <p class="text-50  "><strong>{{accountSummary.accounts.total}}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="panel">
+                            <div class="panel-body dash-bg-color-8">
+                                <div class="dif-controls">
+                                    <div class="count-box count-box-col-6 count-box-right-brd"><span>{{accountSummary.accounts.existing}}</span> Existing</div>
+                                    <div class="count-box count-box-col-6"><span>{{accountSummary.accounts.new}}</span> New</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel">
+                    <div class="panel-body row-no-padding portfolio-issues-tile">
+                        <div class="col-lg-6">
+                            <p class="lead">Issues</p>
+                            <p class="text-62"><strong>{{accountSummary.issues.total}} </strong><span>Total</span></p>
+                        </div>
+                        <div class="col-lg-6 error-count-disp">
+                            <div class="issues-controls pull-right">
+                                <div class="count-box count-box-right-brd error-color count-box-col-6"><span>{{accountSummary.issues.errors}}</span> Errors</div>
+                                <div class="count-box warning-color count-box-col-6"><span>{{accountSummary.issues.warnings}}</span> Warnings</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="margin-top-15 gray95">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Systematic </h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.systematic}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', systematicStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar tolerance" [style.width]="systematicPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Accounts with merge In </h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.accountWithMergeIn}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', accountWithMergeInStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar model" [style.width]="accountWithMergeInPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Accounts with merge Out </h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.accountWithMergeOut}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', accountWithMergeOutStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar cashneed" [style.width]="accountWithMergeOutPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">New Accounts </h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.newAccount}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', newAccountStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar blocked" [style.width]="newAccountPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Accounts with no portfolios </h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.accountWithNoPortfolio}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', accountWithNoPortfolioStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar rebalance" [style.width]="accountWithNoPortfolioPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">ToDo </h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.toDo}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', toDoStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar harvesting" [style.width]="toDoPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">SMA</h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.sma}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', smaStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar contributions " [style.width]="smaPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Accounts with Data Errors</h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.accountWithDataError}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', accountWithDataErrorStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar dataerrors" [style.width]="accountWithDataErrorPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="portfolio-report-component">
+                        <h4 class="title">Accounts with Pending Trades </h4>
+                        <div class="bs-component">
+                            <span class="count">{{accountSummary.bars.accountWithPedingTrades}}</span>
+                            <a [routerLink]="['/eclipse', 'account', 'list', accountWithPedingTradesStatusId]">
+                                <div class="progress">
+                                    <div class="progress-bar distribution" [style.width]="accountWithPedingTradesPerc + '%'"></div>
+                                </div>
+                            </a>
+                            <span class="total-count">{{accountSummary.accounts.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<eclipse-assign-accounts-portfolio (parentCallback)="callbackAssignPopup()" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-accounts-portfolio>

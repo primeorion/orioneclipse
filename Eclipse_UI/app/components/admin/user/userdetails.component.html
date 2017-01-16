@@ -1,0 +1,74 @@
+<form name="formRoleDetails" (submit)="onSave()">
+    <div class="form-inline orian-user-bg" *ngIf="!isEdit">
+        <p-autoComplete class="autocomplete-block customsearch" placeholder="Search User" field="entityName" [minLength]="1" [(ngModel)]="userName"
+            [suggestions]="autocompleteResults" (completeMethod)="autoUserSearch($event)" (onSelect)="selectedUserSearch($event)"></p-autoComplete>
+        <div class="button-spacer">
+            <button type="button" class="btn btn-info btn-raised" (click)="addUser(selectedUser)" [disabled]="showOrionuserBtn">Add Orion User</button>
+        </div>
+    </div>
+    <div class="row" *ngIf="isEdit">
+        <div class="col-sm-12">
+            <div class="col-sm-2 row form-inline orian-user-bg">
+                <label class="" for="username">User Name</label> </div>
+            <div class="col-sm-4 row" style="padding-left:20px;"><span>{{userName}}</span> </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label" for="role">Role</label>
+                <select class="form-control" [(ngModel)]="selectedRoleId" (change)="roleChange($event.target.value)" [disabled]="showSaveBtn==false">
+                        <option value="0" >Select Role</option>
+              <option *ngFor="let ro of rolesData" value={{ro.id}} >
+           {{ro.name}}
+        </option>
+                    </select>
+                <span *ngIf="showroleerrorMsg" class="error">Please select an item in the list</span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group is-empty">
+                <label class="primar-label" for="teamname">Team</label>
+                <p-multiSelect class="autocomplete-block" [options]="teams" [(ngModel)]="selectedTeams" defaultLabel="Choose Team" [disabled]="showSaveBtn==false"
+                    (onChange)="teamsChange(selectedTeams)">
+                </p-multiSelect>
+                <span *ngIf="showerrorMsg" class="error">Please select atleast one team</span>
+            </div>
+        </div>
+
+        <div class="col-sm-4" [hidden]="isAdd">
+            <div class="form-group is-empty role-spacer">
+                <label class="primar-label" for="status">Status</label>
+                <p class="label label-success" *ngIf="isActiveFlag">Active</p>
+                <p class="label label-default" *ngIf="isActiveFlag==false">In-active</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-sm-4">
+            <div class="form-group is-empty role-spacer">
+                <label class="primar-label" for="startDate">Start Date</label>
+                <p-calendar [(ngModel)]="startDate" showAnim="slideDown" [showIcon]="true" placeholder="Start Date" [disabled]="showSaveBtn==false"
+                    (onSelect)="startDateSelect(startDate) " [monthNavigator]="true " [yearNavigator]="true " [readonlyInput]="true"></p-calendar>
+                <span *ngIf="shwstrtdatemsg " class="error ">Please select start date</span>
+            </div>
+        </div>
+        <div class="col-sm-4 ">
+            <div class="form-group is-empty">
+                <label class="primar-label" for="endDate">Expiry Date</label>
+                <p-calendar [(ngModel)]="expireDate " showAnim="slideDown" [showIcon]="true" placeholder="Expiry Date" [disabled]="showSaveBtn==false"
+                    [monthNavigator]="true" [yearNavigator]="true" (onSelect)="expiryDateSelect(expireDate)" [readonlyInput]="true"></p-calendar>
+                <span *ngIf="shwexpdatecomprmsg" class="error">Expiry date should be greater than start date</span>
+                <span *ngIf="shwexpdatemsg" class="error">Please select Expiry date</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-footer ">
+        <!--<a class="btn btn-info btn-raised " href="javascript:void(0) "><i aria-hidden="true " class="fa fa-check-circle-o "></i> Save</a>-->
+        <input type="submit" name="roleSave" class="btn btn-info btn-raised" value="{{btnValue}}" *ngIf="showSaveBtn" [disabled]="disableSaveBtn==true"/>
+        <a class="btn btn-default btn-raised" href="javascript:void(0)" (click)='onCancel()'> Cancel</a>
+    </div>
+</form>

@@ -1,0 +1,24 @@
+{
+    "data": [
+        {
+            "id": 2,
+            "name": "Dashboard",
+            "order": 1
+        },
+        {
+            "id": 1,
+            "name": "DailySync",
+            "order": 3
+        },
+        {
+            "id": 3,
+            "name": "Other",
+            "order": 2
+        },
+        {
+            "id": 4,
+            "name": "Rebalance",
+            "order": 4
+        }
+    ]
+}

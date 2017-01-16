@@ -1,0 +1,72 @@
+<!--sidebar started-->
+<div class="menu-li" id="menu-li">
+  <a href="javascript:void(0);" class="left-close"> <i id="fa-class" class="fa fa-chevron-right" aria-hidden="true"></i> </a>
+</div>
+<div class="sidebar">
+  <!--<h2><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard </h2>-->
+
+  <div class="left-nav-block">
+    <h3><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</h3>
+    <ul class="nav nav-sidebar">
+      <li [routerLinkActive]="['active']"><a [routerLink]="['dashboard']" title="Overview"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Overview <span class="sr-only">(current)</span></a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['portfolio']" title="Portfolio"><i class="fa fa-suitcase" aria-hidden="true"></i> Portfolio </a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['account']" title="Accounts"><i class="fa fa-calculator" aria-hidden="true"></i> Accounts </a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['holding']" title="Holdings"><i class="fa fa-cogs" aria-hidden="true"></i> Holdings </a></li>
+      <li [routerLinkActive]="['active']"><a [routerLink]="['tradeorder']" title="Trade Order"><i class="fa fa-line-chart" aria-hidden="true"></i> Trade Order </a></li>
+      <li class="dropdown" [routerLinkActive]="['active']"><a [routerLink]="['model']" title="Model"><i class="fa fa-th" aria-hidden="true"></i> Model </a>
+        <ul class="submenu">
+          <li class="dropdown-submenu"> <a tabindex="1" href="javascript:void(0);"><i class="fa fa-angle-right" aria-hidden="true"></i> Create Model</a></li>
+        </ul>
+      </li>
+      <li class="dropdown" [routerLinkActive]="['active']"><a [routerLink]="['admin', 'dashboard']" title="Administrator"><i class="fa fa-user" aria-hidden="true"></i> Administrator</a>
+        <ul class="submenu">
+          <li class="dropdown-submenu"> <a tabindex="1" href="javascript:void(0);"><i class="fa fa-angle-right" aria-hidden="true"></i> Create User</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'firmpreference']">Firm Preferences</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'custodian']">Custodian</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'user']">Users</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'role']">Roles</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'team']">Teams</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'custodianpreference']">Custodian</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'teampreference']">Team</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'modelpreference']">Model</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'portfoliopreference']">Portfolio</a></li>
+          <li><a [routerLink]="['/eclipse', 'admin', 'accountpreference']">Account</a></li>
+        </ul>
+      </li>
+      <li class="dropdown" [routerLinkActive]="['active']"><a [routerLink]="['security', 'dashboard']" title="Securities"><i class="fa fa-secure-dollar" aria-hidden="true"></i> Securities</a>
+        <ul class="submenu">
+          <li><a [routerLink]="['/eclipse', 'security', 'asset', 'category']">Category Maintenance</a></li>
+          <li><a [routerLink]="['/eclipse', 'security', 'asset', 'class']">Class Maintenance</a></li>
+          <li><a [routerLink]="['/eclipse', 'security', 'asset', 'subclass']">Sub Class Maintenance</a></li>
+          <li><a [routerLink]="['/eclipse', 'security', 'maintenance']">Security Maintenance</a></li>
+          <li><a [routerLink]="['/eclipse', 'security', 'securitySet']">Security Set Maintenance</a></li>
+        </ul>
+      </li>
+      <li class="dropdown" [routerLinkActive]="['active']"><a [routerLink]="['rebalance']" title="Rebalancer"><i class="fa fa-pie-chart" aria-hidden="true"></i> Rebalancer </a>
+        <ul class="submenu">
+          <li class="dropdown-submenu"> <a tabindex="1" href="javascript:void(0);"><i class="fa fa-angle-right" aria-hidden="true"></i> Rebalance </a></li>
+        </ul>
+      </li>
+       <li class="dropdown" [routerLinkActive]="['active']"><a [routerLink]="['sleeve']" title="Sleeve Setup"><i class="fa fa-th-large" aria-hidden="true"></i> Sleeve </a>
+        <ul class="submenu">
+          <li class="dropdown-submenu"> <a tabindex="1" href="javascript:void(0);"><i class="fa fa-th-large" aria-hidden="true"></i> Sleeve Setup </a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+  <div class="left-nav-block left-nav-block-hidden hidden">
+    <h3><i class="fa fa-th-large" aria-hidden="true"></i> Query Dashboard</h3>
+    <div class="searchquery">
+      <input type="text" class="pull-left" placeholder="Search Query">
+      <button type="button" class="btn btn-blue m-t-5 ">Go</button>
+    </div>
+    <ul class="nav nav-sidebar">
+      <li><a href="javascript:void(0);" title="Portfoilo_OutofBalance">Portfoilo_OutofBalance </a></li>
+      <li><a href="javascript:void(0);" title="Unassigned_Portfoilo">Unassigned_Portfoilo </a></li>
+      <li><a href="javascript:void(0);" title="Portfolio_IncompleteTrades">Portfolio_IncompleteTrades</a></li>
+      <li><a href="javascript:void(0);" title="Trade_Order">Trade_Order </a></li>
+    </ul>
+  </div>
+</div>
+<!--sidebar end-->

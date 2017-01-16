@@ -1,0 +1,56 @@
+<eclipse-account-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-account-tabnav>
+<div class="tab-content">
+    <div id="allaccounts" class="tab-pane fade in active grid-height">
+        <div class="tab-header">
+            <div class="form-inline">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <eclipse-savedviews [model]="savedView" (parentColDefCallback)="createColumnDefs()" (parentCallback)="refreshAccountsList()" viewTypeId="3"></eclipse-savedviews>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <div class="form-group">
+                            <label class="label-right-space">Filter : </label>
+                            <select id="accFilter" class="form-control" [(ngModel)]="fileterTypeId" style="width:auto" (change)="onFilterChange($event)">
+                           <option value="0">NONE</option>
+                           <option *ngFor="let afl of accountFilterList" value={{afl.id}}> {{afl.name}}</option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="agcontainer">
+            <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting (rowSelected)="onRowSelected($event)" (rowDoubleClicked)="onRowDoubleClicked($event)" [gridOptions]="accountGridOptions" enableColResize="true" rowSelection="multiple"
+                [columnDefs]="columnDefs" [rowData]="accountsData" enableFilter (modelUpdated)="onModelUpdated()" [getContextMenuItems]="getContextMenuItems" (rowClicked)="onRowClicked($event)" (gridReady)="onGridReady($event)" [context]="gridContext" [suppressMenuMainPanel]="true">
+            </ag-grid-ng2>
+        </div>
+    </div>
+</div>
+<!--<p-dialog header="Save View As" [(visible)]="displayViewsDialog" modal="modal" responsive="true" showEffect="fade" [resizable]=false
+    width="600">
+    <form [ngFormModel]="editViewGroup">
+        <div class="form-group">
+            <label class="col-md-4 control-label">Save View As</label>
+            <div class="col-md-6">
+                <input type="text" ngControl="name" #name="ngForm" placeholder="Enter View Name" value="" class="form-control" />
+                <em class="securityError danger" *ngIf="!name.valid && submitCategory">View Name Required</em>
+            </div>
+        </div>
+        <div class=" row form-group">
+            <div class="col-md-12">
+                <div class="col-md-6 control-label">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="default" value="Set as default" [(ngModel)]="makeItAsDefault"
+                    /> Set as default
+                </div>
+                <div class="col-md-6">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="default" value="Public" [(ngModel)]="makeItAsPublic" /> Public</div>
+            </div>
+        </div>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix ">
+            <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="closedSaveVeiwAs($event)">CANCEL</button>
+            <button type="button" class="btn btn-blueouter" (click)="saveViewAs($event,editViewGroup)" icon="fa-check">SAVE</button>
+        </div>
+    </form>
+</p-dialog>-->
+
+<eclipse-assign-accounts-portfolio (parentCallback)="callbackAssignPopup()" [showAssignPopup]="showAssignPopup">
+</eclipse-assign-accounts-portfolio>

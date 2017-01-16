@@ -1,0 +1,69 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Users" [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+
+    <eclipse-admin-user-tabnav [model]="tabsModel"></eclipse-admin-user-tabnav>
+    <div class="tab-content">
+
+        <div style="padding: 15px;">
+            <div class="row" *ngIf="userId == undefined">
+                <div class="col-sm-4">
+                    <div class="form-inline orian-user-bg">
+                        <label class="primar-label" class="col-sm-0">User Name</label>
+                        <p-autoComplete class="autocomplete-block customsearch" placeholder="Search User by name" field="name" [minLength]="1" [ngModel]="orionUser"
+                            [suggestions]="userSuggestions" (completeMethod)="loadUserSuggestions($event)" (onSelect)="onUserSelect($event)">
+                        </p-autoComplete>
+                    </div>
+                </div>
+            </div>
+            <div class="row" [hidden]="userId == undefined">
+                <div class="col-sm-12">
+                    <div class="col-sm-2 row form-inline orian-user-bg">
+                        <label class="" for="username">User Name</label>
+                    </div>
+                    <div class="col-sm-4 row" style="padding-left:20px;"><span>{{viewUser.name}}</span> </div>
+                </div>
+            </div>
+            <div class="row" [hidden]="userId == undefined">
+                <div class="col-sm-4">
+                    <div class="form-group is-empty">
+                        <label class="primar-label" for="role">Role</label>
+                        <p>{{selectedRole}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group is-empty">
+                        <label class="primar-label">Team</label>
+                        <p>{{selectedTeams}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" [hidden]="userId == undefined">
+                <div class="col-sm-4">
+                    <div class="form-group is-empty role-spacer">
+                        <label class="primar-label">Start Date</label>
+                        <p>{{viewUser.startDate}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group is-empty">
+                        <label class="primar-label">Expiry Date</label>
+                        <p>{{viewUser.expireDate}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group is-empty role-spacer">
+                        <label class="primar-label" for="status">Status</label>
+                        <p class="label label-success" *ngIf="viewUser.status">Active</p>
+                        <p class="label label-default" *ngIf="!viewUser.status">In-active</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-footer">
+                <a class="btn btn-default btn-raised" [routerLink]="['/eclipse', 'admin', 'user', 'list']">Cancel</a>
+            </div>
+        </div>
+
+    </div>
+</div>

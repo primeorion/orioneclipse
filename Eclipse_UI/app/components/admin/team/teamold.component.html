@@ -1,0 +1,134 @@
+<!--right side main area start-->
+<div class="main">
+    <breadcrumb pageName="Manage Teams">
+        <li class="crumb-link"><a [routerLink]="['/eclipse', 'admin', 'dashboard']">Administrator</a></li>
+    </breadcrumb>
+   
+    <div class="dashboard-content">
+        <!-- admin left menu -->
+        <admin-leftmenu menuName="Teams" [model]="menuModel"></admin-leftmenu>
+        <div class="grid-container">
+            <div class="tab-content">
+                <!--<div id="tab1" class="tab-pane fade in active">-->
+                <tab-set>
+                   <div class="actionBtn btn-group pull-right" style="margin: -48px 0px 0px;">
+                        <a href="javascript:void(0);" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                         <ul class="dropdown-menu submenu-list" [ngClass]="{hidden:selectedTeamId == undefined}">
+                            <div [hidden]="selectedTeamId==undefined || isView">
+                                <li><a href="javascript:void(0)" (click)="viewandEditTeamDetails('view')">View details</a></li>
+                            </div>
+                            <div [hidden]="selectedTeamId==undefined || isEdit">
+                                <li><a href="javascript:void(0)" (click)="viewandEditTeamDetails('edit')">Edit</a></li>
+                            </div>
+                            <div [hidden]="selectedTeamId==undefined || isDeleted">
+                                <li><a href="javascript:void(0)" (click)="onDeleteClicked($event)">Delete</a></li>
+                            </div>
+                            <div [hidden]="selectedTeamId==undefined || isDeleted || noOfUsers <= 0">
+                                <li><a href="javascript:void(0)" (click)="bulkreassignTeam()">Bulk Reassign</a></li>
+                            </div>
+                        </ul> 
+                    </div>
+                    <p-dialog header="" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+                        width="600">
+                        <div>
+                            <div>This action will Delete the association between all Users, Portfolios, Models,<br /> Advisors
+                                from the TEAM. If User is not assigned to any other Team, he/she
+                                <br/> will not be able to login to the Application unless he is re-assigned to a TEAM.<br
+                                />
+                                <br/>To avoid that please select NO and re-assign users to another Team using BULK <br/>Re-Assign.
+                                To Continue with TEAM deletion, please press YES.
+                            </div>
+                            <footer>
+                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                    <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayConfirm=false">No</button>
+                                    <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="deleteTeam()">Yes</button>
+                                </div>
+                            </footer>
+                        </div>
+                    </p-dialog>
+                    <tab tabTitle="All Teams" tabName='tab1'>
+
+                        <div class="col-sm-12 button-container">
+                            <div class="col-sm-7">
+                                <div class="form-group  form-inline">
+                                    <div class="radio">
+                                        <label>
+                                 <input  type="radio" name="Filter"  value="active" (click)="getActive()" [ngModel]="{checked: selectedRadioVal == '0'}" checked/><span class="circle"></span><span class="check"></span>
+                                Active
+                            </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                <input  type="radio"  name="Filter"  value="all"  (click)="getAll()" [ngModel]="{checked: selectedRadioVal == '1'}"/><span class="circle"></span><span class="check"></span>
+                                All
+                            </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5"><button class="btn btn-blueouter btn-raised pull-right" (click)="activeSelectedTab('tab2')"><i class="fa fa-plus-circle blue"></i> Add New Team</button></div>
+                        </div>
+                        <div *ngIf="showGrid">
+                            <!-- Because we are using the Angular ID (ie #ag-grid marker), we have to have all the items that use
+                            that marker inside the same ng-if as the grid -->
+                            <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                                rowBuffer="100" rowSelection="multiple" (rowClicked)="onrowClicked($event)" [columnDefs]="columnDefs" (rowSelected)="onRowSelected($event)"
+                                [rowData]="teams" enableColResize="true" enableFilter [getContextMenuItems]="getContextMenuItems"
+                                (modelUpdated)="onModelUpdated()" (rowDoubleClicked)="onRowDoubleClicked($event)">
+                            </ag-grid-ng2>
+                        </div>
+
+
+                    </tab>
+                    <!--</div>-->
+                    <!--<div id="tab2" class="tab-pane fade in">-->
+                    <tab class="gridTab" tabTitle="Team Details" tabName='tab2'>
+                        <eclipse-teamdetails (teamSaved)="refreshTeamList()"></eclipse-teamdetails>
+                    </tab>
+                </tab-set>
+                <!--</div>-->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Reassign Teams" [(visible)]="displayReassign" modal="modal" responsive="true" showEffect="fade" width="720"
+    height="400">
+    <div *ngIf="selectedTeamId != undefined">
+        <eclipse-team-reassign (reassigned)="reassignTeamToNew(true)"></eclipse-team-reassign>
+        <footer>
+
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter btn-raised" icon="fa-close" (click)="displayReassign=false">Cancel</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="reassignTeamToNew()">Submit</button>
+            </div>
+        </footer>
+    </div>
+    <div *ngIf="selectedTeamId == undefined">
+        <div>Please select a team from teams list</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="displayReassign=false" label="OK"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<!--right side main area end -->
+
+
+<p-dialog [(visible)]="displayPreCondition" modal="modal" responsive="true" showEffect="fade" width="480">
+
+    <div>
+        <div>Since you donot have access to any other TEAM. You can not perform this operation. You need to have access to atleast
+            one more TEAM. </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter btn-raised" icon="fa-close" (click)="displayPreCondition=false">OK</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

@@ -1,0 +1,45 @@
+import * as d3 from 'd3';
+export class TreeStructure {
+    root: any;
+    treeData: any;
+    elemId: any;
+    tree: any;
+    diagonal: any;
+    svg: any;
+    svgGroup: any;
+    zoomListener: any;
+    selectedDomNode: any;
+    storingselectedSubstitudeValue: any = [];
+    margin: any = { top: 50, left: 80, bottom: 80, right: 80 };
+    width: number = 1200 - this.margin.right - this.margin.left;
+    height: number = 550 - this.margin.top - this.margin.bottom; // height auto change
+    counterFlag: number = 0;
+    multipleCounterFlag: number = 0;
+    duration: number = 750;
+    color: any = d3.scale.category20c();
+    firstLevelColor: any = d3.scale.category10();
+    secondLevelColor: any = d3.scale.category20();
+    lastNodeColor: any = d3.scale.category20b();
+    colorCount1: any = 0;
+    colorCount2: any = 0;;
+    colorCount3: any = 0;
+    colorCountgeneric: any = 0;
+    clickFlag: boolean = false;
+    domElement: any;
+    dragElement: any;
+    dropElement: any;
+    droppedElementType: any;
+    draggingElementsArray: any = [];
+    popupData: any = [];
+    htmlNodeFlag: any = { "Category": 0, "Class": 0, "Sub Class": 0, "Ticker Set": 0 };
+    colorArrayForDepth1: any = ["#6495ED", "#007E00", "#C0FFC0", '#fff9f9', '#a82f9e', '#8c1943', '#5e0606', '#185254', '#59e0e5', '#e8e010'];
+    colorArrayForDepth2: any = ["#A282C4", "#FF0000", "#FFC132", "#58B501", "#C95F99", "#DA1B06", "#21841D"];
+    colorArrayForDepth3: any = ["#2F0B3A", "#121892", "#FFC080", "#58B501", "#3B0B0B", "#196A35", "#C95F03", "#AB0101", "#CCCCCC", "#BAFCCC"];
+    mode: string;
+    uniqueId: number;
+    DroppedData: any = [];
+    DroppedDataId: any;
+    parsedSaveData: any = [];
+    deletedNodeOnPopUp: any = [];
+    timestampId: any;
+}

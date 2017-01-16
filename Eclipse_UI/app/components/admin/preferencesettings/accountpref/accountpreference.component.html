@@ -1,0 +1,76 @@
+<breadcrumb pageName="Preference Settings">
+    <li class="crumb-link"><a [routerLink]="['/eclipse', 'admin', 'dashboard']">Administrator</a></li>
+</breadcrumb>
+<div class="dashboard-content">
+    <eclipse-preference-leftmenu></eclipse-preference-leftmenu>
+    <div class="grid-container">
+        <h2 class="admin-page-header">Account Settings</h2>
+        <div class="row">
+            <div class="admin-sub-side-bar">
+                <div>
+                    <p-checkbox (onChange)="selectAllCheckBox($event)" [(ngModel)]="selectAll" [disabled]="chkallDisable"> </p-checkbox>
+                    <label>Select all </label>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <p-autoComplete class="autocomplete-block" [(ngModel)]="selectedAccount" [suggestions]="FilteredAccountResults" placeholder="Search Account"
+                            (completeMethod)="onAccountLoad($event)" (onSelect)="handleSelectedAccount(selectedAccount)" field="name"
+                            [minLength]="1"></p-autoComplete>
+                    </div>
+                </div>
+                <div *ngFor="let account of accountsList" class="checkbox">
+                    <p-checkbox name="group2" value="{{account.id}}" (onChange)="accountOnchangeChk(account.id)" [(ngModel)]="selectedAccountValues">
+                    </p-checkbox>
+                    {{account.name}}
+                </div>
+            </div>
+
+
+            <div class="admin-page-right">
+                <div class="preferences-alert" *ngIf="showSuccessMessage">
+                    <div class="custom-alert alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> {{successMessage
+                        != '' ? successMessage : 'Posted Successfully.'}}
+                    </div>
+                </div>
+                <div class="preferences-alert" *ngIf="showErrorMessage">
+                    <div class="custom-alert alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> {{errorMessage
+                        != '' ? errorMessage : 'Error occured while saving data!.'}}
+                    </div>
+                </div>
+                <div id="admin-accordion" role="tablist" aria-multiselectable="true" [ngStyle]="{'visibility': [(showPanel)]}">
+
+                    <dynamic-wrapper [preferences]="preferenceViewModel"></dynamic-wrapper>
+
+                    <span [ngSwitch]="prefPermissionMode">
+                                    <span *ngSwitchCase="'ADDUPDATE'">
+                    <div class="button-footer">
+                        <!--<a class="btn btn-info btn-raised " href="javascript:void(0)"><i aria-hidden="true" class="fa fa-check-circle-o"></i> Save</a>-->
+                        <input type="submit" name="accountSave" class="btn btn-info btn-raised " (click)='onSubmit()' value="Save" *ngIf="showSaveBtn"
+                            [disabled]="!IsValidForm()" />
+                       <a class="btn btn-default btn-raised " href="javascript:void(0)" *ngIf="showResetBtn" [class.disabled]="btnResetDisable"
+                            (click)='onReset()'> Reset</a>
+                               <a class="btn btn-default btn-raised " href="javascript:void(0)" *ngIf="showResetBtn" [class.disabled]="btnResetDisable"
+                            (click)='onCancel()'> Cancel</a>
+                    </div>
+                                    </span>
+                    </span>
+                    <p-dialog header="" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" width="720">
+                        <div *ngIf="confirmType === 'RESET'">
+                            <p class="text-center">Resetting will revert ALL settings for this level back to the default values.</p>
+                            <p class="text-center">Do you wish to proceed? </p>
+                            <footer class="margin-top-10">
+                                <div class="col-md-3 col-md-push-4 marging-left-2x">
+                                    <button type="button" icon="fa-check" (click)="resetForm()" class="btn btn-blueouter">Yes</button>
+                                    <button type="button" icon="fa-close" (click)="displayConfirm=false" class="btn btn-info btn-raised">No</button>
+                                </div>
+                            </footer>
+                        </div>
+                    </p-dialog>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

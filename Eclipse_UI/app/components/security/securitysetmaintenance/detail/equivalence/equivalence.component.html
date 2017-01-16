@@ -1,0 +1,71 @@
+
+     <div class="popupContainer">
+ 
+      <div class="col-sm-4">
+  
+        <div class="form-group is-empty">
+            <label> Select Equivalence Type : </label>
+                    <select class="form-control" [(ngModel)]="equivalenceType" (ngModelChange) = "getEquivalences()">
+                            <option value="">Select equivalence Type</option>
+                            <option value="Category">Category</option>
+                            <option value="Class">Class</option>
+                            <option value="Sub-Class">Sub-Class</option>
+                            <option value="Security">Security</option>
+                        </select>
+        </div>
+    </div>
+    <div class="col-sm-4" *ngIf = '!isSecuritySearch'>
+     <div class="form-group is-empty">
+           <label>Select Equivalent : </label>
+                 <select class="form-control" [(ngModel)]="equivalent" (ngModelChange)="getSecurities()">
+                         <option value="">Select Equivalent</option>
+                        <option *ngFor="let equivalent of equivalentList" value={{equivalent.id}} >
+                            {{equivalent.name}}
+                        </option>
+                    </select>
+       </div>
+   </div>
+   <div class="col-sm-4" *ngIf = 'isSecuritySearch'>
+        <div class="form-group is-empty">
+            <label>Select Equivalent : </label>
+            <input type="text" placeholder="Search Security" id="name" class="form-control" [(ngModel)]="searchName" (ngModelChange)="autoSecuritySearch(searchName)">
+        
+       <!--<p-autoComplete class="form-control radius-none"  class="autocomplete-block" [(ngModel)]="selectedSecurity" [suggestions]="filteredSecurityResult"
+                        placeholder="Search Security" (completeMethod)="autoSecuritySearch($event)" field="name" [minLength]="1" (onSelect)="handleSelectedSecurity(selectedSecurity)" (keyup)="handleSelectedSecurity(selectedSecurity)"></p-autoComplete>-->
+        
+   </div>
+   </div>
+   <div class="col-sm-4">
+   </div>
+
+   <div class="listexchange">
+       <div class="col-sm-6">
+       <h3><span [hidden] = 'sourceSecurityList == undefined || sourceSecurityList.length == 0'><input type="checkbox" [(ngModel)]="isAllSelected" (ngModelChange)="alterListSelection()"></span>&nbsp;Available</h3>
+           <ul class="left">
+               <li *ngFor='let security of sourceSecurityList'>
+                   <span><input type="checkbox" [(ngModel)]="security.isSelected" (ngModelChange)="alterEquivalenceList(security)"></span>{{security.name}}
+               </li> 
+           </ul>
+       </div>
+       <div class="col-sm-6">
+        <h3><span [hidden] = 'equivalenceList == undefined || equivalenceList.length == 0'><input type="checkbox" [(ngModel)]="isAllEquivalenceSelected" (ngModelChange)="alterEquivalenceSelection()"></span>&nbsp;Selected
+        <span [hidden] = 'equivalenceList == undefined || equivalenceList.length == 0' class="equivalence-delete" (click) = 'deleteSelectedEquivalences()'>Delete Equivalence</span>
+        </h3>
+            <ul class="right">
+               <li *ngFor='let equivalence of equivalenceList'>
+                      <span>
+                          <!--<i class="fa fa-times red" (click) = 'deleteEquivalence(equivalence)'></i>-->
+                          <input type="checkbox" [(ngModel)]="equivalence.isSelected" (ngModelChange)="alterEquivalenceSelectionList(equivalence)">
+                     </span>{{equivalence.name}}
+               </li>
+           </ul>
+       </div>
+   </div>
+</div>
+
+
+    
+    <div class="button-footer-security">
+        <input type="submit" name="securitySave" class="btn btn-info btn-raised " value="Save" (click) = "save()" title="Save equivalences"/>
+        <a class="btn btn-default btn-raised " (click) = "cancel()" title="Cancel"> Cancel</a>
+     </div>

@@ -1,0 +1,131 @@
+<div [formGroup]="form" class="form-horizontal">
+  <div class="form-group">
+    <div [attr.for]="dynamicControlData.name">
+      <div [ngSwitch]="dynamicControlData.componentType">
+
+        <div *ngSwitchCase="'default'">
+
+          <label class="control-label col-sm-6">
+  {{dynamicControlData.displayName}}
+      <a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a>
+    </label>
+          <div class="col-md-1"><span *ngIf="dynamicControlData.symbol !=null" class="input-group-addon-symbol">{{dynamicControlData.symbol }}</span>
+            <span class="preference-indicator-select">
+               <select class="form-control form-control-addon-symbol" *ngIf = "dynamicControlData.indicatorOptions != undefined && dynamicControlData.indicatorOptions.length > 0"
+                (change)="setDynamicDataValue($event)"
+                [(ngModel)]="dynamicControlData.indicatorValue" 
+                [formControlName]="indicatorControlValue" style="width:auto;"
+                 >
+               <option value="null" *ngIf="!dynamicControlData.indicatorValue">Select Indicator</option>
+               <option *ngFor="let option of dynamicControlData.indicatorOptions" value={{option.name}} >
+                            {{option.name}}
+               </option>   
+              </select>
+              </span>
+          </div>
+          <div [ngSwitch]="dynamicControlData.componentName" class="col-md-5">
+            <div *ngSwitchCase="'Textbox'">
+
+
+              <input [title]="showTooltip(dynamicControlData)" class="form-control placeholder-input" [(ngModel)]="dynamicControlData.value"
+                (keydown)="dynamicControlData.value=$event.target.value" [formControlName]="dynamicControlData.name" [id]="dynamicControlData.name"
+                [type]="dynamicControlData.valueType" [pattern]="dynamicControlData.pattern" [step]="(dynamicControlData.valueType=='number')? '1':'0.01'"
+                (keypress)="setValid($event)" [min]="dynamicControlData.minValue" [max]="dynamicControlData.maxValue" (keyup)="emptyError()"
+                (invalid)="validateTextBox(dynamicControlData.value)" [placeholder]="dynamicControlData.watermarkText" onpaste="return false">
+            </div>
+            <div *ngSwitchCase="'Dropdown'">
+              <select [id]="dynamicControlData.name" [title]="showTooltipdropdown(dynamicControlData)" class="form-control" (change)="setDropdownSelectedOption($event)"
+                [formControlName]="dynamicControlData.name">
+            <option value="" selected="selected">Please Select</option>
+           <option *ngFor="let opt of dynamicControlData.options" 
+            [id]="dynamicControlData.name" [value]="opt.id" >{{opt.name}}</option>     
+        </select>
+            </div>
+
+
+            <div *ngSwitchCase="'Checkbox'" [id]="dynamicControlData.name">
+              <div [ngSwitch]="dynamicControlData.valueType">
+                <div *ngSwitchCase="'Boolean'" class="checkbox">
+                  <label>
+                  <input type="Checkbox" [id]="dynamicControlData.name" [name]="dynamicControlData.name" [formControlName]="dynamicControlData.name"
+                    [value]="dynamicControlData.value" (change)="setCheckBoValue($event)" [checked]="setcheckboxchecked(dynamicControlData.value)"
+                    [title]="showTooltip(dynamicControlData)">
+                  </label>
+                </div>
+
+                <div *ngSwitchCase="'List'">
+                  <div *ngFor="let opt of dynamicControlData.options" class="checkbox">
+                    <label>
+                    <input type="Checkbox" [id]="dynamicControlData.name" [name]="dynamicControlData.name" [value]="opt.id" [formControlName]="dynamicControlData.name"
+                      [checked]="dynamicControlData.selectedOptions.indexOf(opt.id) > -1" (change)="setToCheckBoxControl(opt.id,dynamicControlData,dynamicControlData.selectedOptions)">                    {{opt.name}}
+                  </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div *ngSwitchCase="'Radio'">
+              <div *ngFor="let opt of dynamicControlData.options">
+                <input type="Radio" [id]="dynamicControlData.name" [formControlName]="dynamicControlData.name" [ngModel]="{value:dynamicControlData.value }"
+                  name="radioBtn" [checked]="getRadioChecked(opt,dynamicControlData)" (click)="setToRadioControl(opt,dynamicControlData)"
+                  [value]="opt.id"> {{opt.name}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!--Custom control display / rendering-->
+        <div *ngSwitchCase="'custom'">
+          <div [ngSwitch]="dynamicControlData.componentName">
+
+            <div *ngSwitchCase="'TaxLotDepletionMethodSortedlist'" class="form-group">
+              <label class="control-label col-sm-6"> {{dynamicControlData.displayName}}<a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a></label>
+              <div class="col-md-1"></div>
+              <div class="col-sm-5">
+                <sortobjects-component [displaypermission]="true" [(model)]="(dynamicControlData.selectedOptions.length >0) ? dynamicControlData.selectedOptions : dynamicControlData.options"></sortobjects-component>
+              </div>
+            </div>
+
+            <div *ngSwitchCase="'PriorityRankingSortedlist'" class="form-group">
+              <label class="control-label col-sm-6"> {{dynamicControlData.displayName}}<a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a></label>
+              <div class="col-md-1"></div>
+              <div class="col-sm-5">
+                <sortobjects-component [displaypermission]="true" [(model)]="(dynamicControlData.selectedOptions.length > 0) ? dynamicControlData.selectedOptions : dynamicControlData.options"></sortobjects-component>
+              </div>
+            </div>
+
+            <div *ngSwitchCase="'CommunityStrategistEnabledListCascadingControl'" class="form-group">
+              <preference-community-stratagists [displaypermission]="true" [(CommunityStrategies)]="communityStrategies"></preference-community-stratagists>
+            </div>
+
+            <div *ngSwitchCase="'LocationOptimizationDataGrid'" class="form-group">
+              <label class="control-label col-sm-6"> {{dynamicControlData.displayName}}
+                <a href="javascript:void();" data-toggle="tooltip" [title]="dynamicControlData.helpText" class="text-info btn-help"><i class="material-icons">help</i></a>
+              </label>
+              <div class="col-md-1"></div>
+              <div class="col-sm-5">
+                <location-optimization [displaypermission]="true" [(dataSource)]="LocationOptimizations.subClasses"></location-optimization>
+              </div>
+            </div>
+            <div *ngSwitchCase="'SecurityDataGrid'">
+              <Security-DataGrid [displaypermission]="true" [(fromParent)]="SecurityPrefResult"></Security-DataGrid>
+              <!--TODO: NEED TO REMOVE THIS  -->
+              <!--<RedemptionFee-DataGrid [displaypermission]="true" [(fromParent)]="RedemptionFeePrefResult"></RedemptionFee-DataGrid>-->
+            </div>
+
+            <!--TODO: NEED TO ENABLE THIS  -->
+            <!--<div *ngSwitchCase="'RedemptionFeeDataGrid'" class="form-group">
+              <RedemptionFee-DataGrid [displaypermission]="true" [(fromParent)]="SecurityPrefResult"></RedemptionFee-DataGrid>
+            </div>-->
+
+          </div>
+
+        </div>
+        <a href="javascript:void(0)" class="btn-reset"><i class="material-icons" (click)="setResetControl($event)" [id]="dynamicControlData.name"   >replay</i></a>
+        <span class="cat-pref-error">{{errorMessage }}</span>
+      </div>
+    </div>
+  </div>
+</div>

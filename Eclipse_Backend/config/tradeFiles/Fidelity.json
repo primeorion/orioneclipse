@@ -1,0 +1,15 @@
+{
+  "block": {
+    "Account Number": "genericAccountNumber",
+    "Account Type": "accountType",
+    "Order Action": "fidelityOrderActionCode",
+    "Quantity": "fidelityQuantity",
+    "Symbol": "securitySymbol",
+    "Price Type": "fidelityPriceType",
+    "Time in Force": "fidelityTimeInForce",
+    "Limit Price": "fidelityLimitPrice",
+    "Quantity Type": "fidelityQuantityTypeCode",
+    "Exchange to Symbol": "",
+    "Block Indicator": "blockIndicator"
+  }
+}

@@ -1,0 +1,23 @@
+<div class="main">
+    <model-breadcrumb pageName="Model Maintenance">
+        <li class="crumb-link"><a [routerLink]="['/community', 'model', 'list']">Model</a></li>
+    </model-breadcrumb>
+    <div class="dashboard-content dashboard-content-margin">
+        <community-model-tabnav [model]="tabsModel"></community-model-tabnav>
+
+        <div class="tab-content">
+            <div class="tab-pane fade active in grid-height">
+                <community-model-search [model]="model" (onModelChange)="onModelChange($event)"></community-model-search>
+                <community-model-marketing-tabnav [modelId]="model.id" *ngIf="model.id > 0"></community-model-marketing-tabnav>
+                <div class="marketingEditor grid-height" *ngIf="model.id > 0">
+
+                    <h3 class="performance-text"> <i class="fa fa-area-chart icon-color-blue" aria-hidden="true"></i> PERFORMANCE
+                        <button type="button" class="btn btn-info btn-raised btn-add-style" *ngIf="isStrategistAdmin" (click)="addModelPerformance()"> ADD</button>
+                    </h3>
+                    <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" suppressContextMenu="true" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions" enableColResize="true" [columnDefs]="columnDefs" [rowData]="performances" enableFilter (gridReady)="onGridReady($event)">
+                    </ag-grid-ng2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

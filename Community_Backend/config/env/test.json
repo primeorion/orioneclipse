@@ -1,0 +1,61 @@
+{
+	"orion": {
+		"db": {
+			"connectionLimit": 10,
+			"host": "oriondev.cwz3dqtcj9ax.us-east-1.rds.amazonaws.com",
+			"user": "oEAHDC",
+			"password": "b2VhaGRjQCFldiMjIyMjIw==",
+			"database": "hdc11_orionEclipseCommon",
+			"restoreNodeTimeout": 10,
+			"port" : 3306,
+			"community" : {
+				"connectionLimit": 10,
+				"host": "oriondev.cwz3dqtcj9ax.us-east-1.rds.amazonaws.com",
+				"user": "oEAHDC",
+				"password": "b2VhaGRjQCFldiMjIyMjIw==",
+				"database": "hdc11_orionEclipseCommunity",
+				"restoreNodeTimeout": 10,
+				"port" : 3306
+			}
+		},
+		"redis": {
+			"host": "34.193.170.5",
+			"port": 6379
+		},"s3" : {
+			"accessKeyId": "AKIAJYQJPK7K377QTDXA",
+    		"secretAccessKey": "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",
+			"bucket" : "paxorions3",
+			"host" : "s3.amazonaws.com/",
+			"root" : "test/",
+			"region" : "us-east-1"
+		},
+		"aws" : {
+			"accessKeyId" : "AKIAJGVS4663WQJQURLQ",
+			"secretAccessKey" : "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"
+		},
+		"eclipse" : {
+			"host" : "34.193.170.5",
+			"port" : 3000
+		},
+		"import": {
+			"host": "52.205.148.166",
+			"username": "root",
+			"privateKey": "/config/env/importServerKey/dev-openssh-key"
+		},
+		"modelUpdate":{
+			"host": "52.205.148.166",
+			"username": "root",
+			"privateKey": "/config/env/importServerKey/dev-openssh-key"
+		},
+		"rebalance":{
+			"url": "34.193.170.5",
+			"port": 3000
+		},
+		"allowed-origins": true,
+		"req-logger": "combined"
+	},
+	"port": 4000,
+	"sessionsecret": "orioneclipse",
+	"log-level": "debug",
+	"logging-path": "/var/log/orioncommunity"
+}

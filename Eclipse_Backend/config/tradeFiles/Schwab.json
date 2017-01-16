@@ -1,0 +1,39 @@
+{
+  "block": {
+    "Account Number": "genericAccountNumber",
+    "Action": "schwabOrderActionCode",
+    "Quantity": "schwabQuantity",
+    "Security Symbol": "securitySymbol",
+    "Timing": "schwabTiming",
+    "Limit Price": "schwabLimitPrice",
+    "Time Limit": "",
+    "Security Type": "schwabSecurityType",
+    "Stop Price": "",
+    "All or None": "",
+    "Minimum Quantity": "",
+    "Do not Reduce": "",
+    "Reinvest Dividends": "schwabReinvestDividends",
+    "Transaction Fee": ""
+  },
+  "allocation": {
+    "header": {
+      "Record Type": "EH",
+      "Transmission Date": "tradeDate",
+      "Master Account #": "masterAccountNumber",
+      "Action Code": "tdaOrderActionCode",
+      "Security Symbol": "securitySymbol",
+      "Average Price": "",
+      "Trade Date": "tradeDate"
+    },
+    "detail": {
+      "Record Type": "EA",
+      "Sub Account #": "accountNumber",
+      "Share Quantity": "shareQuantity"      
+    },
+    "trailer": {
+      "Record Type": "ET",
+      "Number of Allocation Detail Records": "numberOfAllocationDetails",
+      "Total Share Quantity": "totalShareQuantity"
+    }
+  }
+}

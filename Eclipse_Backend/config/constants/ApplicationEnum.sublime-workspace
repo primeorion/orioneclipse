@@ -1,0 +1,338 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"tree",
+				"treeContainer"
+			],
+			[
+				"conn",
+				"connectionLimit"
+			],
+			[
+				"data",
+				"dataList"
+			],
+			[
+				"get",
+				"getConnection"
+			],
+			[
+				"ti",
+				"toString"
+			],
+			[
+				"t",
+				"type	Attr"
+			],
+			[
+				"re",
+				"response"
+			],
+			[
+				"res",
+				"response"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"se",
+				"sendFile"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/karambeer/Desktop/Securety Concept",
+		"/home/karambeer/Desktop/NewDBChange",
+		"/home/karambeer/Desktop/firm_999.sql",
+		"/home/karambeer/Desktop/custodiaSchema",
+		"/home/karambeer/Downloads/dragNDrop (2)/drag.html",
+		"/home/karambeer/Desktop/hey_firm_999.sql",
+		"/home/karambeer/Desktop/dragNDrop/drag.html",
+		"/home/karambeer/Desktop/database changes",
+		"/home/karambeer/Downloads/dragNDrop/simple.html",
+		"/home/karambeer/Downloads/dragNDrop/tree.html",
+		"/home/karambeer/Downloads/dragNDrop/drag.html",
+		"/home/karambeer/Downloads/Tree Example/dndTree.js",
+		"/home/karambeer/Downloads/Tree Example/index.html",
+		"/home/karambeer/Downloads/dragNDrop (2)/jquery-1.10.2.min.js",
+		"/home/karambeer/Downloads/dragNDrop (2)/jQuery.js",
+		"/home/karambeer/Downloads/Tree Example/flare.json",
+		"/home/karambeer/Downloads/dragNDrop (2)/tree.html",
+		"/home/karambeer/Downloads/dragNDrop (2)/simple.html",
+		"/home/karambeer/Downloads/dragNDrop/dots.tsv",
+		"/home/karambeer/Desktop/test.html",
+		"/home/karambeer/Downloads/dragNDrop/new.html",
+		"/home/karambeer/Desktop/dots.tsv",
+		"/home/karambeer/Desktop/newTest.html",
+		"/home/karambeer/Desktop/orionEclipse/node_modules/waterline/lib/waterline/model/lib/associationMethods/add.js",
+		"/home/karambeer/Desktop/my work to do",
+		"/home/karambeer/orion-node/GruntFile.js",
+		"/home/karambeer/Desktop/GruntFile.js",
+		"/home/karambeer/nodeWithMySql/server.js",
+		"/home/karambeer/nodeWithMySql/config.js",
+		"/home/karambeer/nodeWithMySql/Dao/connectionManager.js",
+		"/home/karambeer/Desktop/Orion Eclipse",
+		"/home/karambeer/Desktop/lambda.",
+		"/home/karambeer/nodeWithMySql/package.json",
+		"/home/karambeer/Desktop/To Learn",
+		"/media/karambeer/E42A32442A3213D0/Typing",
+		"/home/karambeer/Desktop/test.js",
+		"/home/karambeer/firstNodeProject/server.js",
+		"/home/karambeer/firstNodeProject/client/showData.html",
+		"/home/karambeer/firstNodeProject/server/services/readService.js",
+		"/home/karambeer/firstNodeProject/server/dao/daoService.js",
+		"/home/karambeer/firstNodeProject/server/services/my.csv",
+		"/home/karambeer/nodeProject/index.html",
+		"/home/karambeer/firstNodeProject/client/uploadFile.html",
+		"/home/karambeer/firstNodeProject/server/dao/db-config.js",
+		"/home/karambeer/firstNodeProject/client/js/jquery.min.js",
+		"/home/karambeer/nodeProject/server.js",
+		"/home/karambeer/nodeProject/expressFirst.js",
+		"/home/karambeer/nodeProject/stream.js",
+		"/home/karambeer/nodeProject/zip.js",
+		"/home/karambeer/nodeProject/fs.js",
+		"/home/karambeer/kulwant/userHistory/package.json",
+		"/home/karambeer/firstNodeProject/scan.js",
+		"/media/karambeer/5CEA9E22EA9DF90A/node_project/server.js",
+		"/home/karambeer/cute-files-master/cute-files.js",
+		"/home/karambeer/cute-files-master/package.json",
+		"/home/karambeer/kulwant/userHistory/server/DAO/Recommender.db",
+		"/home/karambeer/kulwant/userHistory/server/DAO/db-config.js",
+		"/home/karambeer/kulwant/userHistory/server/services/productEntriesInDb.js",
+		"/home/karambeer/kulwant/userHistory/server/services/generalService.js",
+		"/home/karambeer/kulwant/userHistory/server/Response/responsePrepareService.js",
+		"/home/karambeer/kulwant/userHistory/server/recommendationService/recommendationService.js",
+		"/home/karambeer/kulwant/userHistory/server/mahoutService/mahoutOutputFileService.js",
+		"/home/karambeer/kulwant/userHistory/server/logger/logger.js",
+		"/home/karambeer/kulwant/userHistory/server/File/writeUserViews.csv",
+		"/home/karambeer/kulwant/userHistory/server/File/writeUserData.js",
+		"/home/karambeer/kulwant/userHistory/server/File/userLike.csv",
+		"/home/karambeer/kulwant/userHistory/server/File/FileService.js",
+		"/home/karambeer/kulwant/userHistory/server/DAO/DAOService.js",
+		"/home/karambeer/kulwant/userHistory/client/index.html",
+		"/home/karambeer/kulwant/userHistory/server.js",
+		"/opt/logstash/logstash.conf",
+		"/home/karambeer/kulwant/userHistory/server/elasticSearch/elasticService.js",
+		"/home/karambeer/kulwant node project/userHistory/server/elasticSearch/elasticService.js",
+		"/home/karambeer/kulwant node project/userHistory/server/DAO/db-config.js",
+		"/home/karambeer/kulwant/userHistory/db/movies.csv",
+		"/home/karambeer/kulwant/userHistory/client/signUp.html",
+		"/home/karambeer/kulwant node project/userHistory/db/movies.csv",
+		"/home/karambeer/kulwant/userHistory/db/product.csv",
+		"/opt/logstash/logstash1.conf",
+		"/home/karambeer/kulwant node project/userHistory/node_modules/elasticsearch/src/lib/log.js",
+		"/home/karambeer/nodeProject/first app/cookie.js",
+		"/home/karambeer/nodeProject/first app/server.js",
+		"/home/karambeer/nodeProject/first app/index.html",
+		"/home/karambeer/kulwant node project/userHistory/server/DAO/DAOService.js",
+		"/home/karambeer/nodeProject/dir.js",
+		"/home/karambeer/nodeProject/client.js",
+		"/home/karambeer/nodeProject/delay.js",
+		"/home/karambeer/nodeProject/os.js",
+		"/home/karambeer/nodeProject/path.js",
+		"/home/karambeer/nodeProject/readWrite.js",
+		"/home/karambeer/nodeProject/output.txt"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"orionEclipseCommon",
+			"treeContainer",
+			"donutDataset",
+			"addNewChild",
+			"dragY",
+			"dragX",
+			"overCircle",
+			"updateTempConnector",
+			"addDonut",
+			"click",
+			"d3.event.x",
+			"updateTempConnector",
+			"initiateDrag",
+			"updateTempConnector",
+			"initiateDrag",
+			"updateTempConnector",
+			"initiateDrag",
+			"overCircle",
+			"treeContainer",
+			"svgGroup",
+			"initiateDrag",
+			"click",
+			"addDonut",
+			"database",
+			"svgGroup",
+			"initiateDrag",
+			"draggingNode",
+			"updateTempConnector",
+			"overCircle",
+			"update",
+			"diagonal",
+			"pan",
+			"centerNode",
+			"scale",
+			"diagonal",
+			"dottype",
+			"MongoClient",
+			"bodyParser",
+			"genService",
+			"\");"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"source.y",
+			"source.x",
+			"treeContainer"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "ApplicationEnum.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

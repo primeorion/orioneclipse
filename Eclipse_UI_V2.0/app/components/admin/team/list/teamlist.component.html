@@ -1,0 +1,97 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Teams" [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-team-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-admin-team-tabnav>
+    <div class="tab-content">
+        <div class="col-sm-12 button-container">
+            <div class="col-sm-7">
+                <div class="form-group form-inline">
+                    <div class="radio">
+                        <label><input type="radio" name="Filter" value="active" (click)="filterTeamsGrid(0)" [checked]="selectedRadioVal==0"/><span class="circle"></span><span class="check"></span>
+                                Active</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="Filter" value="all" (click)="filterTeamsGrid(1)" [checked]="selectedRadioVal==1"/><span class="circle"></span><span class="check"></span>
+                                All</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <button [routerLink]="['/eclipse', 'admin', 'team', 'add']" class="btn btn-blueouter btn-raised pull-right"><i class="fa fa-plus-circle blue"></i> Add New Team</button>
+            </div>
+        </div>
+        <div class="agcontainer">
+            <!-- Because we are using the Angular ID (ie #ag-grid marker), we have to have all the items that use
+                            that marker inside the same ng-if as the grid -->
+            <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting rowBuffer="100" rowSelection="multiple"
+               (rowSelected)= "onRowSelected($event)" [gridOptions]="gridOptions" (rowClicked)="onRowClicked($event)" [columnDefs]="columnDefs" [rowData]="teams" enableColResize="true"
+                [getContextMenuItems]="getContextMenuItems" (modelUpdated)="onModelUpdated()" (rowDoubleClicked)="onRowDoubleClicked($event)"
+                enableFilter [suppressMenuMainPanel]="true">
+            </ag-grid-ng2>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false
+    width="600">
+    <div>
+        <div>This action will Delete the association between all Users, Portfolios, Models,<br /> Advisors from the TEAM. If User
+            is not assigned to any other Team, he/she
+            <br/> will not be able to login to the Application unless he is re-assigned to a TEAM.<br />
+            <br/>To avoid that please select NO and re-assign users to another Team using BULK <br/>Re-Assign. To Continue
+            with TEAM deletion, please press YES.
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayConfirm=false">No</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="deleteTeam()">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+<p-dialog header="Reassign Teams" [(visible)]="displayReassign" modal="modal" responsive="true" showEffect="fade" width="720"
+    height="400">
+    <div *ngIf="selectedTeamId != undefined">
+        <eclipse-team-reassign (reassigned)="reassignTeamToNew(true)"></eclipse-team-reassign>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter btn-raised" icon="fa-close" (click)="displayReassign=false">Cancel</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="reassignTeamToNew()">Submit</button>
+            </div>
+        </footer>
+    </div>
+    <div *ngIf="selectedTeamId == undefined">
+        <div>Please select a team from teams list</div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="displayReassign=false" label="OK"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<!--right side main area end -->
+
+<p-dialog [(visible)]="displayPreCondition" modal="modal" responsive="true" showEffect="fade" width="480">
+    <div>
+        <div>Since you donot have access to any other TEAM. You can not perform this operation. You need to have access to atleast
+            one more TEAM. </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter btn-raised" icon="fa-close" (click)="displayPreCondition=false">OK</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+
+
+<p-dialog [(visible)]="displayPrimryteamCndtn" modal="modal" responsive="true" showEffect="fade" width="480">
+    <div>
+        <div>Team is associated as primary team to some portfolios so it can not be deleted. </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter btn-raised" icon="fa-close" (click)="displayPrimryteamCndtn=false">OK</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

@@ -1,0 +1,111 @@
+<table class="table tactical-custom-table table-step-5">
+    <tbody>
+        <tr class="table-row-bg-1">
+            <th></th>
+            <th></th>
+            <th colspan="7" class="text-center table-td-border-left"><strong>Trade Order</strong></th>
+            <th colspan="3" class="text-center table-td-border-left"><strong>Post Trade</strong></th>
+            <th colspan="3" class="text-center table-td-border-left"><strong>Model Target</strong></th>
+            <th colspan="3" class="text-center table-td-border-left"><strong>Current</strong></th>
+            <th colspan="4" class="text-center table-td-border-left"><strong>Gain Loss</strong></th>
+            <th colspan="2" class="text-center table-td-border-left"></th>
+        </tr>
+        <tr class="table-td-border-bottom table-row-bg-2">
+            <th></th>
+            <th>Securities</th>
+            <th class="table-td-border-left">Action</th>
+            <th class="text-right">Shares</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">Price</th>
+            <th>Redemption Fee</th>
+            <th class="text-right">Trade Cost</th>
+            <th class="text-right">Hold Until</th>
+            <th class="table-td-border-left text-right">Shares</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">%</th>
+            <th class="table-td-border-left text-right">Shares</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">%</th>
+            <th class="table-td-border-left text-right">Shares</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">%</th>
+            <th class="table-td-border-left text-right">G/L ST</th>
+            <th class="text-right">G/L LT</th>
+            <th class="text-right">Total G/L $</th>
+            <th class="text-right">Total G/L %</th>
+            <th class="table-td-border-left">Trade Reason</th>
+            <th>Message</th>
+        </tr>
+        <template ngFor [ngForOf]="model" let-security="$implicit" let-i="index">
+            <tr class="{{i % 2 == 0 ? 'table-row-bg-4' : 'text-warning-light table-row-bg-3'}}">
+                <td class="icon-setting">
+                    <a href="javascript:void(0)" class="btn btn-default add-plus-btn" data-toggle="collapse" data-target="#ataxlots{{i}}"><i class="fa fa-plus-circle"></i></a>
+                </td>
+                <td>{{security.securityName}}</td>
+                <td class="table-td-border-left">
+                    <div class="form-group">
+                        <select class="form-control radius-none">
+                            <option>SELL</option>
+                            <option>BUY</option>
+                        </select>
+                        <span class="material-input"></span><span class="material-input"></span>
+                        <span class="material-input"></span><span class="material-input"></span>
+                    </div>
+                </td>
+                <td class="text-right ">
+                    <div class="form-group is-empty">
+                        <input [(ngModel)]="security.tradeOrderShares" class="form-control radius-none text-right" placeholder="80" type="text" />
+                        <span class="material-input"></span><span class="material-input"></span>
+                        <span class="material-input"></span>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="form-group is-empty">
+                        <input [(ngModel)]="security.tradeOrderAmount" class="form-control radius-none text-right" placeholder="15,00.00" type="text"
+                        />
+                        <span class="material-input"></span><span class="material-input"></span>
+                        <span class="material-input"></span>
+                    </div>
+                </td>
+                <td class="td-relative text-right"><span>{{security.tradeOrderPrice | currency:'USD':true:'1.2-2'}}</span></td>
+                <td class="td-relative text-right"><span>{{security.tradeOrderRedemptionFee | currency:'USD':true:'1.2-2'}}</span></td>
+                <td class="td-relative text-right"><span>{{security.tradeCost | currency:'USD':true:'1.2-2'}}</span></td>
+                <td class="text-right">
+                    <div class="form-group is-empty">
+                        <input [(ngModel)]="security.tradeOrderHoldUntil" class="form-control radius-none text-right" size="16" value="12-02-2016"
+                            type="text" />
+                        <span class="material-input"></span><span class="material-input"></span>
+                    </div>
+                </td>
+                <td class="text-right table-td-border-left">{{security.postTradeShares}}</td>
+                <td class="text-right">
+                    <span class="ellipsis-value" data-toggle="tooltip" data-placement="top" title="" data-original-title="">{{security.postTradeAmount | currency:'USD':true:'1.2-2'}}</span>
+                </td>
+                <td class="text-right">{{security.postTradePer}}%</td>
+                <td class="text-right table-td-border-left">{{security.modelTargetShares}}</td>
+                <td class="text-right">{{security.modelTargetAmount | currency:'USD':true:'1.2-2'}}</td>
+                <td class="text-right">{{security.modelTargetPer}}%</td>
+                <td class="text-right table-td-border-left">{{security.currentShares}}</td>
+                <td class="text-right">{{security.currentAmount | currency:'USD':true:'1.2-2'}}</td>
+                <td class="text-right">{{security.currentPer}}%</td>
+                <td class="text-right table-td-border-left">{{security.gainLossCostShortTerm | currency:'USD':true:'1.2-2'}}</td>
+                <td class="text-right">{{security.gainLossCostLongTerm | currency:'USD':true:'1.2-2'}}</td>
+                <td class="text-right">{{security.gainAmount | currency:'USD':true:'1.2-2'}}</td>
+                <td class="text-right">{{security.gainPer}}%</td>
+                <td class="table-td-border-left">
+                    <div class="form-group is-empty">
+                        <input [(ngModel)]="security.commentsTradeReason" type="text" class="form-control" placeholder="Rebalance" />
+                        <span class="material-input"></span>
+                    </div>
+                </td>
+                <td class="text-danger">{{security.commentsMessage}}</td>
+            </tr>
+            <tr class="inbox collapse" id="ataxlots{{i}}">
+                <td colspan="25">
+                    <!-- Taxlots Table -->
+                    <eclipse-tactical-taxlots></eclipse-tactical-taxlots>
+                </td>
+            </tr>
+        </template>
+    </tbody>
+</table>

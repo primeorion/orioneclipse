@@ -1,0 +1,32 @@
+module.exports  = {
+	tableName:'user',
+	columns:{
+		id:'user.id',
+		orionConnectExternalId:'user.orionConnectExternalId',
+		firstName:'user.firstName',
+		lastName:'user.lastName',
+		roleId:'user.roleId',
+		email:'user.email',
+		status:'user.status',
+		tags:'user.tags',
+		startDate:'user.startDate',
+		expireDate:'user.expireDate',
+		userLoginId:'user.userLoginId',
+		isDeleted:'user.isDeleted',
+		createdDate:'user.createdDate',
+		createdBy:'user.createdBy',
+		editedDate:'user.editedDate',
+		editedBy:'user.editedBy'
+	},
+	usCreated:{
+		alias:'usCreated',
+		id:'usCreated.id',
+		userLoginId:'usCreated.userLoginId'
+	},
+	usEdited:{
+		alias:'usEdited',
+		id:'usEdited.id',
+		userLoginId:'usEdited.userLoginId'
+	}
+
+}

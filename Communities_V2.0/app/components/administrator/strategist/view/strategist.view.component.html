@@ -1,0 +1,47 @@
+<community-stratgeist-tabnav (callParentPopup)="showPopup($event)" [model]="tabsModel"></community-stratgeist-tabnav>
+<div class="tab-content">
+    <div id="tab1" class="tab-pane fade in active grid-height">
+        <div class="tab-header">
+            <div class="">
+                <div class="row">
+                    <div class="col-sm-3" *ngIf="isSuperAdmin">
+                        <button type="button" title="ADD NEW STRATEGIST" (click)="addNewStrategist()" class="btn btn-info btn-raised button-space">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> ADD NEW STRATEGIST 
+                    </button>
+                    </div>
+                    <div class="col-sm-5">
+                        <communities-savedviews [model]="savedView" (parentCallback)="getStrategistList()" viewTypeId="1"></communities-savedviews>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="strategistList" enableFilter [getContextMenuItems]="getContextMenuItems" (rowDoubleClicked)="onRowDoubleClicked($event)"
+            (selectionChanged)="selectRows($event)" rowSelection="multiple" (gridReady)="onGridReady($event)" (modelUpdated)="onModelUpdated()" [context]="gridContext">
+        </ag-grid-ng2>
+    </div>
+</div>
+<p-dialog header="Delete Strategist" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="600">
+    <div>
+        <div>
+            <p>This action will permanently delete the Strategist and all associated users.He/She will not be able to login to the application.</p>
+            <p>Do you wish to continue?</p>
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button pButton type="button" (click)="displayConfirm=false" label="No" title="No"></button>
+                <button pButton type="button" (click)="deleteStrategists()" label="Yes" title="Yes"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="displayDeleteErrorMessage" modal="modal" responsive="true" showEffect="fade" [draggable]=false [resizable]=false width="400">
+    <div>
+        <div>{{deletedStrategistCount}} out of {{selectedStrategistCount}} strategists have been deleted.
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-blueouter" pButton (click)="displayDeleteErrorMessage=false" label="Ok"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

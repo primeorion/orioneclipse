@@ -1,0 +1,81 @@
+<div class="main">
+    <div class="topbar">
+        <div class="breadcrum">
+            <div class="topbar-left">
+                <ol class="breadcrumb">
+                    <li class="crumb-icon" *ngIf="isSuperAdmin"><a [routerLink]="['/community', 'administrator','dashboard']"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li class="crumb-link" *ngIf="isSuperAdmin"><a [routerLink]="['/community', 'administrator','dashboard']">Home</a></li>
+                    <li class="crumb-icon" *ngIf="!isSuperAdmin"><a [routerLink]="['/community', 'overview','firm']"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li class="crumb-link" *ngIf="!isSuperAdmin"><a [routerLink]="['/community', 'overview','firm']">Home</a></li>
+                    <!--<li class="crumb-link"><a [routerLink]="['/community', 'dashboard']">Dashboard</a></li>-->
+                    <li class="crumb-trail">Administrator</li>
+                </ol>
+            </div>
+            <div class="topbar-right">
+                <div class="dashboard-widget-tray">
+                    <!--<div class="btn-group">
+						<button type="button" class="btn btn-primary">Action</button>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu">
+							<li><a href="javascript:void(0);">Action</a></li>
+							<li><a href="javascript:void(0);">Another action</a></li>
+							<li><a href="javascript:void(0);">Something else here</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="javascript:void(0);">Separated link</a></li>
+						</ul>
+					</div>-->
+                    <!--<a href="javascript:void(0);" title="" style="height:20px; width:20px; background:red;" class="pull-right"><i class="fa fa-angle-right"></i></a>
+-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-content dashboard-content-margin" style="height:600px;">
+        <div class="dashboard-main row" *ngIf="administratorSummary != undefined">
+            <div class="col-md-6">
+                <div class="panel dash-bg-color1">
+                    <div class="panel-body">
+                        <div class="panel-actions-fly pull-right"><a data-toggle="dropdown" class="btn-panel" href="javascript:void(0);"><i class="glyphicon  glyphicon-option-vertical"></i>     </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a href="javascript:void(0);" tabindex="1" [routerLink]="['/community', 'administrator', 'strategist','list']"><i class="fa fa-angle-right" aria-hidden="true"></i> All Strategists</a>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="javascript:void(0);" tabindex="1" [routerLink]="['/community', 'administrator', 'strategist','add']"><i class="fa fa-angle-right" aria-hidden="true"></i> Strategist Details</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <p class="lead">Strategists</p>
+                        <p class="text-50  ">{{administratorSummary.totalStrategist}} <span>Total</span></p>
+                        <div class="controls">
+                            <div class="contorl-active">Existing<span>{{administratorSummary.existingStrategist}}</span></div>
+                            <div class="contorl-active">New<span>{{administratorSummary.newStrategist}}</span></div>
+                        </div>
+                        <div class="goto-link" [routerLink]="['/community', 'administrator', 'strategist','list']"><a href="javascript:void(0);">Go to Strategists <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel dash-bg-color2">
+                    <div class="panel-body">
+                        <div class="panel-actions-fly pull-right"><a data-toggle="dropdown" class="btn-panel" href="javascript:void(0);"><i class="glyphicon  glyphicon-option-vertical"></i>     </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu"> <a href="javascript:void(0);" tabindex="1" [routerLink]="['/community', 'administrator', 'user', 'list']"><i class="fa fa-angle-right" aria-hidden="true"></i>All Users</a></li>
+                                <li class="dropdown-submenu"> <a href="javascript:void(0);" tabindex="1" [routerLink]="['/community', 'administrator', 'user', 'add']"><i class="fa fa-angle-right" aria-hidden="true"></i>User Details</a></li>
+                            </ul>
+                        </div>
+                        <p class="lead">Users</p>
+                        <p class="text-50  ">{{administratorSummary.totalUsers}}<span>Total</span></p>
+                        <div class="controls">
+                            <div class="contorl-active">Existing<span>{{administratorSummary.existingUsers}}</span></div>
+                            <div class="contorl-active">New<span>{{administratorSummary.newUsers}}</span></div>
+                        </div>
+                        <div class="goto-link" [routerLink]="['/community', 'administrator', 'user','list']"><a href="javascript:void(0);">Go to Users <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<!-- admin left menu -->
+<admin-leftmenu menuName="Users" [model]="menuModel"></admin-leftmenu>
+<div class="grid-container">
+    <eclipse-admin-user-tabnav (showDeletePopup)="showDeleteConfirm()" [model]="tabsModel"></eclipse-admin-user-tabnav>
+    <div class="tab-content">
+        <div class="col-sm-12 button-container">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-5">
+                <div class="pull-right" *ngIf="permission.canAdd">
+                    <button class="btn btn-blueouter btn-raised pull-left" [routerLink]="['/eclipse', 'admin', 'user', 'add']"><i class="fa fa-plus-circle blue"></i> Add New Users</button>
+                </div>
+            </div>
+        </div>
+        <div class="agcontainer">
+            <!-- Because we are using the Angular ID (ie #ag-grid marker), we have to have all the items that use
+                        that marker inside the same ng-if as the grid -->
+            <ag-grid-ng2 #agGrid class="ag-material ag-dark grid-height" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                rowSelection="single" [columnDefs]="columnDefs" [rowData]="usersData" enableFilter (modelUpdated)="onModelUpdated()"
+                enableColResize="true" (rowClicked)="onrowClicked($event)" (rowDoubleClicked)="onRowDoubleClicked($event)" [getContextMenuItems]="getContextMenuItems">
+            </ag-grid-ng2>
+        </div>
+   </div> 
+</div>
+
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" width="526" [resizable]=false>
+    <div *ngIf="confirmType === 'DELETE'">
+        <div>This action will Delete the User he/she will not be able to login to the Application<br/>unless he is re-assigned
+            a Role and Team.<br/>Do you wish to continue ?
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayConfirm=false">No</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="deleterUser()">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<!--right side main area end -->

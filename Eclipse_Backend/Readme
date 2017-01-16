@@ -1,0 +1,9 @@
+
+/**********************Validations*************************/
+1.Validation : For validations we use express-validator .
+For any help go to https://github.com/ctavan/express-validator
+
+/**********************Logging*************************/
+2.Logging :For Logging we use morgan .
+For any help go to https://github.com/expressjs/morgan
+

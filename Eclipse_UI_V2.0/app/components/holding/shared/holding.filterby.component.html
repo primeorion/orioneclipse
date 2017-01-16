@@ -1,0 +1,42 @@
+<div class="row row-no-padding holdings-search-head">
+	<!--<div class="col-md-4">
+        <div class="form-group row row-no-padding">
+            <label class="control-label col-md-5">Show Holdings By : </label>
+            <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="selectedHoldingParam" (change)="selectedHoldingParamChange($event.target.value)">
+                    <option value="">Select</option>
+                    <option *ngFor="let h of holdingValues" [ngValue]="h.name">{{h.name}}</option>
+                 </select>
+            </div>
+        </div>
+    </div>-->
+	<div class="col-md-4">
+		<div class="form-group row row-no-padding">
+			<label class="control-label col-md-5">Show Holdings By : </label>
+			<div class="col-md-4">
+				<div class="portfoliodetails-search-add">
+					<p-autoComplete [(ngModel)]="selectedHoldingObj" [suggestions]="autoCompleteSuggestions" placeholder="Search" (completeMethod)="loadAutoCompleteSuggestionsBySelectedHolding($event)"
+						(onSelect)="onSelect($event)" field="name" class="port-search" [minLength]="1" [size]="30" (keyup)="handleSelectedValue(selectedHoldingObj)">
+
+						<template let-selectedHoldingObj>
+							<ul class="ui-helper-clearfix show-hollding-dropdown">
+								<li>
+									<i *ngIf="selectedHoldingObj.type=='account'" class="fa fa-calculator  text-info"></i>
+									<i *ngIf="selectedHoldingObj.type=='portfolio'" class="fa fa-suitcase text-warning"></i>
+									<span>{{selectedHoldingObj.id + " : " +selectedHoldingObj.name +" - " +" $ "+ selectedHoldingObj.value}}</span>
+								</li>
+
+							</ul>
+						</template>
+					</p-autoComplete>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--<div class="col-md-1">
+        <div class="form-group row row-no-padding">
+            <button type="submit" class="btn btn-raised btn-info btn-sm" (click)="applySelectedChanges()" [disabled]="disableBtn">Apply</button>
+        </div>
+    </div>-->
+</div>

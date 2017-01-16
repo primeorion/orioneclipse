@@ -1,0 +1,71 @@
+<!--right side main area start-->
+<div class="main">
+    <div class="topbar">
+        <div class="breadcrum">
+            <div class="topbar-left">
+                <ol class="breadcrumb">
+                    <li class="crumb-icon"><a href="javascript:void(0);"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li class="crumb-link"><a href="javascript:void(0);" [routerLink]="['/eclipse', 'dashboard']">Home</a></li>
+                    <li class="crumb-link"><a href="javascript:void(0);" [routerLink]="['/eclipse', 'dashboard']">Dashboard</a></li>
+                    <li class="crumb-trail">Securities </li>
+                </ol>
+            </div>
+            <div class="topbar-right">
+                <div class="dashboard-widget-tray">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Action</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0);">Action</a></li>
+                            <li><a href="javascript:void(0);">Another action</a></li>
+                            <li><a href="javascript:void(0);">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:void(0);">Separated link</a></li>
+                        </ul>
+                    </div>
+                    <!--<a href="javascript:void(0);" title="" style="height:20px; width:20px; background:red;" class="pull-right"><i class="fa fa-angle-right"></i></a>
+-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-content">
+        <div class="dashboard-main">
+            <div class="col-md-6">
+                <div class="panel dash-bg-color2">
+                    <div class="panel-body">
+                        <p class="lead">Securities Maintenance</p>
+                        <div class="goto-link"><a [routerLink]="['/eclipse', 'security', 'maintenance']">Go To Securities Maintenance <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel dash-bg-color3">
+                    <div class="panel-body">
+                        <p class="lead">Securities Set Maintenance</p>
+                        
+                        <div class="goto-link"><a [routerLink]="['/eclipse', 'security', 'securitySet' ]">Go To Securities Set Maintenance <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+             <div class="col-md-6">
+                <div class="panel dash-bg-color3">
+                    <div class="panel-body">
+                        <p class="lead">Asset Maintenance</p>
+                        
+                        <div class="goto-link"><a [routerLink]="['/eclipse', 'security', 'asset', 'category']">Go To Asset Maintenance <i class="fa fa-arrow-circle-o-right"></i></a></div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+<!--right side main area end -->

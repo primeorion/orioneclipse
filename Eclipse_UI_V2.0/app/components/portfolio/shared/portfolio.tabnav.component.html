@@ -1,0 +1,72 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left">
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'portfolio', 'dashboard']">Dashboard</a> </li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'portfolio', 'list']">All Portfolios</a></li>
+        <!--<li [routerLinkActive]="['active']" *ngIf="model.canRead && (model.action == 'L' || model.action == 'V')"><a [routerLink]="['/eclipse', 'portfolio', 'view' , (model.id || '')]">Portfolio Details</a></li>-->
+        <li [routerLinkActive]="['active']" *ngIf="model.canRead && (model.action == 'L' || model.action == 'V')"><a [routerLink]="['/eclipse', 'portfolio', 'view']">Portfolio Details</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.canAdd && model.action == 'A'"><a [routerLink]="['/eclipse', 'portfolio', 'add']">Portfolio Details</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.canUpdate && model.action == 'E'"><a [routerLink]="['/eclipse', 'portfolio', 'edit' , model.id]">Portfolio Details</a></li>
+    </ul>
+    <div class="actionBtn btn-group pull-right" *ngIf="model.action != 'A'">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu">
+            <li [hidden]="model.id == undefined || !model.canRead || model.action == 'V' || model.action == 'E' || model.typeId == 0">
+                <a [routerLink]="['/eclipse', 'portfolio', 'view' , model.id]">Edit Portfolio</a>
+            </li>
+            <li [hidden]="model.id == undefined || !model.canUpdate || model.action == 'E'">
+                <a href="javascript:void(0)" *ngIf="model.typeId == 0" [routerLink]="['/eclipse', 'portfolio', 'edit', model.id]">Edit Portfolio</a>
+                <a href="javascript:void(0)" *ngIf="model.typeId == 1" [routerLink]="['/eclipse', 'sleeve', 'edit', model.id]">Edit Sleeves</a>
+                <a href="javascript:void(0)" *ngIf="model.typeId == 1 || !model.canRead" [routerLink]="['/eclipse', 'sleeve', 'transfer', model.id]">Sleeve Transfer</a>
+            </li>
+            <li [hidden]="!(model.id != undefined || model.ids != undefined) || !model.canDelete || model.action != 'L' || model.typeId == 1">
+                <a href="javascript:void(0)" (click)="onMenuClick('Delete')">Delete</a>
+            </li>
+            <li [hidden]="(model.action != 'E' || model.modelId == '0')">
+                <a href="javascript:void(0)" (click)="gotoModelDetails()">View Portfolio-Model Comparison</a>
+            </li>
+
+            <li [hidden]="model.id == undefined || !model.canRead">
+                <a [routerLink]="['/eclipse', 'holding', 'list' , 'portfolio', model.id]">View Holdings</a>
+            </li>
+
+            <li [hidden]="!model.canUpdate">
+                <a href="javascript:void(0)" (click)="onMenuClick('Assign')">Assign Portfolio</a>
+            </li>
+            <li [hidden]="!(model.id == undefined && model.ids == undefined) || !model.canAdd || model.action != 'L'">
+                <a [routerLink]="['/eclipse', 'portfolio', 'add']">Add New Portfolio</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">Rebalance Portfolio(s)</a>
+            </li>
+            <li [hidden]="!(model.id == undefined || model.ids == undefined) || model.action == 'V'" class="dropdown dropdown-submenu">
+                <a href="javascript:void(0)">Trade Tools</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="javascript:void(0)" (click)="onModelSelect(0)">Global Trades</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" (click)="onModelSelect(1)">Tax Ticker Swap</a>
+                    </li>
+                    <li>
+                        <a [hidden]="!(model.id != undefined || model.ids != undefined)" href="javascript:void(0)" (click)="onModelSelect(2)">Trade To Target</a>
+                    </li>
+                     <li>
+                        <a href="javascript:void(0)" [routerLink]="['/eclipse', 'tradeorder', 'spendcash']">Spend Cash</a>
+                    </li>
+                </ul>
+            </li>
+            <li [hidden]="!(model.id == undefined || model.ids == undefined) || !model.canUpdate">
+                <!--!(model.id != undefined || model.ids != undefined) -->
+                <a href="javascript:void(0)" (click)="onMenuClick('PREFERENCES')">Edit preferences</a>
+            </li>
+            <li [hidden]="!(model.id == undefined || model.ids == undefined) || !model.canUpdate">
+                <!--!(model.id != undefined || model.ids != undefined) -->
+                <a href="javascript:void(0)" (click)="onMenuClick('CashNeeds')">Cash Needs</a>
+            </li>
+           
+        </ul>
+    </div>
+</div>

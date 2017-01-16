@@ -1,0 +1,52 @@
+<!--<eclipse-assign-accounts-portfolio (callParentPopup)="showPopup($event)" [model]="tabsModel"></eclipse-assign-accounts-portfolio>-->
+<div class="nav-tabs-container">
+	<ul class="nav nav-tabs pull-left">
+		<li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'account', 'dashboard']">Dashboard</a> </li>
+		<li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'account', 'list']">All Accounts</a></li>
+		<!--<li [routerLinkActive]="['active']" *ngIf="model.canRead && (model.action == 'L' || model.action == 'V')"><a [routerLink]="['/eclipse', 'account', 'view' + (model.id ? '/' + model.id : '')]">Account Details</a></li>-->
+		<!--<li [routerLinkActive]="['active']" *ngIf="model.canRead && (model.action == 'L' || model.action == 'V')"><a [routerLink]="['/eclipse', 'account', 'view' , ( model.id? model.id:'')]">Account Details</a></li>-->
+		<li [routerLinkActive]="['active']" *ngIf="model.canRead && (model.action == 'L' || model.action == 'V')"><a [routerLink]="['/eclipse', 'account', 'view']">Account Details</a></li>
+	</ul>
+	<div class="actionBtn btn-group pull-right">
+		<a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			<i class="material-icons">more_vert</i>
+			<div class="ripple-container"></div>
+		</a>
+		<ul class="dropdown-menu">
+			<li [hidden]="model.id == undefined || !model.canRead || model.action == 'V'">
+				<a [routerLink]="['/eclipse', 'account', 'view' , model.id]">View Details</a>
+			</li>
+			<li [hidden]="model.id == undefined || !model.canRead">
+				<a [routerLink]="['/eclipse', 'holding', 'list' , 'account', model.id]">View Holdings</a>
+			</li>
+			<li [hidden]="!model.canUpdate">
+				<a href="javascript:void(0)" (click)="onMenuClick('Assign')">Assign Portfolio</a>
+			</li>
+			<!--<li [hidden]="!(model.id != undefined || model.ids != undefined) || !model.canRead || !model.canUpdate">-->
+			<li [hidden]="!(model.id == undefined || model.ids == undefined) || !model.canRead || !model.canUpdate">
+				<a href="javascript:void(0)" (click)="onMenuClick('PREFERENCES')">Edit Preferences</a>
+			</li>
+			<li [hidden]="!(model.isTrue == 'Yes')">
+				<a href="javascript:void(0)" (click)="onMenuClick('SMA Weightings')">SMA Weightings</a>
+			</li>
+			<!--<li [hidden]="model.ids == undefined" class="dropdown dropdown-submenu">-->
+				<li [hidden]="!(model.id == undefined || model.ids == undefined) || model.action =='V'" class="dropdown dropdown-submenu">
+				 <a href="javascript:void(0)">Trade Tools</a>
+                <ul class="dropdown-menu">
+                    <li>
+                       <a href="javascript:void(0)" (click)="onModelSelect(0)">Global Trades</a>
+                    </li>
+                     <li>                       
+                        <a href="javascript:void(0)" (click)="onModelSelect(1)">Tax Ticker Swap</a>
+                    </li>
+					<li>
+                       <a href="javascript:void(0)" (click)="onModelSelect(2)">Trade To Target</a>
+                    </li>
+					<li>
+						<a href="javascript:void(0)" [routerLink]="['/eclipse', 'tradeorder', 'spendcash']">Spend Cash</a>
+					</li>
+                </ul>
+			</li>
+		</ul>
+	</div>
+</div>

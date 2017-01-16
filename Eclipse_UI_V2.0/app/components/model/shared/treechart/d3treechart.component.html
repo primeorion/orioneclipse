@@ -1,0 +1,692 @@
+<div *ngIf="displayMode == 'editMode'">
+	<div class="col-sm-3">
+		<div class="form-group">
+			Select Tolerance
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<div class="">
+			<input id="toleranceTypePer" [(ngModel)]="toleranceTypePer" class="form-control" type="Number" min="0" max="100" (keypress)="updateUpperAndLowerToleranceByFixedBand($event)"
+				(keyup)="updateFixedBandByKeyUp($event)" step="0.01" placeholder="Fix Band %"></div>
+	</div>
+</div>
+<div id="blk-1" class="toHide" style="display:block;">
+
+<div class="node_tree">
+</div>
+</div>
+<div id="blk-2" class="toHide" style="display:none;">
+<div *ngIf="isDisableEdit">
+	<div class="no_pending"> No Pending edits to show </div>
+</div>
+<div class="tree-container" *ngIf="!isDisableEdit">
+	<div class="tree-table-grid">
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-default level1">
+				<div class="panel-heading" role="tab" id="heading-1">
+					<div [class]="isblurNode(CreateTreeEdit.id)">
+						<!-- Start of Menu Context -->
+						<div class="actionBtn btn-group pull-right" *ngIf="contextMenuItems.length > 0">
+							<a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<i class="material-icons">more_vert</i>
+								<div class="ripple-container"></div>
+							</a>
+							<!--context menu related things-->
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+								<li *ngIf="displayMode == 'editMode'"><a href="javascript:void(0)" id="delete_cm" (click)="trackByContextmenuModel('Add')">Add</a></li>
+								<li><a *ngIf="displayMode == 'viewMode'" href="javascript:void(0)" id="copy_cm" (click)="trackByContextmenuModel('Copy')">Copy</a></li>
+								<li><a *ngIf="displayMode == 'viewMode' && isApprovedTab" href="javascript:void(0)" id="rebalance_cm">Rebalance</a></li>
+								<li class="dropdown-submenu"><a *ngIf="displayMode == 'viewMode' && isApprovedTab" href="javascript:void(0)" id="tradeTools_cm" tabindex="-1">TradeTools</a>
+									<ul class="dropdown-menu">
+										<li><a href="javascript:void(0)" class="menu_item">Sell Rebalance with Emphasis</a></li>
+										<li><a href="javascript:void(0)" class="menu_item">Buy Rebalance with Emphasis</a></li>
+									</ul>
+								</li>
+							</ul>
+
+						</div>
+						<div class="grid">
+							<table class="table treeview leve1">
+								<thead>
+									<tr>
+										<th>Model Name : {{modelNodeName}}</th>
+									</tr>
+								</thead>
+								<!--<tbody>
+									<tr>
+										<td class="w120">
+											<div class="form-group">
+												<span class="material-input">{{modelNodeName}}</span>
+											</div>
+										</td>
+									</tr>
+								</tbody>-->
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tree-table-grid" *ngFor="let gridCategory of CreateTreeEdit.children">
+		<div class="panel panel-default level1 " style="border:1px solid;color:white">
+<div [class]="gridCategory.substitutedStyle">
+	<div class="actionBtn btn-group pull-right dropup" *ngIf="contextMenuItems.length > 0">
+		<a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			<i class="material-icons">more_vert</i>
+			<div class="ripple-container"></div>
+		</a>
+
+		<ul class="dropdown-menu">
+			<li *ngFor="let contextItems of contextMenuItems">
+				<a [class]="isDisableAddSubModelInGrid(contextItems.name, gridCategory)" href="javascript:void(0)" (click)="trackByContextmenu(contextItems.name,gridCategory,gridNodemodel)">
+								{{contextItems.name}}	</a>
+			</li>
+		</ul>
+	</div>
+	<div class="grid">
+		<table class="table treeview">
+			<thead>
+				<tr>
+					<th>Sub-Model Type</th>
+					<th>Sub-Model Name</th>
+					<th>Target %</th>
+					<th></th>
+					<th>Upper %</th>
+					<th>Lower %</th>
+					<th>Rank</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="w200">
+						<div class="form-group">
+							<div class="form-group" *ngIf="!IsDynamicDisplay">
+								<select [disabled]="displayMode == 'viewMode'" id="submodelTypeddl" class="form-control" [(ngModel)]="gridCategory.modelTypeId"
+									(change)="griddisplaySubModel($event,gridCategory,CreateTreeEdit,gridCategory.id)">
+																	<option selected="" value="0">Select</option>
+																	<option value="1">Category</option>
+																	<option value="2">Class</option>
+																	<option value="4">SecuritySet</option>     
+																	</select>
+
+
+							</div>
+							<div class="form-group" *ngIf="IsDynamicDisplay">
+								<select [disabled]="displayMode == 'viewMode'" id="submodelTypeddl" class="form-control" [(ngModel)]="gridCategory.modelTypeId"
+									(change)="griddisplaySubModel($event,gridCategory,CreateTreeEdit,gridCategory.id)">
+																	<option selected="" value="0">Select</option>																	
+																	<option value="4">SecuritySet</option>     
+																	</select>
+
+
+							</div>
+							<span class="material-input"></span>
+						</div>
+					</td>
+					<td class="w150">
+						<div class="form-group">
+							<select [disabled]="displayMode == 'viewMode'" id="submodelTypeNameSubddl" class="form-control" [(ngModel)]="gridCategory.name"
+								(change)="setGridNodeByModelType($event,gridCategory,CreateTreeEdit)">
+															 <option selected="null" value=null>Select</option>	
+																<option  *ngFor="let opt of gridCategory.submodelList" id={{opt.id}} value={{opt.id}} >{{opt.name}}</option>     								                             </select>
+							<span class="material-input"></span>
+						</div>
+					</td>
+					<td class="w150">
+						<div class="form-group"><input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetPercentKeyup($event,gridCategory,CreateTreeEdit)" (keypress)="setValidTargetPercent($event,gridCategory,CreateTreeEdit)"
+								class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridCategory.targetPercent">
+							<span class="material-input"></span>
+						</div>
+
+					</td>
+					<td class="w150">
+						<div class="form-group">
+							<input [disabled]="displayMode == 'viewMode'" (keyup)="setTolaranceBandKeyUp($event,gridCategory,CreateTreeEdit)" (keypress)="setValidTolaranceBandGrid($event,gridCategory,CreateTreeEdit)"
+								(change)="onChangeBandToleranceGrid($event,gridCategory,CreateTreeEdit)" [(ngModel)]="gridCategory.toleranceTypeValue"
+								class="form-control" type="number" min="0" max="100" step="1" placeholder="Fix Band %">
+							<span class="material-input"></span>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetUpperKeyUp($event,gridCategory,CreateTreeEdit)" (keypress)="setValidtargetUpper($event,gridCategory,CreateTreeEdit)"
+								class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridCategory.upperModelTolerancePercent">
+							<span class="material-input"></span>
+						</div>
+
+					</td>
+					<td>
+						<div class="form-group">
+							<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetLowerKeyUp($event,gridCategory,CreateTreeEdit)" (keypress)="setValidtargetLower($event,gridCategory,CreateTreeEdit)"
+								class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridCategory.lowerModelTolerancePercent">
+							<span class="material-input"></span>
+						</div>
+
+					</td>
+					<td>
+						<div class="form-group">
+							<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetRankKeyUp($event,gridCategory,CreateTreeEdit)" (keypress)="setValidtargetRank($event,gridCategory,CreateTreeEdit)"
+								class="form-control" type="number" min="0" max="10000" step="1" [(ngModel)]="gridCategory.rank" (change)="onChangeRank($event,gridCategory,CreateTreeEdit)">
+							<span class="material-input" value="0"></span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="panel panel-default level2" *ngFor="let gridClass of gridCategory.children">
+	<div class="panel-heading">
+		<div [class]="gridClass.substitutedStyle">
+			<div class="actionBtn btn-group pull-right dropup" *ngIf="contextMenuItems.length > 0">
+				<a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+					<i class="material-icons">more_vert</i>
+					<div class="ripple-container"></div>
+				</a>
+				<ul class="dropdown-menu">
+					<li *ngFor="let contextItems of contextMenuItems">
+						<a [class]="isDisableAddSubModelInGrid(contextItems.name, gridClass)" href="javascript:void(0)" (click)="trackByContextmenu(contextItems.name,gridClass,gridCategory)">{{contextItems.name}}</a>
+					</li>
+				</ul>
+			</div>
+			<div class="grid">
+				<table class="table treeview">
+					<thead>
+						<tr>
+							<th>Sub-Model Type</th>
+							<th>Sub-Model Name</th>
+							<th>Target %</th>
+							<th></th>
+							<th>Upper %</th>
+							<th>Lower %</th>
+							<th>Rank</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="w200 ">
+								<div class="form-group ">
+									<select [disabled]="displayMode == 'viewMode'" id="submodelTypeNameClass " class="form-control " [(ngModel)]="gridClass.modelTypeId "
+										(change)="griddisplaySubModel($event,gridClass,gridCategory,gridClass.id) ">
+												<option selected  value=0>Select</option>		
+												<option  *ngFor="let opt of gridClass.submodelTypes " 
+												id="opt.id " 
+												value={{opt.id}} >{{opt.name}}
+												</option>
+												</select>
+								</div>
+							</td>
+							<td class="w150 ">
+								<div class="form-group ">
+									<select [disabled]="displayMode == 'viewMode'" id="submodelTypeNamedd2 " class="form-control" [(ngModel)]="gridClass.name"
+										(change)="setGridNodeByModelType($event,gridClass,gridCategory)">
+													 <option selected="null " value=null>Select</option>	
+													 <option  *ngFor="let opt of gridClass.submodelList "
+													  id={{opt.id}} value={{opt.id}} >{{opt.name}}</option> 
+													</select>
+								</div>
+							</td>
+							<td class="w150 ">
+								<div class="form-group ">
+									<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetPercentKeyup($event,gridClass,gridCategory)" (keypress)="setValidTargetPercent($event,gridClass,gridCategory)"
+										class="form-control" type="Number" min="0 " max="100" step="0.01 " [(ngModel)]="gridClass.targetPercent">
+								</div>
+							</td>
+							<td class="w150 ">
+								<div class="form-group ">
+									<input [disabled]="displayMode == 'viewMode'" (keyup)="setTolaranceBandKeyUp($event,gridClass,gridCategory)" (keyup)="setTolaranceBandKeyUp($event,gridClass,gridCategory)"
+										(keypress)="setValidTolaranceBandGrid($event,gridClass,gridCategory)" (change)="onChangeBandToleranceGrid($event,gridClass,gridCategory)"
+										[(ngModel)]="gridClass.toleranceTypeValue
+											" class="form-control " type="number " min="0 " max="100 " step="1 " placeholder="Fix Band % ">
+									<span class="material-input "></span>
+								</div>
+							</td>
+							<td>
+								<div class="form-group ">
+									<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetUpperKeyUp($event,gridClass,gridCategory)" (keypress)="setValidtargetUpper($event,gridClass,gridCategory)"
+										class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridClass.upperModelTolerancePercent">
+									<span class="material-input "></span>
+								</div>
+
+							</td>
+							<td>
+								<div class="form-group ">
+									<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetLowerKeyUp($event,gridClass,gridCategory)" (keypress)="setValidtargetLower($event,gridClass,gridCategory)"
+										class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridClass.lowerModelTolerancePercent">
+									<span class="material-input"></span> </div>
+							</td>
+							<td>
+								<div class="form-group ">
+									<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetRankKeyUp($event,gridClass,gridCategory)" (keypress)="setValidtargetRank($event,gridClass,gridCategory)"
+										class="form-control" type="number" min="0" max="10000" step="1" [(ngModel)]="gridClass.rank" (change)="onChangeRank($event,gridCategory,CreateTreeEdit)">
+									<span class="material-input"></span>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default level3 " *ngFor="let gridSubClass of gridClass.children ">
+		<div class="panel-heading ">
+			<div [class]="gridSubClass.substitutedStyle">
+				<div class="actionBtn btn-group pull-right dropup" *ngIf="contextMenuItems.length> 0">
+					<a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						<i class="material-icons">more_vert</i>
+						<div class="ripple-container"></div>
+					</a>
+					<ul class="dropdown-menu">
+						<li *ngFor="let contextItems of contextMenuItems">
+							<a [class]="isDisableAddSubModelInGrid(contextItems.name, gridSubClass)" href="javascript:void(0)" (click)="trackByContextmenu(contextItems.name,gridSubClass,gridClass)">{{contextItems.name}}</a>
+						</li>
+					</ul>
+				</div>
+				<div class="grid">
+					<table class="table treeview">
+						<thead>
+							<tr>
+								<th>Sub-Model Type</th>
+								<th>Sub-Model Name</th>
+								<th>Target %</th>
+								<th></th>
+								<th>Upper %</th>
+								<th>Lower %</th>
+								<th>Rank</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="w200">
+									<div class="form-group">
+										<select [disabled]="displayMode == 'viewMode'" id="submodelTypeSubClass" class="form-control" [(ngModel)]="gridSubClass.modelTypeId"
+											(change)="griddisplaySubModel($event,gridSubClass,gridClass,gridSubClass.id)">
+														<option selected  value=0>Select</option>		
+														<option  *ngFor="let opt of gridSubClass.submodelTypes" id="opt.id" value={{opt.id}} >{{opt.name}}</option>
+														</select>
+									</div>
+								</td>
+								<td class="w150">
+									<div class="form-group">
+										<select [disabled]="displayMode == 'viewMode'" id="submodelTypeNameSubClsddl" class="form-control" [(ngModel)]="gridSubClass.name"
+											(change)="setGridNodeByModelType($event,gridSubClass,gridClass)">
+	 												<option selected="null" value=null>Select</option>	
+													<option  *ngFor="let opt of gridSubClass.submodelList" id={{opt.id}} value={{opt.id}} >{{opt.name}}</option> 
+													</select>
+									</div>
+								</td>
+								<td class="w150">
+									<div class="form-group"><input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetPercentKeyup($event,gridSubClass,gridClass)" (keypress)="setValidTargetPercent($event,gridSubClass,gridClass)"
+											class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridSubClass.targetPercent">
+										<span class="material-input"></span>
+									</div>
+								</td>
+								<td class="w150">
+									<div class="form-group">
+										<input [disabled]="displayMode == 'viewMode'" (keyup)="setTolaranceBandKeyUp($event,gridSubClass,gridClass)" (keypress)="setValidTolaranceBandGrid($event,gridSubClass,gridClass)"
+											(change)="onChangeBandToleranceGrid($event,gridSubClass,gridClass)" [(ngModel)]="gridSubClass.toleranceTypeValue"
+											class="form-control" type="number" min="0" max="100" step="1" placeholder="Fix Band %">
+										<span class="material-input"></span>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetUpperKeyUp($event,gridSubClass,gridClass)" (keypress)="setValidtargetUpper($event,gridSubClass,gridClass)"
+											class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridSubClass.upperModelTolerancePercent">
+										<span class="material-input"></span>
+									</div>
+
+								</td>
+								<td>
+									<div class="form-group">
+										<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetLowerKeyUp($event,gridSubClass,gridClass)" (keypress)="setValidtargetLower($event,gridSubClass,gridClass)"
+											class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridSubClass.lowerModelTolerancePercent">
+										<span class="material-input"></span>
+									</div>
+
+								</td>
+								<td>
+									<div class="form-group">
+										<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetRankKeyUp($event,gridSubClass,gridClass)" (keypress)="setValidtargetRank($event,gridSubClass,gridClass)"
+											class="form-control" type="number" min="0" max="10000" step="1" [(ngModel)]="gridSubClass.rank" (change)="onChangeRank($event,gridCategory,CreateTreeEdit)">
+										<span class="material-input"></span>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="panel panel-default level4" *ngFor="let gridSecurityset of gridSubClass.children">
+				<div class="panel-body">
+					<div [class]="gridSecurityset.substitutedStyle">
+						<div class="actionBtn btn-group pull-right dropup" *ngIf="contextMenuItems.length > 0">
+							<a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<i class="material-icons">more_vert</i>
+								<div class="ripple-container"></div>
+							</a>
+							<ul class="dropdown-menu">
+								<li *ngFor="let contextItems of contextMenuItems">
+									<a [class]="isDisableAddSubModelInGrid(contextItems.name, gridSecurityset)" href="javascript:void(0)" (click)="trackByContextmenu(contextItems.name,gridSecurityset,gridSubClass)">{{contextItems.name}}</a>
+								</li>
+							</ul>
+						</div>
+						<div class="grid">
+
+							<table class="table treeview">
+								<thead>
+									<tr>
+										<th>Sub-Model Type</th>
+										<th>Sub-Model Name</th>
+										<th>Target %</th>
+										<th></th>
+										<th>Upper %</th>
+										<th>Lower %</th>
+										<th>Rank</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="w200">
+											<div class="form-group">
+
+												<select [disabled]="displayMode == 'viewMode'" id="submodelTypeSecClass" class="form-control" [(ngModel)]="gridSecurityset.modelTypeId"
+													(change)="griddisplaySubModel($event,gridSecurityset,gridSubClass,gridSecurityset.id)">
+<option selected  value=0>Select</option>		
+<option  *ngFor="let opt of gridSecurityset.submodelTypes" id="opt.id" value={{opt.id}} >{{opt.name}}</option></select>
+
+											</div>
+										</td>
+										<td class="w150">
+											<div class="form-group">
+												<select [disabled]="displayMode == 'viewMode'" id="submodelTypeSecurityddl" class="form-control" [(ngModel)]="gridSecurityset.name"
+													(change)="setGridNodeByModelType($event,gridSecurityset,gridSubClass)">
+	 <option selected="null" value=null>Select</option>	
+																<option  *ngFor="let opt of gridSecurityset.submodelList" id={{opt.id}} value={{opt.id}} >{{opt.name}}</option> 
+	</select>
+
+											</div>
+										</td>
+										<td class="w150">
+											<div class="form-group"><input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetPercentKeyup($event,gridSecurityset,gridSubClass)"
+													(keypress)="setValidTargetPercent($event,gridSecurityset,gridSubClass)" class="form-control" type="Number" min="0"
+													max="100" step="0.01" [(ngModel)]="gridSecurityset.targetPercent">
+												<span class="material-input"></span>
+											</div>
+
+										</td>
+										<td class="w150">
+											<div class="form-group">
+												<input [disabled]="displayMode == 'viewMode'" (keyup)="setTolaranceBandKeyUp($event,gridSecurityset,gridSubClass)" (keypress)="setValidTolaranceBandGrid($event,gridSecurityset,gridSubClass)"
+													(change)="onChangeBandToleranceGrid($event,gridSecurityset,gridSubClass)" [(ngModel)]="gridSecurityset.toleranceTypeValue"
+													class="form-control" type="number" min="0" max="100" step="1" placeholder="Fix Band %">
+												<span class="material-input"></span>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetUpperKeyUp($event,gridSecurityset,gridSubClass)" (keypress)="setValidtargetUpper($event,gridSecurityset,gridSubClass)"
+													class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridSecurityset.upperModelTolerancePercent">
+												<span class="material-input"></span>
+											</div>
+
+										</td>
+										<td>
+											<div class="form-group">
+												<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetLowerKeyUp($event,gridSecurityset,gridSubClass)" (keypress)="setValidtargetLower($event,gridSecurityset,gridSubClass)"
+													class="form-control" type="Number" min="0" max="100" step="0.01" [(ngModel)]="gridSecurityset.lowerModelTolerancePercent">
+												<span class="material-input"></span>
+											</div>
+
+										</td>
+										<td>
+											<div class="form-group">
+												<input [disabled]="displayMode == 'viewMode'" (keyup)="setTargetRankKeyUp($event,gridSecurityset,gridSubClass)" (keypress)="setValidtargetRank($event,gridSecurityset,gridSubClass)"
+													class="form-control" type="number" min="0" max="10000" step="1" [(ngModel)]="gridSecurityset.rank" (change)="onChangeRank($event,gridCategory,CreateTreeEdit)">
+												<span class="material-input"></span>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="circleHover">
+	<table class="table treeview" *ngIf="(childNodeData.length!=0 && hoveredParentName)">
+		<thead>
+			<tr>
+				<th *ngIf="!securitySetHover" colspan="6">{{hoveredParentName}}</th>
+				<th *ngIf="securitySetHover" colspan="5">{{hoveredParentName}}</th>
+			</tr>
+			<tr class="table_nodeVal">
+				<th></th>
+				<th>Target %</th>
+				<th *ngIf="!securitySetHover">Band/Range</th>
+				<th>Upper %</th>
+				<th>Lower %</th>
+				<th>Rank</th>
+			</tr>
+		</thead>
+
+		<tbody *ngFor="let node of childNodeData">
+			<tr class="table_nodeVal">
+				<td class="node_label">{{node.label}}</td>
+				<td>{{node.targetPercent}}</td>
+				<td *ngIf="!securitySetHover">{{node.toleranceTypeValue}}</td>
+				<td>{{node.upperTolerance}}</td>
+				<td>{{node.lowerTolerance}}</td>
+				<td>{{node.rank}}</td>
+			</tr>
+			<tr class="table_nodeVal" *ngIf="((node.count)+1 == childNodeData.length)">
+				<td class="node_label">Total</td>
+				<td>{{node.totalTarget}}</td>
+				<td *ngIf="!securitySetHover"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="full_tree"></div>
+<p-dialog [(visible)]="displayReassign" [resizable]="false" modal="modal" class="money-market-model" responsive="true" showEffect="fade"
+	width="850" [closable]="!removedNodes">
+
+	<div class="title-bar">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="form-group">
+					<input type="text" id="nodeName" class="form-control" [(ngModel)]="droppedElement" [(readonly)]="isreadonlyName" (dblclick)="eventEmitDoubleClickName($event)"
+					/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Namespace *</label>
+						<input type="text" id="nodeNameSpace" [(ngModel)]="modelNamespace" placeholder="Enter Namespace" class="form-control placeholder-input"
+							[(readonly)]="isreadonlyNameSpace" (dblclick)="eventEmitDoubleClickNameSpace($event)" />
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="dialog-body">
+		<div class="form-group-style" id="Absolute" *ngIf="submodelDetailslst.length > 0">
+			<div class="row">
+				<div class="col-sm-2"> </div>
+				<div class="col-sm-2"> <strong>Target % </strong> </div>
+				<div class="col-sm-2" *ngIf="!displaySecurities"> <strong>Band/Range </strong> </div>
+				<div class="col-sm-2"><strong>Upper % </strong></div>
+				<div class="col-sm-2"><strong>Lower % </strong> </div>
+				<div class="col-sm-2"> <strong> Rank </strong></div>
+			</div>
+			<div class="row margin-top-8" *ngFor="let submodeldata of submodelDetailslst">
+				<div class="col-sm-2 word-wrap"> <strong><i *ngIf="!displaySecurities" class="glyphicon glyphicon-remove closeChild"></i> {{submodeldata.nodeName}} </strong>					</div>
+				<div class="col-sm-2">
+					<div class="form-group"><input type="text" class="form-control radius-none " (keypress)="validTargetPercent($event,submodeldata)" type="Number"
+							min="0" max="100" step="0.01" [(ngModel)]="submodeldata.targetPercent"></div>
+				</div>
+				<div class="col-sm-2" *ngIf="!displaySecurities">
+					<div class="form-group">
+						<input type="text" (keypress)="validTolaranceBand($event,submodeldata)" [(ngModel)]="submodeldata.toleranceTypeValue" class="form-control radius-none"
+							(change)="onChangeBandTolerance($event,submodeldata)" type="number" min="0" max="100" step="0.01">
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group"><input type="text" (keypress)="validtarUpperPercent($event,submodeldata)" (keydown)="validatePercentKeyDown($event,submodeldata,'upperModelTolerancePercent')"
+							class="form-control radius-none " type="Number" min="0" max="100" step="0.01" [(ngModel)]="submodeldata.upperModelTolerancePercent">
+						<span class="material-input"></span>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group"><input type="text" (keypress)="validtarUpperPercent($event,submodeldata)" (keydown)="validatePercentKeyDown($event,submodeldata,'lowerModelTolerancePercent')"
+							class="form-control radius-none" type="Number" min="0" max="100" step="0.01" [(ngModel)]="submodeldata.lowerModelTolerancePercent">
+						<span class="material-input"></span>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group"><input type="text" (keypress)="validtarUpperPercent($event,submodeldata)" class="form-control radius-none" type="number"
+							min="0" max="10000" step="1" value="0" [(ngModel)]="submodeldata.rank"><span class="material-input"></span></div>
+				</div>
+			</div>
+
+			<div class="row row-top-border">
+				<div class="col-sm-2 label-top-space"> <strong>Total </strong> </div>
+				<div class="col-sm-2 label-top-space"> <strong>{{getToleranceTotal()}}</strong></div>
+			</div>
+		</div>
+		<div class="info_topLevelpopup text-center" *ngIf="submodelDetailslst.length == 0">
+			No children nodes found</div>
+	</div>
+	<footer>
+		<div class="col-sm-6 text-right dialog-error ui-helper-clearfix">
+			<div *ngIf="SubModelChildernsValidation" class="margin-top-20">{{errorMessage}}</div>
+		</div>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="updateNodes()" label="SAVE" [disabled]="!IsValidForm()"></button>
+			<button *ngIf="!removedNodes" type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CANCEL" (click)="cancelPopUp()"></button>
+		</div>
+	</footer>
+
+</p-dialog>
+
+<p-dialog [(visible)]="InfoPopup" [resizable]="false" modal="modal" responsive="true" showEffect="fade" width="600">
+	<p class="info_popup text-center"></p>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CLOSE" (click)="closeInfoPopUp()"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="confirm" [resizable]="false" [(visible)]="canDeleteModel" modal="modal" responsive="true" showEffect="fade"
+	width="600">
+	<p class="confirm_Modelpopup text-center">This action will delete the model permanently,Do you wish to continue?</p>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="YES" (click)="deletingModel()"></button>
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="NO" (click)="closeInfoPopUp()"></button>
+		</div>
+	</footer>
+
+</p-dialog>
+
+<p-dialog header="confirm" [resizable]="false" [(visible)]="canDeleteSubModel" modal="modal" responsive="true" showEffect="fade"
+	width="600">
+	<p class="confirm_subModelpopup text-center">This action will delete the sub-model permanently,Do you wish to continue?</p>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="YES" (click)="deletingSubModel()"></button>
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="NO" (click)="closeInfoPopUp()"></button>
+		</div>
+	</footer>
+
+</p-dialog>
+
+
+
+<p-dialog header="Copy model" [resizable]="false" class="popup-style" [(visible)]="copyModel" modal="modal" responsive="true"
+	showEffect="fade" width="650">
+	<div class="form-group">
+		<label class="col-md-4"> Save copied Model As :</label>
+		<div class="col-md-8">
+			<input type="text" class="form-control" [(ngModel)]="copiedModelName" placeholder="<Copy 1 of {{modelName}}>">
+		</div>
+	</div>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="SAVE" [disabled]="isValidCopy()" (click)="copyModelInfo()"></button>
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CANCEL" (click)="closeInfoPopUp()"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Copy Sub model" [resizable]="false" class="popup-style" [(visible)]="copySubModel" modal="modal" responsive="true"
+	showEffect="fade" width="650">
+
+	<div class="form-group">
+		<label class="col-md-4"> Save Copied Sub Model As :</label>
+		<div class="col-md-8">
+			<input type="text" class="form-control" [(ngModel)]="copiedSubModelName" placeholder="<Copy of {{modelName}}>">
+		</div>
+	</div>
+
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="SAVE" [disabled]="isValidSubModelCopy()" (click)="copySubModelInfo()"></button>
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="CANCEL" (click)="closeInfoPopUp()"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+
+<p-dialog header="substituted" [resizable]="false" [(visible)]="substituted" modal="modal" responsive="true" showEffect="fade"
+	width="600" [closable]="false">
+	<div class="form-inline">
+		<div class="form-group">
+			To Be Substituted With :
+			<select id="submodelTypeNamePopUp" class="form-control" [(ngModel)]="substituteModelName">
+	<!--<option selected="null" value={{substitutedNode.id}}>{{substitutedNode.name}}</option>-->
+<option  *ngFor="let opt of submodelList" id={{opt.id}} value={{opt.id}} >{{opt.name}}</option>
+</select>
+		</div>
+	</div>
+	<footer>
+		<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+			<button type="button" pButton icon="fa-close" class="btn btn-blueouter" label="SAVE" (click)="substituteReplace()"></button>
+		</div>
+	</footer>
+</p-dialog>
+
+
+<!--context menu related things-->
+<div class="dropdown" id="context-dd-menu">
+	<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+		<li *ngIf="displayMode == 'editMode'"><a href="javascript:void(0)" class="menu_item" id="delete_cm">Delete</a></li>
+		<li *ngIf="displayMode == 'editMode'"><a href="javascript:void(0)" class="menu_item" id="remove_cm">Remove</a></li>
+		<li *ngIf="displayMode == 'viewMode'"><a href="javascript:void(0)" class="menu_item" id="copy_cm">Copy</a></li>
+		<li *ngIf="displayMode == 'viewMode' && portfolioIdFromView && !substitutedModelId &&!parentNodeSelected && !portfolioPending"><a href="javascript:void(0)" class="menu_item" id="substitude_cm">Substitute</a></li>
+		<li *ngIf="displayMode == 'viewMode' && isApprovedTab && parentNodeSelected"><a href="javascript:void(0)" class="menu_item" id="rebalance_cm">Rebalance</a></li>
+
+		<li *ngIf="displayMode == 'viewMode' && isApprovedTab" class="dropdown-submenu"><a href="javascript:void(0)" class="menu_item" id="tradeTools_cm" tabindex="-1">TradeTools</a>
+			<ul *ngIf="displayMode == 'viewMode'" class="dropdown-menu">
+				<li><a href="javascript:void(0)" class="menu_item">Sell Rebalance with Emphasis</a></li>
+				<li><a href="javascript:void(0)" class="menu_item">Buy Rebalance with Emphasis</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>

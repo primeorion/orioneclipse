@@ -1,0 +1,152 @@
+<div class="main">
+	<model-breadcrumb pageName="Model Maintenance">
+		<li class="crumb-link"><a [routerLink]="['/community', 'model', 'list']">Model</a></li>
+	</model-breadcrumb>
+	<div class="dashboard-content dashboard-content-margin">
+		<community-model-tabnav [model]="tabsModel"></community-model-tabnav>
+
+		<div class="tab-content">
+			<div class="tab-pane fade active in">
+				<form #modelForm="ngForm" (ngSubmit)="saveModel()" class="securityForm padding-0" novalidate>
+
+					<div class="row">
+						<!--<div class="col-sm-12">
+							<div class="form-inline space-top-10">
+								<div class="form-group is-empty">
+									<input type="text" class="form-control radius-none input-style" id="exampleInputName4" placeholder="Search model">
+									<span class="material-input"></span></div>
+								<button type="button" class="btn btn-info btn-raised"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+							</div>
+						</div>-->
+						<div class="col-xs-12">
+							<div class="model-heading"> Model Information</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Model ID</label>
+								<p>{{model.id}}</p>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group is-empty">
+								<label for="email" class="primar-label required">Model Name </label>
+								<input type="text" class="form-control" placeholder="Enter Model Name" [(ngModel)]="model.name" (blur)="modelAlreadyExist()"
+									name="name" #name="ngModel" required>
+								<em class="securityError danger" *ngIf="!name.valid && (!name.pristine)">Required</em>
+								<em class="securityError danger" *ngIf="matchingmodelsExists">Model already exists with same name</em>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group is-empty">
+								<label for="email" class="primar-label">Style </label>
+								<input type="text" class="form-control" placeholder="Enter Style" [(ngModel)]="model.style" name="style" #style="ngModel">
+								<!--<em class="securityError danger" *ngIf="!style.valid && (!style.pristine)">Required</em>-->
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group is-empty">
+								<label for="email" class="primar-label">Target Risk Upper (%)</label>
+								<input type="text" class="form-control" placeholder="Enter Target Risk Upper" [(ngModel)]="model.targetRiskUpper" name="targetRiskUpper"
+									#targetRiskUpper="ngModel" onkeypress="return event.charCode >= 48 && event.charCode <= 57" (keyup)="riskRange(model.targetRiskUpper,$event)">
+								<!--<em class="securityError danger" *ngIf="!targetRiskUpper.valid && (!targetRiskUpper.pristine)">Required</em>-->
+								<em class="securityError danger" *ngIf="checkRiskUpperRange">Target Risk Upper % should be a number between 0 and 100</em>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Current Risk (%)</label>
+								<input type="text" class="form-control" placeholder="Enter Current Risk" [(ngModel)]="model.currentRisk" name="currentRisk"
+									onkeypress="return event.charCode >= 48 && event.charCode <= 57" #currentRisk="ngModel" (keyup)="riskRange(model.currentRisk,$event)">
+								<!--<em class="securityError danger" *ngIf="!currentRisk.valid && (!currentRisk.pristine)">Required</em>-->
+								<em class="securityError danger" *ngIf="checkCurrentRiskRange">currentRisk should be a number between 0 and 100</em>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Target Risk Lower (%)</label>
+								<input type="text" class="form-control" placeholder="Enter Target Risk Lower" [(ngModel)]="model.targetRiskLower" name="targetRiskLower"
+									onkeypress="return event.charCode >= 48 && event.charCode <= 57" #targetRiskLower="ngModel" (keyup)="riskRange(model.targetRiskLower,$event)">
+								<!--<em class="securityError danger" *ngIf="!targetRiskLower.valid && (!targetRiskLower.pristine)">Required</em>-->
+								<em class="securityError danger" *ngIf="checkRiskLowerRange">Target Risk Lower % should be a number between 0 and 100</em>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Minimum Amount</label>
+								<input type="text" class="form-control" placeholder="Enter Minimum Amount" [(ngModel)]="model.minimumAmount" name="minimumAmount"
+									onkeypress="return event.charCode >= 48 && event.charCode <= 57" #minimumAmount="ngModel">
+								<!--<em class="securityError danger" *ngIf="!minimumAmount.valid && (!minimumAmount.pristine)">Required</em>-->
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Advisor Fee (bps)</label>
+								<input type="text" class="form-control" placeholder="Enter Advisor Fee" [(ngModel)]="model.advisorFee" name="advisorFee"
+									#advisorFee="ngModel" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+								<!--<em class="securityError danger" *ngIf="!advisorFee.valid && (!advisorFee.pristine)">Required</em>-->
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Weighted Avg. Net Expense</label>
+								<input type="text" class="form-control" placeholder="Enter Weighted Avg. Net " [(ngModel)]="model.weightedAvgNetExpense"
+									onkeypress="return event.charCode >= 48 && event.charCode <= 57" #weightedAvgNetExpense="ngModel" name="weightedAvgNetExpense">
+								<!--<em class="securityError danger" *ngIf="!weightedAvgNetExpense.valid && (!weightedAvgNetExpense.pristine)">Required</em>-->
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Status</label>
+								<select class="form-control" [(ngModel)]="model.status" name="status" #status="ngModel" required>
+                        <!--<option value="undefined">Select Status</option>-->
+                        <option *ngFor="let status of modelStatus"  value={{status.id}} >
+                            {{status.name}}
+                        </option>
+                  </select>
+								<em class="securityError danger" *ngIf="!status.valid && (!status.pristine)">Required</em>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group  is-empty">
+								<label for="email" class="primar-label">Dynamic</label>
+								<input type="checkbox" [(ngModel)]="model.isDynamic" name="isDynamic">
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<div class="model-heading"> Allocation</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="form-inline space-top-10">
+								<div class="form-group is-empty">
+									<div class="col-md-6 margin-top-05">
+										<p-autoComplete placeholder="Search Security" (onSelect)="onSecuritySelect($event)" [(ngModel)]="searchSecurityString" field="symbol"
+											name="searchSecurityString" [minLength]="1" [suggestions]="securtiesSuggestions" (completeMethod)="autoSecurtySearch($event)">
+										</p-autoComplete>
+									</div>
+									<span class="material-input"></span></div>
+								<button type="button" class="btn btn-info btn-raised" (click)="addSecurity()" [disabled]="!searchSecurityString"> ADD</button>
+							</div>
+						</div>
+
+
+						<ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+							[gridOptions]="securityGridOptions" suppressRowClickSelection="true" rowSelection="multiple" enableColResize="true"
+							[context]="gridContext" suppressContextMenu="true" [columnDefs]="securityColumnDefs" [rowData]="securities" enableFilter>
+						</ag-grid-ng2>
+						<p class="pull-right" *ngIf="totalAllocation == 100">Total Allocation : {{totalAllocation}}%</p>
+						<p class="pull-right" *ngIf="totalAllocation != 100">Total Allocation : <em class="securityError danger">{{totalAllocation}}%</em></p>
+					</div>
+					<div class="divider"></div>
+
+
+					<div class="row text-right">
+						<div class="col-sm-12">
+							<button class="btn model-btn-primary" type="submit" [disabled]="!modelForm.form.valid || !checkAllocation || !checkCastodian || matchingmodelsExists || checkNumberRange">Save</button>
+							<button [routerLink]="['/community', 'model', 'list']" class="btn model-btn-default">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

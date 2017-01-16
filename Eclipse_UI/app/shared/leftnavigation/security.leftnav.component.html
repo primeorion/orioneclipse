@@ -1,0 +1,11 @@
+<div class="admin-sub-left">
+    <div class="info-box">
+        <p class="title" style="font-size: 27px;">{{menuName}}</p>
+    </div>
+    <ul class="admin-menu">
+        <li><a title="Security Maintenance" [routerLink]="['/eclipse', 'security', 'maintenance']" [class.securityActiveLink]="getLinkStyle('/maintenance')">Securities Maintenance</a></li>
+        <li><a title="Security Set Maintenance" [routerLink]="['/eclipse', 'security', 'securitySet']" [class.securityActiveLink]="getLinkStyle('/securitySet')">Securities Set Maintenance</a></li>
+        <li><a title="Asset Maintenance" [routerLink]="['/eclipse', 'security', 'asset' , 'category']" [class.securityActiveLink]="getLinkStyle('/asset')" >Asset Maintenance</a></li>
+
+    </ul>
+</div>

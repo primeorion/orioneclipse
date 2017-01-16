@@ -1,0 +1,133 @@
+ <form [ngFormModel]="modelForm" class="modelForm">
+  <div class="dashboard-content">
+     
+            
+        <div class= "row">
+            <div class="col-sm-3">
+                <label class="primar-label" ><h4>Model Structure</h4>
+                </label>
+            </div>
+        
+            <div class="col-sm-3"><label class="primar-label" for="modelName">Model Name</label></div>
+            <div class="col-sm-3">
+              <div class="form-group is-empty">            
+                <input type="text"  id="modalName"
+                  class="form-control priceInput" [(ngModel)]="selectedModel.name">
+              </div>
+            </div>
+        </div>
+      <div class="model-container">
+        <!--<h2 class="model-sub-header">
+        LEVEL 1
+        </h2>-->
+        <div class="table-responsive"	>
+          <div class="">
+            <table cellpadding="5" cellspacing="5" class="table table-bordered">
+              <thead>
+                <tr>
+                 
+                 <th colspan="2">Parent</th>
+                  <th> Name </th>
+                  <th> level </th>
+                  <th> Target %</th>
+                  <th> Upp Tol %</th>
+                  <th> Low Tol %</th>
+                  <th> Low Trade %</th>
+                  <th> UPP Trade %</th>
+                  <th colspan="3">&nbsp; </th>
+                  
+                </tr>
+              </thead>
+                <tbody>
+        
+                <tr  *ngFor="let modelElement of (selectedModel.modelElements  | orderBy : 'level'); let i=index"
+                    (click) ="getSecuritySetDetail(modelElement.relatedTypeId)">
+                  <td class="color{{modelElement.colorCounter}}"> </td>
+                  <td><p class="parentname" *ngIf="modelElement.parentElement">{{modelElement.parentElement?.name}}</p>
+                  <p class="parentname" *ngIf="!modelElement.parentElement">{{selectedModel.name}}</p>
+                  </td>
+                  
+                  <td ><input type="text" *ngIf="modelElement.level != 4" class="form-control radius-none" id="" [(ngModel)] = "modelElement.name">
+                        <select  *ngIf="modelElement.level == 4" class="form-control" [(ngModel)]="modelElement.relatedTypeId" (change)="selectSecuritySet($event, modelElement)">
+                            <option value="0">Select TickerSet</option>
+                            <option *ngFor="let securitySet of securitySetList" value={{securitySet.id}} >
+                              {{securitySet.name}}
+                          </option>
+                       </select>
+                  </td>
+                  
+                  <td>{{modelElement.level}}</td>
+                  <td><input type="text" class="form-control radius-none" id="" [(ngModel)] = "modelElement.targetPercent" placeholder="Enter Value"></td>
+                  <td><input type="text" class="form-control radius-none" id="" [(ngModel)] = "modelElement.lowerModelTolerancePercent" placeholder="Enter Value"></td>
+                  <td><input type="text" class="form-control radius-none" id="" [(ngModel)] = "modelElement.upperModelTolerancePercent" placeholder="Enter Value"></td>
+                  <td><input type="text" class="form-control radius-none" id="" [(ngModel)] = "modelElement.lowerTradeTolerancePercent" placeholder="Enter Value"></td>
+                  <td><input type="text" class="form-control radius-none" id="" [(ngModel)] = "modelElement.upperTradeTolerancePercent" placeholder="Enter Value"></td>
+                  <td><a href="javascript:void(0)" class="close-row" (click)="removeElement(i)"><i class="fa fa-close" *ngIf = "i != '0'"></i></a> </td>
+                  <td><a href="javascript:void(0)" class="sub-row" (click)="createModelElement(modelElement,i, true)" [class.disabled]="!modelElement.name || modelElement.level == 4 ? true : null"> Add Child</a></td>
+                  <td> <a href="javascript:void(0)" class="sub-row" (click)="createModelElement(modelElement, i, false)" [class.disabled]="!modelElement.name ? true : null"> Add Sibling</a> </td>
+                </tr> 
+                </tbody>
+              
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="model-container">
+        <h2 class="model-sub-header">
+        Tickerset
+        </h2>
+        <div class="table-responsive" >
+          <div class="">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                 
+                  <th colspan="2"> Name </th>
+                  <th>Target %</th>
+                  <th>Upp Tol %</th>
+                  <th>Low Tol %</th>
+                  <th>Rank</th>
+                    
+                  <!--th colspan="2">&nbsp; </th>-->
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let security of securitySetDetail.securities">
+                  <td class="red"> </td>
+                  <td>{{security.name}}</td>
+                  <td>{{security.targetPercent}}</td>
+                  <td>{{security.lowerModelTolerancePercent}}</td>
+                  <td>{{security.upperModelTolerancePercent}}</td>
+                  <td>{{security.rank}}</td>
+                  
+                 <!-- <td><a href="" class="close-row"><i class="fa fa-close"></i></a> </td>
+                  <td><a href="" class="sub-row"><i class="fa fa-plus-square-o"></i></a></td>
+                  <td> <a href="" class="sub-row"><i class="fa fa-plus-square"></i></a> </td>-->
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="bs-component pull-right"> 
+            <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "saveModel()">Save</a> 
+             <a href="javascript:void(0)" class="btn btn-raised btn-default">Cancel</a> </div>
+      </div>
+    </div>
+    </form>
+    <p-dialog header="Delete Category" [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+                        [resizable]=false width="600">
+    <div>
+      <div>Do you want to delete the Model Element ? It will delete all child element also. </div>
+      <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+          <button type="button" pButton icon="fa-close" title="No" (click)="displayConfirm=false" label="No"></button>
+          <button type="button" pButton icon="fa-check" title="Yes" (click)="deleteModelElement()" label="Yes"></button>
+        </div>
+      </footer>
+    </div>
+  </p-dialog>

@@ -1,0 +1,43 @@
+{
+	"orion": {
+		"db": {
+			"connectionLimit": 10,
+"host": "localhost",
+			"user": "root",
+			"password": "paxcel@123",
+			"database": "dev2_orionEclipseCommon",
+			"restoreNodeTimeout": 10,
+			"community" : {
+				"connectionLimit": 10,
+"host": "localhost",
+			"user": "root",
+			"password": "paxcel@123",
+			"database": "dev2_orionEclipseCommunity",
+				"restoreNodeTimeout": 10
+			}
+		},
+		"redis" : {
+			"host" :"54.173.63.220",
+			"port" : 6379
+		},
+		"aws" : {
+			"accessKeyId" : "AKIAJGVS4663WQJQURLQ",
+			"secretAccessKey" : "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"
+		},
+		"eclipse" : {
+			"host" : "localhost",
+			"port" : 3000
+		},
+		"import": {
+			"host": "52.205.148.166",
+			"username": "root",
+			"privateKey": "/config/env/importServerKey/local-openssh-key"
+		},
+		"allowed-origins": true,
+		"req-logger": "dev"
+	},
+	"port": 4000,
+	"sessionsecret": "orioneclipse",
+	"log-level": "debug",
+	"logging-path": "/var/log/orioncommunity"
+}

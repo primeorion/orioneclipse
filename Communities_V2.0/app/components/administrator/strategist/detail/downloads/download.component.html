@@ -1,0 +1,80 @@
+<div id="subtab7" class="tab-pane fade in  active ">
+
+	<h3>Manage Downloads</h3>
+	<ul class="content-list">
+		<li><i class="fa fa-stop" aria-hidden="true"></i> Upload files that you would like to provide easy access to, for all of your
+			clients.
+		</li>
+		<li>
+			<i class="fa fa-stop" aria-hidden="true"></i> These files will be displayed as part of the Marketing contents on the site
+		</li>
+	</ul>
+	<form #downloadsForm="ngForm" novalidate (ngSubmit)="addDocumentFile(downloadsForm)">
+		<div class="row">
+			<div class=" col-lg-5 col-md-6 col-sm-12" [hidden]="isViewMode">
+				<div class="choose-file-box" (dragover)='dragDocument($event)' (drop)='dropDocument($event)'><i class="fa fa-file-text-o" aria-hidden="true"></i><br> Drop Files Here<br>
+					<div class="line-space">Or</div>
+					<span class="btn btn-info btn-file btn-raised">
+                    Choose File <input type="file" (change)="selectFileFromInput($event)" [(ngModel)] = "file" name = "file"
+                    accept="application/pdf">
+                </span>
+
+					<div class="file-path-info">
+						<div class="form-group is-empty m-t-zero">
+							<label for="email" class="drag">Name   <em class="securityError danger" style="font-weight:normal;font-size:12px;" *ngIf="!documentName.valid && (!documentName.pristine || submitDownload)">Required</em> </label>
+							<input placeholder="Enter File Name" class="form-control" [(ngModel)]="document.name" name="documentName" #documentName="ngModel"
+								required>
+
+						</div>
+						<div class="form-group is-empty m-t-zero">
+							<label for="email" class="drag">Description   <em class="securityError danger" style="font-weight:normal; font-size:12px;"  *ngIf="!description.valid && (!description.pristine || submitDownload)">Required</em>   </label>
+							<textarea placeholder="Enter Description Here" class="form-control" [(ngModel)]="document.description" name="description"
+								#description="ngModel" required></textarea>
+
+						</div>
+					</div>
+
+				</div>
+				<em class="securityError danger" *ngIf="showDocumentUploadError">{{documentUploadError}}</em>
+			</div>
+			<div class=" col-lg-7 col-md-6 col-sm-12">
+
+				<div class="file-list" *ngIf="downloads != undefined && downloads.length > 0">
+					<div class=" heading">File Name</div>
+					<ul>
+						<li *ngFor="let download of downloads">
+							<div class="heading"> <i class="fa fa-times" aria-hidden="true" (click)="displayDeleteDocumentConfirm(download.id)" *ngIf="!isViewMode"></i>								{{download.displayName}}</div>
+
+							{{download.description}}</li>
+					</ul>
+				</div>
+
+			</div>
+
+
+		</div>
+		<div class="divider" [hidden]="isViewMode"></div>
+		<div class="row text-right" [hidden]="isViewMode">
+			<div class="col-sm-12">
+				<button class="btn model-btn-primary pull-left" type="submit">Add</button>
+				<!--<button class="btn model-btn-default pull-left" (click) = "cancel(downloadsForm)">Cancel</button>-->
+				<button [routerLink]="['/community', 'administrator','strategist', 'list']" class="btn model-btn-default pull-left">Cancel</button>
+
+			</div>
+		</div>
+	</form>
+</div>
+<p-dialog header="Delete Document" [(visible)]="displayDeleteConfirm" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+	[resizable]=false width="600">
+	<div>
+		<div>
+			<p>Are you sure you want to delete the document?</p>
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button pButton type="button" (click)="displayDeleteConfirm=false" label="No" title="No"></button>
+				<button pButton type="button" (click)="deleteDocument()" label="Yes" title="Yes"></button>
+			</div>
+		</footer>
+	</div>
+</p-dialog>

@@ -1,0 +1,65 @@
+<div class="nav-tabs-container dropdown-style">
+
+    <!--//for temporary need to remove once working with permissions-->
+    <ul class="nav nav-tabs pull-left">
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'model', 'dashboard']">Model Dashboard</a> </li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'model', 'list']">All Models</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'model', 'view']">Model Details</a></li>
+    </ul>
+
+    <!--<ul class="nav nav-tabs pull-left">
+    <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'model', 'dashboard']">Model Dashboard</a> </li>
+    <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'model', 'list']">All Models</a></li>
+    <li [routerLinkActive]="['active']" *ngIf="model.canRead && (model.action == 'L' || model.action == 'V')"><a [routerLink]="['/eclipse', 'model', 'view/' + (model.id || '')]">Model Details</a></li>
+    <li [routerLinkActive]="['active']" *ngIf="model.canAdd && model.action == 'A'"><a [routerLink]="['/eclipse', 'model', 'add']">Model Details</a></li>
+    <li [routerLinkActive]="['active']" *ngIf="model.canUpdate && model.action == 'E'"><a [routerLink]="['/eclipse', 'model', 'edit/' + model.id]">Model Details</a></li>
+</ul>-->
+    <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu" *ngIf="model.action == 'L'">
+            <li [hidden]="model.id == undefined || !model.canRead || model.action == 'V'">
+                <a [routerLink]="['/eclipse', 'model', 'view', model.id]">View Model</a>
+            </li>
+            <li [hidden]="(model.id == undefined && model.ids == undefined) || !model.canRead || model.action == 'V'" class="dropdown dropdown-submenu">
+                <a href="javascript:void(0)">Trade Tools</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <!--<a [routerLink]="['/eclipse', 'tradeorder', 'globaltrades']" >Global Trades</a>                      -->
+                        <a href="javascript:void(0)" (click)="onModelSelect(0)">Global Trades</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" (click)="onModelSelect(1)">Tax Ticker Swap</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" (click)="onModelSelect(2)">Trade To Target</a>
+                    </li>
+                </ul>
+            </li>
+            <li [hidden]="model.id == undefined || !model.canUpdate || model.action == 'E'">
+                <a [routerLink]="['/eclipse', 'model', 'edit', model.id]">Edit Model</a>
+            </li>
+            <li [hidden]="model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('PREFERENCES')">Edit preferences</a>
+            </li>
+            <li [hidden]="!(model.id != undefined || model.ids != undefined) || !model.canDelete || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('Delete')">Delete</a>
+            </li>
+            <li [hidden]="!(model.id != undefined || model.ids != undefined) || !model.canDelete || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('Rebalance')">Rebalance</a>
+            </li>
+            <!--<li [hidden]="!model.canUpdate">-->
+            <li [hidden]="model.id == undefined || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('Copy')">Copy</a>
+            </li>
+            <li [hidden]="model.id != undefined || model.ids != undefined || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('Import')">Model Import</a>
+            </li>
+            <li [hidden]="model.id != undefined || model.ids != undefined || model.action != 'L'">
+                <a href="javascript:void(0)" [routerLink]="['/eclipse', 'sleeve', 'strategy']">Sleeve Strategy</a>
+            </li>
+        </ul>
+    </div>
+</div>

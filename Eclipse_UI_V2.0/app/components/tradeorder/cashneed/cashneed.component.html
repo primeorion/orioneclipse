@@ -1,0 +1,38 @@
+<!--right side main area start-->
+<div class="tab-content">
+			<div class="nav-tabs-container dropdown-style">
+				<ul class="nav nav-tabs pull-left step-process-tab-style">
+					<li id="selectionFilter" class="tab-disabled" [ngClass]="{'active': viewName == 'SelectionTab'}" [ngClass]="{'completed-step': viewName == 'finalTab'}">
+						<a aria-expanded="false" data-toggle="tab" href="#SelectionTab"> <i>1</i> Filter method by </a>
+					</li>
+
+					<li id="Final" class="tab-disabled" [ngClass]="{'active': viewName == 'finalTab'}">
+						<a aria-expanded="true" data-toggle="tab" href="#finalTab"> <i>2</i> FINAL</a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content">
+				<div id="SelectionTab" *ngIf="viewName == 'SelectionTab'">
+					<eclipse-tradeorder-tradefilter (tradeFilterCallback)="getTradeFiltersDate($event)" [excelData]="excelData" [parentModel]="parentModelData"></eclipse-tradeorder-tradefilter>
+					<div class="row">
+						<div class="col-sm-12 text-right ">
+							<button [disabled]="disableFilterNextBtn" class="btn btn-info btn-raised pull-right" id="btnNext" (click)="getView('finalTab')">NEXT</button>
+						</div>
+					</div>
+				</div>
+
+				<div id="finalTab" *ngIf="viewName == 'finalTab'">
+					<h4 class="text-info">Would you like to add a remark or note to this batch before it gets executed ?</h4>
+					<div class=" row col-sm-8 top-space-70">
+						<textarea class="form-control" [(ngModel)]="parentModelData.notes" placeholder="Please add optional note or reasons for the trades"></textarea>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-right ">
+							<button class="btn btn-black " id="btnBack3" (click)="getView('SelectionTab')">BACK</button>
+							<button class="btn btn-info btn-raised " id="btnCalculate" (click)="calculate()">CALCULATE</button>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+</div>

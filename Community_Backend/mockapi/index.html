@@ -1,0 +1,12 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io('http://localhost:3000', {
+      'query': 'token=' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPcmlvbiIsImF1ZCI6Imh0dHA6Ly9zZXNzaW9uLm9yaW9uIiwiZXhwIjoxNDY2NjE0MjYyLjM3OSwiYWN0dWFsVXNlcklkIjozNzA5MjUsImZpcm1JZCI6OTk5LCJpYXQiOjE0NjY1NzgyNjJ9.7XtyRji2kGk-VcwoQ6BYwC_YTL7C4zoIcBf1vzHAAF4"
+  });
+  socket.on('connect', function () {
+    socket.on('authenticated', function () {
+              console.log("asdfasdf");
+            })
+           // .emit('authenticate', {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPcmlvbiIsImF1ZCI6Imh0dHA6Ly9zZXNzaW9uLm9yaW9uIiwiZXhwIjoxNDY2NTQ3MzY4LjM1NCwiYWN0dWFsVXNlcklkIjozNzA5MjUsImZpcm1JZCI6OTk5LCJpYXQiOjE0NjY1MTEzNjh9.kVlczl3Y-PuImgkCWcRWVl7r9aiJ0ChWTEjW-Qko5L4"}); //send the jwt
+  });
+</script>

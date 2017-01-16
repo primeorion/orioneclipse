@@ -1,0 +1,65 @@
+<div class="dashboard-content" style="margin-top:-16px;">  
+  <form [ngFormModel]="rebalanceForm" (ngSubmit)="rebalance()" class="rebalanceForm">
+     <label class= "green" *ngIf = "isAssignedModel">Model assigned successfully to portfolio</label>
+    <div class= "row" style="margin-bottom:8px;">
+        <div class="col-sm-7" style = "border: solid white 1px;margin-left: 20px;margin-top: 7px;">
+                <div class="col-sm-4">
+                <div class="form-group is-empty">
+                        <label class="primar-label" for="roletype">Select Model</label>
+                        <select class="form-control" ngControl = "modelId" [(ngModel)]="selectedModel.id" #modelId = "ngForm" 
+                        (change) = "disableRebalanceAndLog()">
+                            <option value="null" *ngIf="!selectedModel.id">Select Model</option>
+                            <option *ngFor="let model of modelList" value={{model.id}} >
+                                {{model.name}}
+                            </option>
+                        </select>
+                        <em class="rebalancerError danger" *ngIf="!modelId.valid && rebalanceModel">Required</em>
+                    </div>
+                </div>
+            
+                <div class="col-sm-4">
+                    <div class="form-group is-empty" >
+                        <label class="primar-label" for="roletype">Select Portfolio</label>
+                        <select class="form-control" ngControl = "portfolioId" [(ngModel)]="selectedPortfolio.id" 
+                        #portfolioId = "ngForm" (change) = "disableRebalanceAndLog()">
+                            <option value="null" *ngIf="!selectedPortfolio.id">Select Portfolio</option>
+                            <option *ngFor="let portfolio of portfolioList" value={{portfolio.id}} >
+                                {{portfolio.name}}
+                            </option>
+                        </select>
+                        <em class="rebalancerError danger" *ngIf="!portfolioId.valid && rebalanceModel">Required</em>
+                    </div>
+                </div>
+            <div class="col-sm-4">
+                <div class="bs-component pull-right" style="margin-top:60px;"> 
+                        <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "assignModel()">Assign Model</a> 
+                </div>
+            </div>
+         </div>  
+                <div class="col-sm-2">
+                    <div class="bs-component pull-right" style="margin-top:68px;"> 
+                            <input type="submit" name="rebalance" class="btn btn-info btn-raised " 
+                            value="Rebalance" title="Rebalance" [disabled] = "!canRebalnce"/>
+                        <!--  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "rebalance()">Rebalance</a> -->
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="bs-component pull-right" style="margin-top:68px;"> 
+                            <a name="rebalance" class="btn btn-info btn-raised " value="Download" title="Show Logs" 
+                            (click) = "downloadLogs()" [class.disabled]="tradeCode == null">Show Logs</a>
+                        <!--  <a href="javascript:void(0)" class="btn btn-raised btn-info" (click) = "rebalance()">Rebalance</a> -->
+                    </div>
+                </div>    
+            </div>
+        </form>
+        <div class = "agcontainer">
+               <ag-grid-ng2 #agGrid style="width: 100%; height: 300px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting [gridOptions]="gridOptions"
+                                rowSelection="single" [columnDefs]="columnDefs" [rowData]="tradeList" 
+                                enableFilter>
+            </ag-grid-ng2>
+              
+            </div>
+            <div [innerHTML]="rebalancerLogs">
+                </div>
+</div>
+      

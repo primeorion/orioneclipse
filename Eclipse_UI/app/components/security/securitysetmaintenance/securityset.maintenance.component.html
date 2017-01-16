@@ -1,0 +1,50 @@
+<!--right side main area start-->
+<div class="main">
+    <breadcrumb pageName="Securities Set">
+        <li class="crumb-link"><a [routerLink]="['/eclipse', 'security', 'dashboard']">Securities</a></li>
+    </breadcrumb>
+    <div class="dashboard-content">
+     
+        
+        <eclipse-security-leftnav menuName="Securities Set Maintenance"></eclipse-security-leftnav>
+        <div class="grid-container">
+            <div class="nav-tabs-container tactical-trade-menu-container">
+                <ul class="nav nav-tabs pull-left">
+                    <li><a title="All Securities Set" (click) = 'isSecuritySetView = true' [class.active] = "isSecuritySetView">All Securities Set</a></li>
+                    <li><a title="Securities Set Detail" (click) = 'navigateToSecuritySetDetail()' [class.active] = "!isSecuritySetView">Securities Set Detail</a></li>
+                </ul>
+                <div class="actionBtn btn-group pull-right tactical-trade-menu-icon">
+                    <a data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                        <i class="material-icons">more_vert</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                    <ul class="dropdown-menu submenu-list" [ngClass]="{hidden:selectedSecuritySetId == undefined || selectedSecuritySetId == 0}">
+                            <div [hidden]="!isDetailEditMode && !isSecuritySetView">
+                                <li><a href="javascript:void(0)" (click)="performViewEditActionOnSecuritySet(false)">View Details</a></li>
+                            </div>
+                            <div [hidden]="isDetailEditMode && !isSecuritySetView">
+                                <li><a href="javascript:void(0)" (click)="performViewEditActionOnSecuritySet(true)">Edit</a></li>
+                            </div>
+                            <div [hidden]="!isSecuritySetView">
+                                <li><a href="javascript:void(0)" (click)="deleteSecurity()">Delete</a></li>
+                            </div>
+                     </ul>
+                </div>
+            </div>
+            <div *ngIf = 'isSecuritySetView'>
+                <eclipse-securityset-view (editSecurity) = "editSecurity($event)" (setSelectedSecuritySet) = "setSelectedSecuritySet($event)"></eclipse-securityset-view>
+            </div>
+            <div *ngIf = '!isSecuritySetView'>
+                <eclipse-securityset-detail [securitySetId] = "selectedSecuritySetId" [isDetailEditMode] = "isDetailEditMode" [isCopyMode] = "isCopyMode" (displaySecuritySetList) = "displaySecuritySetList($event)" 
+                (setSelectedSecuritySet) = "setSelectedSecuritySet($event)"></eclipse-securityset-detail>
+            </div>
+            <!--<router-outlet></router-outlet>-->
+            
+        </div>
+    </div>
+</div>
+
+
+
+<!--right side main area end -->

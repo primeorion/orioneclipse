@@ -1,0 +1,374 @@
+.tool-tip {
+    position: absolute;
+    display: none;
+    width: auto;
+    height: auto;
+    background: none repeat scroll 0 0 white;
+    border: none;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 12px;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold
+}
+
+.response-image {
+    max-width: 100%;
+    height: auto;
+    width: 100%
+}
+
+
+/*Tool tip for pie arc styles*/
+
+.toolTipTreePie, .circleHover {
+    position: absolute;
+    width: auto;
+    height: auto;
+    /*padding: 3px;*/
+    /*background-color: white;*/
+    color: #000;
+    font-weight: bold;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    /*-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);*/
+    -mox-box-shadow: 4px 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rbga(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+
+/*Context menu styles*/
+
+#contextmenu {
+    display: none;
+    position: absolute;
+    background-color: #000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #888;
+}
+
+#contextmenu hr {
+    border: 1px solid #ccc;
+}
+
+item {
+    font-family: 'Helvetica';
+    font-weight: 200;
+    font-size: 14px;
+    line-height: 16px;
+    display: block;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 2.5px;
+    padding-bottom: 2.5px;
+    border: 1px solid #fff;
+}
+
+item:first-child {
+    padding-top: 10px;
+}
+
+item:last-child {
+    padding-bottom: 10px;
+}
+
+item:hover {
+    color: #FFF;
+    background-color: #0099FF;
+    cursor: pointer;
+}
+
+.list-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+
+/*Static dummy data */
+
+.tabs {
+    /*width:100%;
+    display:inline-block;*/
+    width: 21%;
+    display: inline-block;
+    position: absolute;
+    left: 0%;
+}
+
+.tab-links li {
+    margin: 15px 5px;
+    list-style: none;
+}
+
+.tab-links a {
+    padding: 9px 30px;
+    display: inline-block;
+    border-radius: 3px 3px 0px 0px;
+    background: #41A317;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4c4c4c;
+    transition: all linear 0.15s;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+
+/*Tree chart styles*/
+
+.node {
+    cursor: pointer;
+}
+
+.node circle {
+    fill: #fff;
+}
+
+.node text {
+    font: 12px sans-serif;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+
+/* drop down level styles*/
+
+.mcompare_selectLevel {
+    width: 115px;
+    height: 30px;
+    top: 55px;
+    color: #cccccc;
+    background: rgb(17, 16, 16);
+    border: 2px solid #685D69;
+    position: absolute;
+    left: 10%
+}
+
+.label_select {
+    position: absolute;
+    top: 60px;
+}
+
+.tooltip_mcompare {
+    display: none;
+    position: absolute;
+    background: #2A2B2D;
+    padding: 10px;
+}
+
+.label_tooltip {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+.current_value, .pending_value {
+    color: grey;
+}
+
+.current_tooltip, .pending_tooltip {
+    color: white;
+    font-size: 13px;
+}
+
+.compareModel .axis .tick line {
+    opacity: 0.3;
+}
+
+#myModal {
+    background: #000;
+}
+
+.modal-header {
+    background-color: #2A2B2D;
+}
+
+.modal-body {
+    background-color: #2A2B2D;
+}
+
+.close_model {
+    color: #fff;
+    position: relative;
+    left: 98%;
+}
+
+#update {
+    color: white;
+    background-color: blue;
+    position: relative;
+    left: 70px;
+}
+
+#gettingId, #gettingName {
+    color: black;
+    font-weight: bold;
+    position: relative;
+    left: 104px;
+    top: -30px;
+}
+
+.update_tree {
+    position: absolute;
+    left: 100%;
+    top: 45%;
+}
+
+.label_id {
+    left: -70px;
+    position: relative;
+}
+
+.label_name {
+    position: relative;
+    left: -53px;
+}
+
+.select_dragClass a {
+    padding: 9px 47px;
+    position: relative;
+}
+
+.tree_content {
+    position: relative;
+    top: -75px;
+}
+
+#dialog-model-header {
+    background: #43434D;
+    border: none;
+}
+
+.info_popup, .confirm_Modelpopup, .confirm_subModelpopup, .info_lowestLevelpopup {
+    position: relative;
+    top: 30px;
+    font-size: 20px;
+}
+
+.info_topLevelpopup {
+    position: relative;
+    top: 0px;
+    font-size: 20px;
+}
+
+.copy_model {
+    font-size: 20px;
+    text-align: center;
+    top: 30px;
+    position: relative;
+}
+
+.copy_text {
+    color: black;
+}
+
+.popup_headerpercent {
+    width: 10%;
+}
+
+.popup_input_body {
+    width: 20%;
+}
+
+.custom_input {
+    width: 20%;
+}
+
+.circleHover {
+    display: none;
+}
+
+.closeChild:hover {
+    cursor: pointer;
+}
+
+
+/*Group Chart*/
+
+.tooltip_trade {
+    position: relative;
+    width: 120px;
+    background-color: #FAFAFA;
+    color: black;
+    z-index: 8;
+    border: 0.5px solid #c8c8c8;
+}
+
+.GroupLegendonClick {
+    color: #CCC;
+    font-size: '14px';
+    font-weight: bold;
+    cursor: pointer;
+    fill: #CCC;
+}
+
+.rectClik {
+    fill: #CCC !important;
+}
+
+
+/*Mouse hover on node shows the available children ...Styles for showing them*/
+
+.table_nodeVal td, .table_nodeVal th {
+    text-align: center;
+    padding: 5px !important;
+}
+
+
+/*Dashed path styles */
+
+
+/*20, 10, 5, 5, 5, 10*/
+
+.link_dashed {
+    fill: none;
+    stroke: #ccc;
+    stroke-dasharray: 5, 5;
+}
+
+.legendsText {
+    color: '#333333';
+    font-size: '14px';
+    font-weight: 'bold';
+    cursor: 'pointer';
+    fill: #333333;
+}
+
+.legendClickText {
+    color: #CCC;
+    font-size: '14px';
+    font-weight: bold;
+    cursor: pointer;
+    fill: #CCC;
+}
+
+.legendClickrect {
+    fill: #CCC !important;
+}
+
+.no_pending {
+    font-size: 22px;
+    text-align: center;
+    position: relative;
+    top: 150px;
+    left: 0;
+}
+
+
+.node_label{
+    text-align:left !important;
+}

@@ -1,0 +1,51 @@
+<div class="main">
+    <breadcrumb pageName="Rebalance"></breadcrumb>
+    <div class="dashboard-content">
+        <div class="nav-tabs-container">
+            <ul class="nav nav-tabs pull-left">
+                <li class="active" [class.active]="viewName == 'dashboard'"><a data-toggle="tab" (click)="viewName = 'dashboard'">Dashboard</a> </li>
+                <li [class.active]="viewName == 'list'"><a data-toggle="tab" (click)="viewName = 'list'" [class.active]="viewName == 'list'">All Models</a></li>
+                <li [class.active]="viewName == 'detail'"><a data-toggle="tab" (click)="setLinkStyle('detail')" [class.active]="viewName == 'detail'">Model Detail</a></li>
+                <li [class.active]="viewName == 'portfolio'"><a data-toggle="tab" (click)="setLinkStyle('portfolio')" [class.active]="viewName == 'portfolio'">Portfolio</a></li>
+                <li [class.active]="viewName == 'rebalance'"><a data-toggle="tab" (click)="setLinkStyle('rebalance')" [class.active]="viewName == 'rebalance'">Rebalancer</a></li>
+            </ul>
+            <div class="actionBtn btn-group pull-right">
+                <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <i class="material-icons">more_vert</i>
+                    <div class="ripple-container"></div>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void(0)">Action</a></li>
+                    <li><a href="javascript:void(0)">Another action</a></li>
+                    <li><a href="javascript:void(0)">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0)">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="dashboard" *ngIf="viewName == 'dashboard'" class="tab-pane fade in active">
+                <p class="dataAvailable"> <strong>Based on data available on:</strong> 05/21/2016</p>
+                <div class="graph-container">
+                    <p class="graph-caption">Models Dashboard</p>
+                    <div class="graph"> <img src="/app/assets/img/model.jpg" /> </div>
+                </div>
+            </div>
+            <div id="holding" *ngIf="viewName == 'list'" class="tab-pane fade in active grid-height">
+                <eclipse-model-list (viewModelDetail)="viewModelDetail($event)" (displayRebalanceDetail)="displayRebalanceDetail($event)"></eclipse-model-list>
+
+            </div>
+
+            <div id="modelDetail" *ngIf="viewName == 'detail'" class="tab-pane fade in active grid-height">
+                <eclipse-model-detail [modelId]="selectedModelId" (displayModelList)="displayModelList($event)"></eclipse-model-detail>
+            </div>
+            <div id="rebalancePortfolio" *ngIf="viewName == 'portfolio'" class="tab-pane active fade in grid-height">
+                <eclipse-rebalance-portfolio></eclipse-rebalance-portfolio>
+            </div>
+            <div id="rebalancer" *ngIf="viewName == 'rebalance'" class="tab-pane fade active in grid-height">
+                <eclipse-rebalance-rebalancerDetail></eclipse-rebalance-rebalancerDetail>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--right side main area end -->

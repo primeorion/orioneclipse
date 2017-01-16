@@ -1,0 +1,242 @@
+<header class="navbar navbar-fixed-top">
+    <simple-notifications [options]="options"></simple-notifications>
+    <div class="container-fluid">
+        <div class="logo">
+            <!--<a [routerLink]="['dashboard']" class="orine-logo">Orion</a>-->
+            <a [routerLink]="['dashboard']">
+                <img src="{{firmProfile.imagePath}}" />
+            </a>
+        </div>
+        <div class="navbar-search">
+            <!--<input type="text" placeholder="looking for something?" />-->
+            <p-autoComplete [(ngModel)]="selectedSearchResult" [suggestions]="searchSuggestions" placeholder="looking for something?"
+                (completeMethod)="loadSearchSuggestions($event)" field="name" [delay]="1000" (onSelect)="onSearchSelect($event)" [minLength]="1"
+                [dropdown]="true" (onDropdownClick)="handleDropdown(event)">
+                <template let-selectedSearchResult>
+                    <ul class="ui-helper-clearfix show-hollding-dropdown">
+                        <li>
+                            <i [ngClass]="selectedSearchResult.uiClass" class="fa text-info"></i>
+                            <span *ngIf="selectedSearchResult.category=='module' || selectedSearchResult.category=='page' || selectedSearchResult.category=='teamdata' || selectedSearchResult.category=='roledata' || selectedSearchResult.category=='userdata'">{{selectedSearchResult.name}}</span>
+                            <span *ngIf="selectedSearchResult.category=='portfoliodata' || selectedSearchResult.category=='accountdata' || selectedSearchResult.category == 'modeldata' || selectedSearchResult.category == 'securitydata'">{{selectedSearchResult.id + " : " +selectedSearchResult.name }}</span>
+                            <span *ngIf="selectedSearchResult.category=='holdingdata'">{{selectedSearchResult.id + " : " +selectedSearchResult.name +" - " +" $ "+ selectedSearchResult.value}}</span>
+                        </li>
+                    </ul>
+                </template>
+            </p-autoComplete>
+
+            <a href="javascript:void(0);"><span class="dropdown-search"></span></a>
+
+            <div class="search-dropdown" #searchOptionsDropdown [hidden]="!showSearchModuleOptions">
+                <span>Search Options</span>
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectAll" (change)="toggleAll(option, $event)" value="All"> ALL</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectPortfolios" (change)="toggleSearchOptions('Portfolios', $event)" value="Portfolios"> Portfolios</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectAccounts" (change)="toggleSearchOptions('Accounts', $event)" value="Accounts"> Accounts</label>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectHoldings" (change)="toggleSearchOptions('Holdings', $event)" value="Holdings"> Holdings</label>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectModels" (change)="toggleSearchOptions('Models', $event)" value="Models"> Models</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectTrades" (change)="toggleSearchOptions('Trades', $event)" value="Trades"> Trades</label>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectSecurities" (change)="toggleSearchOptions('Securities', $event)" value="Securities"> Securities</label>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectAdministrator" (change)="toggleSearchOptions('Administrator', $event)" value="Administrator"> Administrator</label>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectDataQuery" (change)="toggleSearchOptions('Data Query', $event)" value="Data Query"> Data Query</label>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" [(ngModel)]="selectRebalancer" (change)="toggleSearchOptions('Rebalancer', $event)" value="Rebalancer"> Rebalancer</label>
+                </div>
+
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="navbar-menus">
+                <ul>
+                    <li> <a href="javascript:void(0);" class="right-hbox-btn" data-target="noti_container"><span class="glyphicon glyphicon-bell"></span> Notifications <span class="noti-badge label label-danger">{{msgCount}}</span></a>                        </li>
+                    <li class="dropdown navbar-user-dropdown">
+                        <a href="javascript:void(0);" class="user-info" id="navbar-user-dropdown" role="button" data-toggle="dropdown" data-target="#">
+                            <img src="{{user.userLogo}}" class="user-avatar">{{displayName}}<span class="caret"></span> </a>
+                        <ul class="dropdown-menu navbar-user-dropdown-menu" role="menu" aria-labelledby="navbar-user-dropdown">
+                            <li *ngIf="uiprivilege.isFirmAdmin"><a href="#FirmProfile" data-toggle="modal" (click)="ShowProfilePopup()"><i class="fa fa-institution"></i> Firm Profile</a></li>
+                            <li><a (click)="showUserData()" href="javascript:void(0);"><i class="glyphicon glyphicon-user"></i> User Profile</a></li>
+                            <li *ngIf="user.actualUserId==null"><a (click)="displayLoginAs=true" href="javascript:void(0);"><i class="glyphicon glyphicon-user"></i> Login As</a></li>
+                            <li *ngIf="user.actualUserId!=null"><a (click)="revertLoginAs()" href="javascript:void(0);"><i class="glyphicon glyphicon-user"></i> Revert</a></li>
+                            <li><a [routerLink]="['/logout']" href="javascript:void(0);"><i class="fa fa-power-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="container-fluid-row">
+        <!--sidebar started-->
+        <dashboard-leftnav> </dashboard-leftnav>
+        <!--sidebar end-->
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:690px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Quick Column Selector</h4>
+            </div>
+            <div class="modal-body"> <img src="../app/assets/img/select-table.png" width="659" height="310" /> </div>
+            <div class="modal-footer"> <a href="javascript:void(0);" class="btn btn-blue">Save Changes</a> <a href="javascript:void(0);" class="btn btn-default"
+                    data-dismiss="modal">Cancel</a> </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".left-close").click(function() {
+        $("body").toggleClass("hide-show");
+        $('.fa-chevron-left').toggleClass(' fa-chevron-right');
+    });
+</script>
+<eclipse-layout (msgCounter)="getNotificationCount($event)" (ShowProfilePopup)="showUserProfile()">
+</eclipse-layout>
+<p-dialog [(visible)]="displayFirmProfile" modal="modal" class="popup-style" responsive="true" showEffect="fade" width="400"
+    header="Firm Profile" [resizable]=false>
+    <div class="col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group custom-form-group">
+                <label class="control-label col-sm-3" for="email">Name:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="firmName" [(ngModel)]="firmProfile.name" placeholder="">
+                </div>
+            </div>
+
+            <div class="form-group custom-form-group">
+                <label class="control-label col-sm-4 text-right"> Logo:</label>
+                <!--Fileupload-->
+                <div class="col-sm-8 marging-top-2x" *ngIf="!displayLogo">
+                    <div>
+                        <div (dragover)='dragFile($event)' (drop)='dropFile($event)'>
+                            <div class="choose-file-small-box file-upload-input-style">
+                                <span class="btn btn-info btn-file btn-raised"> Choose File
+                                                    <input type="file" name="model" id ="model-file" 
+                                                    (change)="selectProfileImage($event,true)">
+                                                </span><br> or drag and drop here
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <em class="securityError danger" *ngIf="showFileUploadError">{{fileUploadError}}</em>
+                <div class="col-sm-8 marging-top-2x" *ngIf="displayLogo">
+                    <a class="thumbnail col-sm-6"><img class="image" style="height: 105px; width: 100%; display: block;" src="{{imagePath}}" /></a>
+                    <a class="col-sm-12 text-link margin-top-minus text-left" (click)='onChangeLogo()'>Change logo</a>
+                </div>
+                <!--End file upload-->
+            </div>
+        </div>
+    </div>
+    <footer class="text-right">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info btn-raised btn" data-dismiss="modal" (click)="saveProfile()">Save</button>
+            <button type="button" class="btn model-btn-default" data-dismiss="modal" (click)="onCancel()">Cancel</button>
+        </div>
+    </footer>
+</p-dialog>
+
+
+<!-- Modal UserProfile-->
+<p-dialog [(visible)]="displayUserProfile" modal="modal" class="popup-style" responsive="true" showEffect="fade" width="400"
+    header="User Profile" [resizable]=false>
+    <div class="col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group custom-form-group">
+                <label class="control-label col-sm-4 text-right" for="name">Full Name:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="fullName" [(ngModel)]="user.name" placeholder="">
+                </div>
+            </div>
+            <div class="form-group custom-form-group">
+                <label class="control-label col-sm-4" for="pwd">Email Address:</label>
+                <div class="col-sm-8">
+                    <input type="email" class="form-control" id="email" [(ngModel)]="user.email" placeholder="">
+                </div>
+            </div>
+        </div>
+        <div class="form-group custom-form-group">
+            <label class="control-label col-sm-4 marging-bottom-1x"> Profile Image:</label>
+        </div>
+        <div>
+            <div (dragover)='dragProfileImage($event)' (drop)='dropProfileImage($event)'>
+                <div class="col-sm-12 choose-file-small-box file-upload-input-style">
+                    <span class="btn btn-info btn-file btn-raised"> Choose File
+                      <input type="file" id="file-input" accept="image/*" data-type='image' 
+               (change)="selectProfileImage($event)">
+                      </span><br> or drag and drop here
+                    <p>{{userProfile.userLogo}}</p>
+                    <p *ngIf="isProfileImage">{{userProfile.imagePath}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <em class="securityError danger" *ngIf="showFileUploadError">{{fileUploadError}}</em>
+
+
+    <footer class="text-right">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info btn-raised btn" data-dismiss="modal" (click)='saveUserProfile()'>Save</button>
+            <button type="button" class="btn model-btn-default" data-dismiss="modal" (click)="closeUserModal()">Cancel</button>
+        </div>
+    </footer>
+</p-dialog>
+
+<!-- Modal Login As-->
+<p-dialog [(visible)]="displayLoginAs" modal="modal" class="popup-style" responsive="true" showEffect="fade" width="400"
+    header="Login As" [resizable]=false>
+    <div class="col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group custom-form-group">
+                <label class="control-label col-sm-4 text-right" for="name">Firm Id:</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="firmId" [(ngModel)]="loginAsInfo.firmId" placeholder="">
+                </div>
+            </div>
+            <div class="form-group custom-form-group">
+                <label class="control-label col-sm-4" for="pwd">User Id:</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="userId" [(ngModel)]="loginAsInfo.userId" placeholder="">
+                </div>
+            </div>
+        </div>
+        <div class="form-group custom-form-group">
+            <label class="control-label" style="color:red;float:center;">{{loginAsErrorMessage}}</label>
+        </div>
+    </div>
+
+
+
+    <footer class="text-right">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info btn-raised btn" data-dismiss="modal" (click)='loginAs()' [disabled]="!(loginAsInfo.firmId!=undefined && loginAsInfo.userId!=undefined)">Login</button>
+            <button type="button" class="btn model-btn-default" data-dismiss="modal" (click)="closeLoginAsModal()">Cancel</button>
+        </div>
+    </footer>
+</p-dialog>

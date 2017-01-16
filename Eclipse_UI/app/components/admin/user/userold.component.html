@@ -1,0 +1,95 @@
+<!--right side main area start-->
+<div class="main">
+    <breadcrumb pageName="Users">
+        <li class="crumb-link"><a [routerLink]="['/eclipse', 'admin', 'dashboard']">Administrator</a></li>
+    </breadcrumb>
+    <div class="dashboard-content">
+        <!-- admin left menu -->
+        <admin-leftmenu menuName="Users" [model]="menuModel"></admin-leftmenu>
+        <div class="grid-container">
+             <div class="actionBtn btn-group pull-right">
+                        <a href="javascript:void(0);" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                        <ul class="dropdown-menu submenu-list" [ngClass]="{hidden:selectedUserId == undefined}">
+                            <div [hidden]="selectedUserId==undefined|| isView">
+                                <li><a href="javascript:void(0)" (click)="viewandEditUserDetails('view')">View Detail</a></li>
+                            </div>
+                            <div [hidden]="selectedUserId==undefined|| isEdit">
+                                <li><a href="javascript:void(0)" (click)="viewandEditUserDetails('edit')">Edit Detail</a></li>
+                            </div>
+
+                            <div [hidden]="selectedUserId==undefined || isDeleted">
+                                <li><a href="javascript:void(0)" (click)="confirmType='DELETE';displayConfirm=true">Delete</a></li>
+                            </div>
+                            <div [hidden]="selectedUserId==undefined">
+
+                            </div>
+                            <!--<li><a href="javascript:void(0)">Bulk Reassign</a></li>-->
+                        </ul>
+                    </div>
+
+            <div class="tab-content">
+                <!--<div id="tab1" class="tab-pane fade in active">-->
+                <tab-set>
+                   
+                    <tab tabTitle="All Users" tabName='tab1' class="gridTab">
+
+                        <div class="col-sm-12 button-container">
+                            <div class="col-sm-7">
+                                <!--<div class="form-group  form-inline">
+                            <div class="radio">
+                                <label>
+                                 <input  type="radio" name="Filter"  value="active" (click)="getActive()" checked /><span class="circle"></span><span class="check"></span>
+                                Active
+                            </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                <input  type="radio"  name="Filter"  value="all" (click)="getAll()"/><span class="circle"></span><span class="check"></span>
+                                All
+                            </label>
+                            </div>
+                        </div>--></div>
+                            <div class="col-sm-5"><button class="btn btn-blueouter btn-raised pull-right" (click)="activeSelectedTab('tab2')"><i class="fa fa-plus-circle blue"></i> Add New Users</button></div>
+                        </div>
+                        <div *ngIf="showGrid" class="agcontainer">
+                            <!-- Because we are using the Angular ID (ie #ag-grid marker), we have to have all the items that use
+                            that marker inside the same ng-if as the grid -->
+                            <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                                [gridOptions]="gridOptions" rowBuffer="100" rowSelection="single" [columnDefs]="columnDefs" [rowData]="usersData"
+                                enableFilter (modelUpdated)="onModelUpdated()" enableColResize="true" (rowClicked)="onrowClicked($event)"
+                                (rowDoubleClicked)="onRowDoubleClicked($event)" [getContextMenuItems]="getContextMenuItems">
+                            </ag-grid-ng2>
+                        </div>
+
+
+                    </tab>
+                    <!--</div>-->
+
+                    <!--<div id="tab2" class="tab-pane fade in">-->
+                    <tab tabTitle="Users Details" tabName='tab2' class="gridTab">
+                        <eclipse-userdetails (userSaved)="refreshUsersList()"></eclipse-userdetails>
+                    </tab>
+                </tab-set>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="displayConfirm" modal="modal" responsive="true" showEffect="fade" width="526" [resizable]=false>
+    <div *ngIf="confirmType === 'DELETE'">
+        <div>This action will Delete the User he/she will not be able to login to the Application<br/>unless he is re-assigned
+            a Role and Team.<br/>Do you wish to continue ?
+        </div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="displayConfirm=false">No</button>
+                <button type="button" class="btn btn-blueouter" icon="fa-check" (click)="deleterUser()">Yes</button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>
+<!--right side main area end -->

@@ -1,0 +1,27 @@
+{
+  "name": "Orion-Community",
+  "version": "1.0.0",
+  "description": "Community Rest APIs",
+  "title": "Community Rest APIs",
+  "url" : "https://baseurl/v1",
+  "order": [
+    "Authentication",
+    "Users",
+    "Privileges",
+    "Roles",
+    "Teams",
+    "Custodians",
+    "Trades",
+    "Advisors",
+    "Portfolios",
+    "Models",
+    "Dashboard",
+    "Import",
+    "Preferences",
+    "Categories",
+    "Classes",
+    "SubClasses",
+    "Security"
+  ]
+ }
+ 

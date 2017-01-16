@@ -1,0 +1,18 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left">
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'holding', 'dashboard/' + (model.type != undefined ? (model.type + '/' + model.typeId) : '')]">DashBoard</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'holding', 'list/' + (model.type != undefined ? (model.type + '/' + model.typeId) : '')]">Holdings Listing</a></li>        
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/eclipse', 'holding', 'view/' + (model.type != undefined ? (model.type + '/' + model.typeId  + '/') : '') + (model.id || '')]">Holding Details</a></li>
+    </ul>
+    <div class="actionBtn btn-group pull-right">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu submenu-list" [ngClass]="{hidden:model.id == undefined  || model.action == 'V'}" >         
+            <li [hidden]="model.id == undefined || model.action == 'V'">
+                <a [routerLink]="['/eclipse', 'holding', 'view/' + (model.type != undefined ? (model.type + '/' + model.typeId  + '/') : '') + (model.id || '')]">View Details</a>
+            </li>           
+        </ul>
+    </div>
+</div>

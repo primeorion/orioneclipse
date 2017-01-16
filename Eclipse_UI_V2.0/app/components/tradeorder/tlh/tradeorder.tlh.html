@@ -1,0 +1,142 @@
+<div class="nav-tabs-container dropdown-style">
+	<ul class="nav nav-tabs pull-left step-process-tab-style">
+		<li id="selectionFilter" class="tab-disabled" [ngClass]="{'active': viewName == 'SelectionTab'}">
+			<a aria-expanded="false" data-toggle="tab" href="#SelectionTab"> <i>1</i> Selection and Filter </a>
+		</li>
+		<li id="createTrades" class="tab-disabled" [ngClass]="{'active': viewName == 'createTradesTab'}">
+			<a aria-expanded="true" data-toggle="tab" href="#createTradesTab"> <i>2</i> Create Trades</a>
+		</li>
+		<li id="Final" class="tab-disabled" [ngClass]="{'active': viewName == 'finalTab'}">
+			<a aria-expanded="true" data-toggle="tab" href="#finalTab"> <i>3</i> FINAL</a>
+		</li>
+	</ul>
+</div>
+<div class="tab-content">
+	<div id="SelectionTab" class="tab-pane fade in active " *ngIf="viewName == 'SelectionTab'">
+		<div class="custom-tab-container">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Taxable Accounts Only:</label>
+					<input type="checkbox" [(ngModel)]="tlhFilters.taxableAccountsOnly">
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-5">Select Gain/Loss:</label>
+					<div class="col-md-7">
+						<select name="status" [(ngModel)]="tlhFilters.gainLoss" class="form-control">
+							<option value="undefined">Select</option>
+						<option *ngFor="let item of gainOrLoss"  value={{item.id}} >
+                            {{item.name}}
+                        </option>						
+                        <!--<option value="">Select</option>-->
+                        <!--<option value="1">Gain</option>
+                        <option value="2">Loss</option>-->
+                        
+                  </select>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-5">Select Term:</label>
+					<div class="col-md-7">
+						<select name="status" [(ngModel)]="tlhFilters.term" class="form-control">
+                        <option value="undefined">Select</option>
+                       <option *ngFor="let item of terms" value={{item.id}} >
+                            {{item.name}}
+                        </option>
+                  </select>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-5">Select:</label>
+					<div class="col-md-3">
+						<select name="status" class="form-control" [(ngModel)]="tlhFilters.sign">
+                        <option value="undefined">Select</option>
+						 <option *ngFor="let item of signs" value={{item.id}} >
+                            {{item.name}}
+                        </option>
+                  </select>
+					</div>
+					<div class="col-md-4">
+						<input type="text" [(ngModel)]="tlhFilters.amount" placeholder="Enter Amount" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 text-right ">
+				<button  class="btn btn-info btn-raised pull-right" (click)="getSelectedView('createTradesTab')">NEXT</button>
+			</div>
+		</div>
+	</div>
+	<div id="createTradesTab" class="" *ngIf="viewName == 'createTradesTab'">
+		<div id="tab1" class="agcontainer margin-top-15">
+			<ag-grid-ng2 #agGrid class="ag-material ag-dark" [showToolPanel]="false" [rowData]="tradeTlh" [gridOptions]="gridOptions"
+				rowSelection="multiple" [columnDefs]="columnDefs" enableSorting (rowSelected)="onRowSelected($event)" enableColResize="true"
+				style="height:400px; width:100%;">
+			</ag-grid-ng2>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 text-right ">
+				<button class="btn btn-black " id="btnBack2" (click)="getSelectedView('SelectionTab')">BACk</button>
+				<button [disabled]="disableCreateTradeNextBtn" class="btn btn-info btn-raised " id="btnNext2" (click)="getSelectedView('finalTab')">NEXT</button></div>
+		</div>
+
+	</div>
+	<div id="finalTab" class="" *ngIf="viewName == 'finalTab'">
+		<h4 class="text-info">Which Securities do you want to trade ?</h4>
+			<div class="table-responsive space-top-10" style=" height:250px;">
+				<table class="table table-bordered">
+					<thead>
+						<tr class="table-header">
+							<th># of Accounts </th>
+							<th> Sell </th>
+							<th> Percent </th>
+							<th> Buy</th>
+							<th> Amount</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th> <i class="fa fa-times text-danger " aria-hidden="true"></i> 5 </th>
+							<th> SAVINGS ( CASH ) </th>
+							<th style="width:150px;">
+								<div class="form-group">
+									<input placeholder="20 " class="form-control" type="text">
+								</div>
+							</th>
+							<th><a (click)="selectSecurityConfirmation = true"> GS0124810 ( Allmernia xxx fid equity income</a> </th>
+							<th style="width:150px;">
+								<div class="form-group">
+									<input placeholder="20 " class="form-control" type="text">
+								</div>
+							</th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		<div class="row">
+			<div class="col-sm-12 text-right ">
+				<button class="btn btn-black " id="btnBack3" (click)="getSelectedView('createTradesTab')">BACK</button>
+				<button class="btn btn-info btn-raised" (click)="generateTrades()">CALCULATE</button> </div>
+		</div>
+		<div class="divider"></div>
+	</div>
+</div>
+<p-dialog [(visible)]="selectSecurityConfirmation" modal="modal" responsive="true" showEffect="fade" [draggable]=true [resizable]=false
+    width="400">
+    <div>
+        <div><label>Select Security to Buy : </label>
+		<input type="text" class="form-control"></div>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" class="btn btn-info btn-raised" (click)="displayConfirm=false" label="Cancel"></button>
+                <button type="button" pButton icon="fa-check" class="btn btn-blueouter" (click)="displayConfirm=false;DoAction()" label="Ok"></button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

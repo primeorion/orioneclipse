@@ -1,0 +1,135 @@
+<form name="formCustodianDetails" (submit)="saveCustodian()">
+    <div class="">
+        <div class="row">
+            <div class="col-sm-6" id="custodian" [hidden]="!showSearchCustodian">
+                <div class="row">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label class="primar-label" for="custodian" class="col-sm-5">Search Custodian</label>
+                        <div class="col-sm-6 col-sm-pull-1">
+                            <p-autoComplete [(ngModel)]="txtCustodianName" [suggestions]="FileteredCustodianRsults" placeholder="Search By Name" (completeMethod)="autoCustodianSearch($event)"
+                                (onSelect)="selectedCustodianSearch($event)" class="autocomplete-block" field="name" [minLength]="1"></p-autoComplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="showDetail">
+            <div class="col-sm-3" *ngIf="selectedCustodianId != undefined">
+                <div class="form-group">
+                    <label class="primar-label">Custodian ID</label>
+                    <span>{{custodian.id}}</span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group is-empty role-spacer">
+                    <label class="primar-label">Custodian Name</label>
+                    <input type="text" placeholder="Enter Custodian Name" id="Name" [(ngModel)]="custodian.name" class="form-control" (blur)="checkValidation()">
+                    <span class="error" *ngIf="nameErrorMsg">Please enter name</span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group is-empty">
+                    <label class="primar-label">Custodian Code</label>
+                    <input type="text" placeholder="Enter Custodian Code" [(ngModel)]="custodian.code" id="Code" class="form-control" (blur)="checkValidation()">
+                    <!--<span *ngIf="isView">{{custodian.code}}</span>-->
+                    <span class="error" *ngIf="codeErrorMsg">Please enter code</span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group is-empty">
+                    <label class="primar-label">Master Account</label>
+                    <input type="text" placeholder="Enter Master Account" id="Account" [(ngModel)]="custodian.accountNumber" class="form-control">
+                    <!--<span *ngIf="isView">{{custodian.masteraccountNumber}}</span>-->
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group1 is-empty">
+                    <div class="col-sm-12 row">
+                        <div class="col-sm-4 row"><label class="primar-label ">Trade Execution Type </label></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="radio-inline">
+                                    <input type="radio" name="op1" id="1" [ngModel]="{checked: tradeExecutionVal == '1'}" (click)="sameForAllRadioBtnChange(1)"
+                                        checked/>
+                                    <label for="1">Same For All </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" [disabled]="selectTradeType == true" [(ngModel)]="custodian.tradeExecutionTypeId" (change)="onDropDownChange($event.target.value)">
+                                <option value = "0">Select Trade Execution Type</option>
+                                <option *ngFor="let te of tradeExeTypes" value={{te.id}}>
+                                    {{te.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="  is-empty col-sm-8">
+                            <div class="radio-inline">
+                                <input type="radio" name="op1" id="2" [ngModel]="{checked: tradeExecutionVal == '0'}" (click)="securityTypeRadioBtnChange(0)"
+                                />
+                                <label for="1">Based Upon Security Type (Except Cash) </label><br/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">&nbsp;
+                        </div>
+                        <div class="col-sm-12">
+                            <div *ngIf="TradeType">
+                                <div class="col-sm-4">
+                                    <label class="primar-label"> Select Security Type</label>
+                                    <select class="form-control" [(ngModel)]="selectedSecurityId" (change)="onSecurityDropDownChange($event.target.value)">
+                                        <option value = "0">Select Security Type</option>
+                                        <option *ngFor="let se of securityTypes" value={{se.id}}>
+                                            {{se.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="primar-label"> Select Trade Execution Type </label>
+                                    <select class="form-control" [(ngModel)]="selectedTradeId" (change)="onTradeTypeDropDownChange($event.target.value)">
+                                        <option value = "0">Select Trade Execution Type</option>
+                                        <option *ngFor="let tet of tradeExeTypes" value={{tet.id}}>
+                                            {{tet.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1">
+                                    <label class="primar-label"> Option </label>
+                                    <button type="button" class="btn btn-mr-0 btn-info btn-raised" (click)="addCustodian()" [disabled]="disableAddBtn">Add</button>
+                                </div>
+                                <div *ngIf="showGrid">
+                                    <ag-grid-ng2 #agGrid style="width: 100%; height: 350px;" class="ag-material ag-dark" suppressContextMenu="true" [showToolPanel]="fasle"
+                                        enableSorting [gridOptions]="gridCustodianOptions" [columnDefs]="CustodianDefs" enableFilter
+                                        [rowData]="CustodianRowData">
+                                    </ag-grid-ng2>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-dialog header="Delete Custodian Security" [(visible)]="deleteConfirm" modal="modal" responsive="true" showEffect="fade"
+        [draggable]=false [resizable]=false width="355">
+        <div>
+            <div>This action will Delete the Security and Trade. <br /> Do you wish to continue?</div>
+            <footer>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    <button type="button" pButton icon="fa-close" (click)="deleteConfirm=false" label="No"></button>
+                    <button type="button" pButton icon="fa-check" (click)="deleterCustodianDetails()" label="Yes"></button>
+                </div>
+            </footer>
+        </div>
+    </p-dialog>
+    <div class="button-footer">
+        <input type="submit" name="custodianSave" class="btn btn-info btn-raised " value="Save" *ngIf="showSaveBtn" [disabled]="disableSaveBtn"
+        />
+        <a class="btn btn-default btn-raised " href="javascript:void(0)" (click)='onCancel()'> Cancel</a>
+    </div>
+
+</form>

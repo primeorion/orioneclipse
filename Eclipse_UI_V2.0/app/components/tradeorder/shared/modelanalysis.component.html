@@ -1,0 +1,114 @@
+<div class="form-group">
+    <div class="custom-form-group">
+        <div class="checkbox-inline ">
+            <label class="font-size"><input type="checkbox" [(ngModel)]="isCostBasis" checked /> Include Cost Basis</label>
+            <label class="font-size marging-left-2x"><input type="checkbox" [(ngModel)]="isTradeBlock" checked /> Include Trade Blocked Account</label>
+            <label class="font-size marging-left-2x"><input type="checkbox" [(ngModel)]="isExcludeAsset" /> Show Excluded Assets</label>
+        </div>
+        <button (click)="refreshClick()" [disabled]="selectedModelId == undefined" class="btn-sm btn btn-raised btn-reload btn-success"><i class="fa fa-refresh"></i></button>
+    </div>
+    <div class="nav-tabs-container custom-tab-container margin-top-10">
+        <div class=" col-md-12">
+            <h5 class="">
+                <select class="form-control" (change)="onModelSelect($event.target.value)">
+                    <option value="">Mutual Fund and Equity Model</option>
+                    <option *ngFor="let item of filteredModels" value={{item.id}}>{{item.name}}</option>
+                </select>
+            </h5>
+        </div>
+        <div class="margin-15" *ngIf="summary != undefined">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="span-block">Current Cash</span>
+                    <label class="text-color1">{{summary.cashValue | currency:'USD':true:'1.2-2'}}</label>
+                </div>
+                <div class="col-md-4">
+                    <span class="span-block">Cash Difference</span>
+                    <label class="text-color2">{{summary.cashDifference | currency:'USD':true:'1.2-2'}}</label>
+                </div>
+                <div class="col-md-4">
+                    <span class="span-block">Total Cash</span>
+                    <label class="text-color3">{{summary.totalCash | currency:'USD':true:'1.2-2'}}</label>
+                </div>
+            </div>
+            <div class="row margin-top-5">
+                <div class="col-md-4">
+                    <span class="span-block">Cost Basis</span>
+                    <label class="text-color4">{{summary.costBasis | currency:'USD':true:'1.2-2'}}</label>
+                </div>
+                <div class="col-md-4">
+                    <span class="span-block">Market Value</span>
+                    <label class="text-color5">{{summary.marketValue | currency:'USD':true:'1.2-2'}}</label>
+                </div>
+               <div class="col-md-4">
+    <span class="span-block">Tolerance Band</span>
+    <div class="form-inline">
+        <div *ngIf="showCalculateBox" class="form-group custom-form-group">
+            <input type="number" [(ngModel)]="targetTolerance" min="0" (blur)="recalculateTolerance()" class="form-control input-sm" style="width:70px"
+            />
+            <a (click)="recalculateTolerance(true)" href="javascript:void(0)" ><i class="fa fa-close"></i></a>
+        </div>
+    </div>
+    <div class="form-group custom-form-group" *ngIf="!showCalculateBox">
+     <button (click)="showCalculateBox=true" class="btn btn-raised btn-xs btn-info">Modify</button>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="selectedModelId != undefined" class="nav-tabs-container custom-tab-container fullList-scroll margin-top-10">
+    <ul class="nav nav-pills nav-justified nav-pills-sm">
+        <li *ngFor="let item of modelLevels" [class.active]="tabs[item.id] == selectedTab">
+            <a (click)="onTabChange(tabs[item.id])" data-toggle="tab" href="#maSecurity" aria-expanded="true">{{item.name}}</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="maSecurity" class="fade in active">
+            <div *ngIf="summary != undefined">
+                <div class="responsive-table">
+                    <ag-grid-ng2 #agGridMA style="width: 100%; height: 235px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                        [gridOptions]="tabGrid.gridOptions" [columnDefs]="tabGrid.columnDefs" [rowData]="tabGrid.gridRowData"
+                        (rowSelected)="onRowSelected($event)" [getRowStyle]="getRowStyle" suppressContextMenu="true" enableColResize="true"
+                        [context]="gridContext" rowSelection="single" enableFilter>
+                    </ag-grid-ng2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="selectedModelId != undefined" class="margin-top-10">
+    <div class="nav-tabs-container custom-tab-container fullList-scroll  margin-top-10">
+        <ul class="nav nav-pills nav-justified nav-pills-sm">
+            <li class="active">
+                <a data-toggle="tab" (click)="onPortfolioTabChange(1)" href="#maPortfolios" aria-expanded="true">Portfolios </a>
+            </li>
+            <li>
+                <a data-toggle="tab" (click)="onPortfolioTabChange(2)" href="#maPortfolios" aria-expanded="true">Sleeves </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="maPortfolios" class="fade in active">
+                <div class="text-right">
+                    <div class="form-group">
+                        <div class="custom-form-group">
+                            <div class="">
+                                <label class="radio-inline"><input [checked]="true" (click)="selectCellValueType(1)" type="radio" name="radioPf" /><span class="circle"></span><span class="check"></span>Percent</label>
+                                <label class="radio-inline"><input (click)="selectCellValueType(2)" type="radio" name="radioPf" /><span class="circle"></span><span class="check"></span>Dollers</label>
+                                <label class="radio-inline"><input (click)="selectCellValueType(3)" type="radio" name="radioPf" /><span class="circle"></span><span class="check"></span>Shares</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <ag-grid-ng2 #agGridPf style="width: 100%; height: 235px;" class="ag-material ag-dark" [showToolPanel]="false" enableSorting
+                        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="gridRowData" enableColResize="true" (rowSelected)="onPortfolioRowSelected($event)"
+                        suppressContextMenu="true" rowSelection="single" enableFilter>
+                    </ag-grid-ng2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

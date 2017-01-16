@@ -1,0 +1,18 @@
+<div id="subtab1" class="tab-pane fade in  active " >
+    
+    <form #commentaryForm="ngForm" class="securityForm" novalidate> 
+         <span [hidden] = '!isViewMode' [innerHTML]="commentary.strategyCommentary"></span> 
+         <p-editor [hidden] = 'isViewMode' [(ngModel)]="commentary.strategyCommentary" [style]="{'height':'320px'}" 
+             name="strategyCommentary" #strategyCommentary="ngModel" ></p-editor>
+         <!--<em class="securityError danger" *ngIf="!strategyCommentary.valid && (!strategyCommentary.pristine || submitCommentary)">Required</em>-->
+   <div class="row text-right" [hidden] = 'isViewMode'>
+                <div class="col-sm-12" >
+                 
+                  <button class="btn model-btn-primary" type="submit" (click) = "saveCommentary(commentaryForm)">Save</button>
+                    <button class="btn btn-danger btn-delete-style" (click) = "commentary.strategyCommentary = ''">Clear</button>
+                   <!--<button class="btn model-btn-default" (click) = 'cancel(commentaryForm)'>Cancel</button>-->
+                   <button [routerLink]="['/community', 'administrator','strategist', 'list']" class="btn model-btn-default">Cancel</button>
+                </div>
+              </div>
+    </form>
+</div>

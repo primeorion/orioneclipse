@@ -1,0 +1,60 @@
+<!--right side main area start-->
+<div class="tab-content">
+	<div class="main">
+		<div class="dashboard-content">
+			<div class="nav-tabs-container dropdown-style">
+				<ul class="nav nav-tabs pull-left step-process-tab-style">
+					<li id="selectionFilter" [ngClass]="{'active': viewName == 'SelectionTab'}" [ngClass]="{'completed-step': viewName == 'createTradesTab'}">
+						<a aria-expanded="false" data-toggle="tab" href="#SelectionTab"> <i>1</i> SELECTION AND FILTER </a>
+					</li>
+
+					<li id="Final" class="tab-disabled" [ngClass]="{'active': viewName == 'finalTab'}">
+						<a aria-expanded="true" data-toggle="tab" href="#finalTab"> <i>2</i> TRADE ORDERS</a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content">
+				<div id="SelectionTab" *ngIf="viewName == 'SelectionTab'">
+					<eclipse-tradeorder-tradefilter></eclipse-tradeorder-tradefilter>
+					<div class="row">
+						<div class="col-sm-12 text-right ">
+							<button class="btn btn-info btn-raised pull-right" id="btnNext" (click)="getView('finalTab')">NEXT</button>
+						</div>
+					</div>
+				</div>
+
+				<div id="finalTab" *ngIf="viewName == 'finalTab'">
+					<h4 class="text-info">Are there any specific options for this batch ?</h4>
+					<div class=" row col-sm-8 top-space-70">
+						<div class="col-sm-4">
+							<label class="label-fontsize">Action</label>
+						</div>
+						<div class="col-sm-4">
+							<label class="label-fontsize">Reason</label>
+						</div>
+						<!-- textarea class="form-control" [(ngModel)]="selectedModel.notes" placeholder="Please add optional note or reasons for the trades"></textarea -->
+					</div>
+					<div class=" row col-sm-8">
+						<div class="col-sm-4">
+							<select class="form-control ng-pristine ng-valid ng-touched" [(ngModel)]="action">
+								<option value="0">Raised Cash</option>
+								<option value="1">Spend Cash</option>
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" style="width:100px" placeholder="Enter Reason" class="form-control" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-right ">
+							<button class="btn btn-black " id="btnBack3" (click)="getView('SelectionTab')">BACK</button>
+							<button class="btn btn-info btn-raised " id="btnCalculate" (click)="calculate()">CALCULATE</button>
+						</div>
+					</div>
+					<div class="divider"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

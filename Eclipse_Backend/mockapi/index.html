@@ -1,0 +1,47 @@
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script>
+  var socket = io('http://localhost:3000', {
+      'query': 'token=' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPcmlvbiIsImF1ZCI6Imh0dHA6Ly9zZXNzaW9uLm9yaW9uIiwiZXhwIjoxNDgyMTY0NjM5LjM2MSwiZmlybUlkIjo2LCJ1c2VySWQiOjcwMCwiaWF0IjoxNDgyMTI4NjM5fQ.I7RsQDZ8AyobAi3twezjxusgRstzNUaVY9D49SkShfA"
+  });
+
+  socket.on('error', function (err,data) {
+    console.log(err);
+  });
+
+  socket.on('authenticated', function () {
+    console.log("authenticated");
+  });
+
+  socket.on('connect', function () {
+  	console.log("socket client connected");
+    getTopic();
+    socket.on('error', function () {
+      console.log("error");
+    })
+  });
+  socket.on('firmId_userId', function(data){
+    console.log("activity notifcation for this user ")
+  });
+  function subscribeTopic(topic){
+    //and hit api to put user subscription in db
+    socket.emit("subscribeTopic", {topic : topic});
+    socket.on(topic,function(data){
+      console.log("Data emit from server = "+data);
+    })
+  }
+  function getTopic(){
+    //get user subscription topics
+    var topics = ['TRADEGEN','COMMODUPD', 'DATAIMPORT'];
+    topics.forEach(function(topic){
+      console.log(topic);
+      subscribeTopic(topic);
+    });
+  }
+  function unSubscribeTopic(topic){
+    //and hit api to remove user subscription from db
+    socket.emit("unSubscribeTopic", {topic : topic});
+  }  
+
+
+
+</script>

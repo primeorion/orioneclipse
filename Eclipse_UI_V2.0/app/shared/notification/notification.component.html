@@ -1,0 +1,269 @@
+<!--Notifications-->
+
+<div class="">
+	<div class="notification-right-hbox-container ease" id="noti_container">
+		<a href="javascript:void(0);" class="noti-box-toggle right-hbox-btn" data-target="noti_container"> <i class="glyphicon-menu-right glyphicon" aria-hidden="true"></i> </a>
+		<div class="notification-right-tab-box" *ngIf="(!showPreferencesDiv)">
+			<div class="noti-box-header">
+				<h1 class="pull-left">Notifications</h1>
+				<div class="notibar-menu">
+					<ul>
+						<li class="form-inline" *ngIf="!showTodo">
+							<span>Group by :</span>
+							<select *ngIf="!showTodo" class="form-control radius-none" [(ngModel)]="selectedDisplayCategory" (change)="groupNotifications($event.target.value)">                        
+                        	<option  value="Date">Date</option>
+							<option  value="Category">Category</option>
+                  		</select>
+						</li>
+						<li> <a href="javascript:void(0);" class="user-info" (click)="showPreferences(true)"><i class="fa fa-gear"></i>  </a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="noti-box-content" *ngIf="showNotificationDiv">
+				<div class="form-group is-empty">
+					<div class="icon-addon addon-lg">
+						<input type="text" id="searchNotifications" placeholder="Search" [(ngModel)]="filterNotificationsText" class="form-control custom-search-bar"
+							(keyup)="onFilterkeyUp($event)" (keypress)="filterNotifications($event)">
+						<label for="notificationSearchemail" class="glyphicon glyphicon-search custom-icon-addon" title="search"></label>
+						<label for="<notificationSearch></notificationSearch>" class="glyphicon glyphicon-remove custom-icon-close" title="close"
+							(click)="clearSearch()"></label>
+					</div>
+					<span class="material-input"></span></div>
+
+				<div class="nav-tabs-container custom-tab-container fullList-scroll">
+					<ul class="nav nav-pills">
+						<li [ngClass]="{'active': selectedTab == 'All'}"><a data-toggle="tab" href="#All" aria-expanded="true" (click)="getFilterList('All')"><i class="fa fa-file-text-o"></i> All</a></li>
+						<li [ngClass]="{'active': selectedTab == 'Unread'}"><a data-toggle="tab" href="#All" aria- expanded="true" (click)="getFilterList('Unread')"><i class="fa fa-newspaper-o"></i> Unread </a></li>
+						<li [ngClass]="{'active': selectedTab == 'Read'}"><a data-toggle="tab" href="#All" aria- expanded="true" (click)="getFilterList('Read')"><i class="fa fa-newspaper-o"></i> Read </a></li>
+						<li [ngClass]="{'active': selectedTab == 'ToDo'}"><a data-toggle="tab" href="#ToDo" aria- expanded="true" (click)="getActivities()"><i class="fa fa-calendar-check-o"></i> To Do </a></li>
+					</ul>
+					<div class="tab-content">
+						<!--Start Notification and categories-->
+						<div class="tab-pane fade in active">
+							<div class="notifications-wrapper" *ngIf="!showTodo">
+								<div *ngFor="let group of displayGroups">
+									<div class="chat-box-single-line">
+										<abbr class="items-date-stamp">{{group}}</abbr>
+									</div>
+									<div *ngFor="let notificationItem of finalList; let i=index">
+										<div *ngIf="notificationItem.displayGroup==group &&  (i<topFour || showAllNotificaitons)">
+											<notification-item [notice]="notificationItem" (viewNotification)="viewNotificationResult($event)" (setReadStatus)="updateNotificationStatus($event)"></notification-item>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="notification-footer" *ngIf="!showAllNotificaitons && finalList.length>topFour && showTodo==false">
+								<a href="javascript:void(0)" class="menu-title" (click)="viewAllNotifications()">More<i class="glyphicon glyphicon-circle-arrow-right"></i></a>
+							</div>
+							<!--End  Notification and categories-->
+
+
+							<!--ToDo Tab-->
+							<div class="tab-pane fade in active" *ngIf="showTodo">
+								<div class="">
+									<div class="col-md-12 margin-top-05"> <a href="javascript:void(0)" (click)="onShowNewTask()" class="pull-right clear-left"><i class="fa fa-plus-square text-success"></i> Add New Task</a></div>
+								</div>
+								<div class="notifications-wrapper">
+									<div *ngFor="let group of displayActivityGroups">
+										<div class="chat-box-single-line">
+											<abbr class="items-date-stamp">{{group}}</abbr>
+										</div>
+										<div *ngFor="let activity of finalActivitiesList ; let i=index">
+											<div *ngIf="activity.displayGroup==group &&  (i<topSixActivities || showAllActivities)">
+												<a class="notification-item-list">
+													<div class="notification-item">
+														<h4 class="item-title"><i class="fa fa-calendar-check-o text-info"></i>{{activity.name}}</h4>
+														<span class="item-time-stamp">{{activity.createdOn | date :'shortTime'}}</span>
+													</div>
+													<div class="item-slide-menu">
+														<button class="btn-read" title="Assign User"><img src="app/assets/img/assign-user-icon.png" (click)="showUsers(activity.id)"></button>
+														<button class="btn-trash" title="Mark as Complete"><i class="fa  fa-check-square text-white" (click)="markComplete(activity.id)"></i></button>
+													</div>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="notification-footer" *ngIf="!showAllActivities && finalActivitiesList.length>topSixActivities">
+									<a href="javascript:void(0)" class="menu-title" (click)="viewAllActivities()">More<i class="glyphicon glyphicon-circle-arrow-right"></i></a>
+								</div>
+							</div>
+							<!--END ToDo Tab-->
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--Notification Story-->
+			<div *ngIf="showNotificationStoryDiv">
+				<div class="noti-box-content">
+					<div class="nav-tabs-container custom-tab-container fullList-scroll">
+						<div class="tab-content">
+							<div class="notification-item-full" *ngFor="let notification of notificationInformation">
+								<span class="notification-cat">{{notification.notificationCategory.name}}</span>
+								<div class="item-time-stamp"><span>{{(notification.createdOn | date:'MM/dd/yy  h:mm a')}}</span></div>
+								<p>{{notification.subject}}</p>
+								<a *ngIf="notification.notificationCategory.name=='Trading' || notification.notificationCategory.name=='Approval'" href="javascript:void(0)"
+									class="menu-title" (click)="routeLink()">Click Here <i class="glyphicon glyphicon-circle-arrow-right"></i></a>
+								<!--||('Model Assignment Approval')||('Model Change Approval')								-->
+							</div>
+						</div>
+					</div>
+					<div class="notification-footer text-right clearfix">
+						<a class="menu-title pull-right" href="javascript:void(0)" (click)="showNotifications()"><i class="fa fa-chevron-circle-left"></i> Back</a>
+					</div>
+				</div>
+			</div>
+			<!--End Notification Story-->
+		</div>
+		<!--Notification Preferences-->
+		<div class="notification-right-tab-box" *ngIf="(showPreferencesDiv)">
+			<div class="noti-box-header">
+				<h1 class="pull-left"><i class="fa fa-gear"></i> Notification Preferences</h1>
+			</div>
+			<div class="noti-box-content">
+				<div class="nav-tabs-container custom-tab-container fullList-scroll">
+					<div class="tab-content">
+
+						<div class="notification-preferences">
+							<div class="row">
+								<div class="col-md-6">Personal email: </div>
+								<div class="col-md-6">
+									<span>{{userEmail}}</span>
+									<br/>
+									<a href="javascript:void(0)" (click)="updateUserEmail()"><small>Change</small></a>
+								</div>
+							</div>
+							<div class="row margin-top-10">
+								<div class="col-md-5 text-center pull-right">
+									<div class="col-md-6">Enabled</div>
+									<div class="col-md-6">Email</div>
+								</div>
+							</div>
+							<div class="noti-per-row row" *ngFor="let category of notificationCategoryList">
+								<div class="col-md-7">
+									<!--<h4 class="item-title"  [ngClass]="{'unread': !notice.readStatus}" (click)="viewNotificationStory(notice.id)"><img src='app/assets/img/{{notice.notificationCategoryType.code}}.png'> {{notice.subject}} </h4>-->
+									<h4 class="item-title"> <img src='app/assets/img/{{category.code}}.png'> {{category.notificationCategoryName}} </h4>
+								</div>
+								<div *ngFor="let topic of notificationTopics">
+									<div *ngIf="topic.notificationCategoryId==category.notificationCategoryId" class="clearfix">
+										<div class="col-md-7">
+											<p class="noti-per-content">{{topic.subject}}
+												<a href="javascript:void();" title={{topic.description}}><i class="fa  fa-question-circle text-info"></i></a>
+
+											</p>
+
+											<!--<i class="fa fa-help text-info" data-toggle="tooltip" ></i>																						-->
+										</div>
+										<div class="col-md-5 text-center">
+											<!--*ngFor="let topics of notificationTopics"-->
+											<div class="col-md-6">
+												<p><input type="checkbox" (change)="updateEnable(topic)" [(ngModel)]="topic.enabled" /></p>
+												<!--[(ngModel)]="topics.enabled" -->
+											</div>
+											<div class="col-md-6">
+												<p><input type="checkbox" [(ngModel)]="topic.sendEmail" [disabled]="!topic.enabled" /></p>
+												<!--[(ngModel)]="topics.sendEmail"-->
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row notification-footer text-right">
+					<div class="from-group btn-group-sm">
+						<button type="button" class="btn btn-raised btn-info" (click)="onSave()">Save</button>
+						<button type="button" class="btn btn-raised btn-default" (click)="showPreferences(false)">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--End Notification Preferences-->
+
+		<!--<p-growl [(value)]="msgs"></p-growl>-->
+		<!--<p-dialog [(visible)]="displayprogressBar" modal="modal" class="popup-style" responsive="true" width="400" header="Firm Profile" [resizable]=false>-->
+		<div *ngIf="hideProgressBar">
+			<div class="running-bar">
+				<!--<a (click)="closeProgressBar()" class="progress-close"><i class="fa fa-close"></i></a>-->
+				<div class="row">
+					<div class="col-md-6">
+						<span class="text-xs-center">{{analyticsProgress}}<span></span> </span>
+					</div>
+					<!--<div class="col-md-6 text-right text-muted"><span class="text-success">80</span> out of <span class="text-info">100</span></div>-->
+				</div>
+				<!--<progress class="progress" value="80" max="100" aria-describedby="example-caption-4"></progress>-->
+				<p-progressBar [value]="value"></p-progressBar>
+			</div>
+		</div>
+		<!--</p-dialog>-->
+	</div>
+
+	<!--Create Activity Popup-->
+	<p-dialog header="Add New Activity" [(visible)]="displayAddActivity" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+		[resizable]=false width="550">
+		<div class="form-horizontal col-md-10">
+			<div class="form-group">
+				<label class="control-label col-sm-3 label-fontsize">Name</label>
+				<div class="col-sm-9">
+					<input type="text" [(ngModel)]="activity.name" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-3 label-fontsize">Description</label>
+				<div class="col-sm-9">
+					<input type="text" [(ngModel)]="activity.description" placeholder="up to 50 characters only" class="form-control" />
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="closePopup()">CANCEL</button>
+				<button type="button" class="btn btn-blueouter" icon="fa-check" (click)="createActivity()">SAVE</button>
+			</div>
+		</footer>
+	</p-dialog>
+	<!--End Create Activity Popup-->
+
+	<!--Assign User Popup-->
+
+	<p-dialog header="Assign User" [(visible)]="displayUsers" modal="modal" responsive="true" showEffect="fade" [draggable]=false
+		[resizable]=false width="1000" height="450">
+		<div>
+			<div class="col-md-6">
+				All Users
+				<div>
+					<ag-grid-ng2 #agGrid class="ag-material ag-dark" style="width: 100%; height: 280px;" [rowData]="usersData" [showToolPanel]="false"
+						enableSorting [gridOptions]="gridOptions" rowSelection="multiple" [columnDefs]="columnDefs" enableFilter [suppressMenuMainPanel]="true"
+						enableColResize="true">
+					</ag-grid-ng2>
+				</div>
+			</div>
+			<div class="col-md-1">
+				<p class="margin-top-30"> </p>
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="assignUser()">></button>
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="removeUser()"><</button>
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="assignAllUsers()">>></button>
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)="removeAllUsers()"><<</button>
+			</div>
+			<div class="col-md-5">
+				Assigned Users
+				<div>
+					<ag-grid-ng2 #agGrid class="ag-material ag-dark" style="width: 100%; height: 280px;" [columnDefs]="columnDefs" [rowData]="selectedUsers"
+						[showToolPanel]="false" enableSorting rowSelection="multiple" scrollbar [gridOptions]="selectedUsersGridOptions" enableFilter
+						[suppressMenuMainPanel]="true" enableColResize="true">
+					</ag-grid-ng2>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" class="btn btn-info btn-raised" icon="fa-close" (click)='closeUsersPopup()'>CANCEL</button>
+				<button type="button" class="btn btn-blueouter" icon="fa-check" (click)='AssignUsersToActivity()'>SAVE</button>
+				<em class="securityError danger" *ngIf="assignUserErrorMsg">{{assignUserErrorMsg}}</em>
+			</div>
+		</footer>
+	</p-dialog>
+	<!--End Assign User Popup-->

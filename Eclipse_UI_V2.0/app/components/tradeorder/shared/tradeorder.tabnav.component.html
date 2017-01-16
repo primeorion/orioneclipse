@@ -1,0 +1,56 @@
+<div class="nav-tabs-container">
+    <ul class="nav nav-tabs pull-left" *ngIf="model.action != 'TF'">
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'L' || model.action == 'LA'"><a [routerLink]="['/eclipse', 'tradeorder', 'list']">Orders</a></li>
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'L' || model.action == 'LA'"><a [routerLink]="['/eclipse', 'tradeorder', 'awaiting']">Awaiting Acceptance </a></li>
+    </ul>
+    <ul class="nav nav-tabs pull-left" *ngIf="model.action == 'TF'">
+        <li [routerLinkActive]="['active']" *ngIf="model.action == 'TF'"><a [routerLink]="['/eclipse', 'tradeorder', 'tradefile']">Trade Files </a></li>
+    </ul>
+    <div class="actionBtn btn-group pull-right" *ngIf="model.action != 'TF'">
+        <a href="javascript:void(0)" data-target="#" class="btn btn-primary action-drop dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="material-icons">more_vert</i>
+            <div class="ripple-container"></div>
+        </a>
+        <ul class="dropdown-menu">
+            <li [hidden]="!executePriv.canRead || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('ProcessAll')"> <i class="fa fa fa-retweet"></i> Process All</a>
+            </li>
+            <li [hidden]="!model.canUpdate || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('EnableAll')"><i class="fa fa-thumbs-o-up"></i> Enable All</a>
+            </li>
+            <li [hidden]="!model.canUpdate || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('DisableAll')"><i class="fa fa-thumbs-o-down"></i> Disable All</a>
+            </li>
+            <li [hidden]="!model.canDelete || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('DeleteAll')"><i class="fa fa-close"></i> Delete All</a>
+            </li>
+            <li [hidden]="!model.canDelete || model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('DeleteAllZeroQty')"><i class="fa fa-trash-o"></i> Delete All Zero Qty Orders</a>
+            </li>
+            <li [hidden]="model.action != 'L' && model.action != 'LA'">
+                <a href="javascript:void(0)" (click)="onMenuClick('Refresh')"><i class="fa fa-refresh"></i> Refresh Grid</a>
+            </li>
+            <li [hidden]="model.action != 'L' && model.action != 'LA'">
+                <a href="javascript:void(0)" (click)="onMenuClick('Export')"><i class="fa fa-file-excel-o"></i> Export to Excel</a>
+            </li>
+            <!--<li [hidden]="model.action != 'L'">
+                <a href="javascript:void(0)" [routerLink]="['/eclipse', 'tradeorder', 'globaltrades']">Global Trades</a>
+            </li>
+             <li [hidden]="model.action != 'L'">
+                <a href="javascript:void(0)" [routerLink]="['/eclipse', 'tradeorder','tickerswap']">Tax Ticker Swap</a>
+            </li>-->
+            <!--<li [hidden]="model.action != 'L'">
+                <a href="javascript:void(0)" [routerLink]="['/eclipse', 'tradeorder', 'raisecash']">Raise Cash</a>
+            </li>
+            <li [hidden]="model.action != 'L'">
+                <a href="javascript:void(0)" (click)="onMenuClick('TacticalTool')">Tactical Trade Tool</a>
+            </li>
+            <li [hidden]="model.action != 'L'">
+                <a href="javascript:void(0)" [routerLink]="['/eclipse', 'tradeorder', 'spendcash']">Spend Cash</a>
+            </li>
+             <li [hidden]="model.action != 'L'">
+                <a href="javascript:void(0)" [routerLink]="['/eclipse', 'tradeorder', 'tlh']">Tax Loss Harvesting Tool</a>
+            </li>-->
+        </ul>
+    </div>
+</div>

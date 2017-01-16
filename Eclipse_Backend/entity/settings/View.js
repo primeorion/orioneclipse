@@ -1,0 +1,28 @@
+module.exports  = {
+tableName:'userGridView',
+columns:{
+		id:'userGridView.id',
+		viewName:'userGridView.viewName',
+		viewTypeId:'userGridView.viewTypeId',
+		isDefault:'userGridView.isDefault',
+		isPublic:'userGridView.isPublic',
+		filter:'userGridView.filter',
+		gridColumnDefs:'userGridView.gridColumnDefs',
+		isDeleted:'userGridView.isDeleted',
+		createdDate:'userGridView.createdDate',
+		createdBy:'userGridView.createdBy',
+		editedDate:'userGridView.editedDate',
+		editedBy:'userGridView.editedBy'
+	},
+	usCreated:{
+		alias:'usCreated',
+		id:'usCreated.id',
+		userLoginId:'usCreated.userLoginId', 
+                isDeleted:'usCreated.isDeleted'
+	},
+	usEdited:{
+		alias:'usEdited',
+		id:'usEdited.id',
+		userLoginId:'usEdited.userLoginId'
+	}
+}
